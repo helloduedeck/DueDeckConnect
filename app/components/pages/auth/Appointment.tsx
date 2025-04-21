@@ -332,10 +332,10 @@ const Appointment = () => {
                 return (
                   <View
                     style={{
-                      backgroundColor: colors.white,
+                      // backgroundColor: colors.white,
                       borderRadius: 4,
                       marginVertical: moderateScale(10),
-                      marginHorizontal: moderateScale(19),
+                      marginHorizontal: moderateScale(12),
                     }}>
                     <AppointmentBoard
                       appointedEmployeeProps={{

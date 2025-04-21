@@ -114,7 +114,7 @@ const ServiceItemCard: React.FC<IProps> = ({
   return (
     <Card
       viewableItems={viewableItems}
-      item={item}
+      // item={item}
       borderStartColor={
         isAssigned
           ? colors.orange
@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
     color: colors.GRey800,
     marginLeft: moderateScale(13),
     maxWidth: '65%',
-    marginTop: moderateScale(10),
+    marginTop: moderateScale(0),
   },
   topRightTextContainer: {},
 

@@ -17,6 +17,8 @@ export const getServiceBackgroundColor = (serviceTitle: string) => {
 
 export const getMenuBoarddBackgroundColor = (menuBoard: string) => {
   switch (menuBoard) {
+    case 'Taskrequests':
+      return 'yellow';
     case 'Servicepurple':
       return colors.Servicepurple;
     case 'DocViolet':

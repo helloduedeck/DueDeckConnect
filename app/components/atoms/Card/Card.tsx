@@ -48,7 +48,7 @@ const cardStyle: any = (color: string) => ({
 const styles = StyleSheet.create({
   container: cardStyle,
   card: {
-    marginVertical: moderateScale(10, 0.25),
+    marginVertical: moderateScale(4, 0.25),
     marginHorizontal: moderateScale(15, 0.25),
     shadowColor: colors.charcoal,
     shadowOffset: {

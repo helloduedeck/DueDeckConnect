@@ -256,6 +256,13 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
           }}>
           <DocumentUpload
             attachments={item.attachments && item.attachments[0]}
+            DocSubabelcount={{
+              size: 'small',
+              fontWeight: 'normal',
+              fontStyle: 'normal',
+              title: item.attachments?.length === 0 ? '' : item.attachments?.length,
+              color: colors.primary,
+            }}
             Doclabelprop={{
               size: 'small',
               fontWeight: 'bold',

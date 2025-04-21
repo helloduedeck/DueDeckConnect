@@ -9,9 +9,11 @@ import fontsize from '../../themev1/fontstyle';
 type IProps = {
   digits: number;
   onChange: (otp: string) => void;
+  onFocus:()=> void;
+  onBlur:()=>void;
 };
 
-const OTPInput: React.FC<IProps> = ({digits, onChange}) => {
+const OTPInput: React.FC<IProps> = ({digits, onChange,onFocus,onBlur}) => {
   const textInputRef = useRef([]);
   const [otp, setOTP] = useState([]);
   const [focusedBox, setFocusedBox] = useState<any>();
@@ -19,11 +21,6 @@ const OTPInput: React.FC<IProps> = ({digits, onChange}) => {
   const focusPrevious = (key: string, index: number) => {
     if (key === 'Backspace' && index !== 0) {
       textInputRef.current[index - 1].focus();
-      setOTP(otp => {
-        otp[index] = undefined;
-        onChange(otp.join(''));
-        return [...otp];
-      });
     }
   };
 
@@ -62,11 +59,15 @@ const OTPInput: React.FC<IProps> = ({digits, onChange}) => {
                 otp[index] = '';
                 return [...otp];
               });
+              onFocus();  // Call the onFocus prop to hide heading and subheading
+
             }}
             onBlur={() => {
               if (index === focusedBox) {
                 setFocusedBox(null);
               }
+              onBlur();  // Call the onBlur prop to show heading and subheading
+
             }}
             onKeyPress={e => focusPrevious(e.nativeEvent.key, index)}
           />
@@ -88,7 +89,6 @@ const inputContainerStyle: any = (isSelected: boolean) => ({
   paddingVertical: Platform.OS === 'android' ? 0 : 10,
   alignItems: 'center',
   justifyContent: 'center',
-
   backgroundColor: colors.grayLight,
 });
 
@@ -104,5 +104,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.Normal,
     width: 70,
     textAlign: 'center',
+    color:colors.GRey800
   },
 });

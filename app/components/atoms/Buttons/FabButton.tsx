@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Keyboard,
+  Pressable,
+  Animated,
 } from 'react-native';
 import {ScaledSheet, moderateScale} from 'react-native-size-matters';
 import {FabPropsType} from '../../../types/components';
@@ -20,13 +22,18 @@ import Circle from '@components/atoms/Circle/Circle';
 import {Label} from '@components/atoms/Label';
 import Button from '@components/atoms/button/Button';
 
-import ActionSheet from '@components/atoms/actionSheet/ActionSheet';
+// import ActionSheet from '@components/atoms/actionSheet/ActionSheet';
 import {FAB} from 'react-native-paper';
 import ResheduleAppointment from '@components/organisms/App/ResheduleAppointment';
 import fontsize from '../../../themev1/fontstyle';
 import {useNewTaskRequestMutation} from '@api/services';
 import {toast} from '@utils';
 import {useAppSelector} from '@hooks/redux_hooks';
+import ActionSheet from '@components/organisms/ActionSheet/ActionSheet';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
+import { ROUTES } from '@routes';
+import Svg, { Path } from 'react-native-svg';
 
 const FabButton = (props: FabPropsType) => {
   const dashboardState = useAppSelector(state => state?.dashboard);
@@ -36,6 +43,8 @@ const FabButton = (props: FabPropsType) => {
   const [showServiceView, setShowServiceView] = useState(false);
   const [showAppointmentView, setShowAppointmentView] = useState(false);
   const [characterCount, setCharacterCount] = useState(0);
+  const [taskmodalVisible, setTaskModalVisible] = useState(false);
+  const navigation = useNavigation();
 
   const [createNewTask] = useNewTaskRequestMutation();
 
@@ -58,12 +67,14 @@ const FabButton = (props: FabPropsType) => {
 
   const closeActionsheet = () => {
     setIsSheetOpen(false);
+    setCharacterCount(0)
   };
 
   const handleChangeText = (text: string) => {
     setServiceNotes(text);
     setCharacterCount(text.length);
   };
+  const [animation] = useState(new Animated.Value(0)); // initial position
 
   let Fabsizes;
   switch (props.size) {
@@ -79,9 +90,10 @@ const FabButton = (props: FabPropsType) => {
     setIsSheetOpen(false);
   };
   const onNewService = async () => {
-    if (!serviceNotes) {
+    if (!serviceNotes && serviceNotes.trim().length === 0) {
       return toast.failure('Please Enter Manadatory Field!!!');
     }
+    setTaskModalVisible(true)
 
     const reqData: any = {
       task_note: serviceNotes,
@@ -106,6 +118,14 @@ const FabButton = (props: FabPropsType) => {
         toast.failure('Please Enter Manadatory Fields!!!');
       });
   };
+
+  const iconMovement = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -15], // Icon moves 10 units upwards when animated
+  });
+  function alert(arg0: string) {
+    throw new Error('Function not implemented.');
+  }
 
   return (
     <View>
@@ -228,6 +248,82 @@ const FabButton = (props: FabPropsType) => {
             </View>
           </View>
         </Modal>
+        <Modal
+        animationType="slide"
+        transparent={true}
+        visible={taskmodalVisible}
+        onRequestClose={() => setTaskModalVisible(false)}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}
+        >
+          <View
+            style={{
+              width: 343,
+              height: 230,
+              backgroundColor: 'white',
+              borderRadius: 4,
+              alignItems: 'center',
+              padding: moderateScale(24),
+              justifyContent: 'center',
+            }}
+          >
+            <Pressable
+              style={{position:'absolute',right:10,top:10}}
+               onPress={() =>
+                setTaskModalVisible(false)
+ }
+            >
+              <MaterialCommunityIcons
+                name="close"
+                size={20}
+                color={colors.black}
+              />
+            </Pressable>
+            <View>
+              <MaterialCommunityIcons
+                name={'checkbox-marked-circle-outline'}
+                color={colors.SemGreen500}
+                size={50}
+                style={{
+                  marginLeft: moderateScale(50),
+                  justifyContent: 'center',
+                  marginBottom: moderateScale(16),
+                }}
+              />
+              <Label
+                size={'small'}
+                fontWeight={'semibold'}
+                title={'New Taskrequest has been created!'}
+                color={colors.GRey800}
+              />
+            </View>
+
+            <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setTaskModalVisible(false);
+                 navigation.navigate(ROUTES.TASKREQUESTS)
+                }}
+              >
+                <Sublabel
+                  size={'medium'}
+                  fontWeight={'semibold'}
+                  fontStyle={'normal'}
+                  title={'View Taskrequest'}
+                  color={colors.primary}
+                  align={undefined}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
         <View>
           <ResheduleAppointment
             AppointmentContent={undefined}
@@ -278,14 +374,16 @@ const FabButton = (props: FabPropsType) => {
                       fontWeight={'bold'}
                       fontStyle={'normal'}
                       title={'Service You Are Looking For'}
-                      color={undefined}
+                      color={colors.GRey800}
                       align={undefined}
                     />
                     <TextInput
                       placeholder="Type"
+                      placeholderTextColor={colors.Grey600}
                       maxLength={250}
                       value={serviceNotes}
                       onChangeText={handleChangeText}
+                      style={{color:colors.GRey800}}
                     />
                     <View
                       style={{
@@ -304,7 +402,7 @@ const FabButton = (props: FabPropsType) => {
                         fontWeight={'bold'}
                         fontStyle={'normal'}
                         title={`${characterCount}/250`}
-                        color={undefined}
+                        color={colors.GRey800}
                         align={undefined}
                       />
                     </View>
@@ -369,10 +467,22 @@ const FabButton = (props: FabPropsType) => {
           backgroundColor: colors.primary,
           borderRadius: 60,
         }}
-        icon="plus"
-        color="white"
+        icon={() => (
+          <Animated.View style={{ transform: [{ translateY: iconMovement }] }}>
+          <Svg width="28" height="28" viewBox="2.5 1 22 24">
+            <Path
+              fill="none"
+              stroke="white"
+              strokeWidth="2" // Thinner stroke width for a lighter effect
+              d="M12 5v14M5 12h14"
+            />
+          </Svg>
+        </Animated.View>
+        )}    
+            color="white"
         size="medium"
         onPress={() => setModalVisible(true)}
+        
       />
     </View>
   );

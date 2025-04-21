@@ -55,7 +55,7 @@ const NotificationHeader: React.FunctionComponent<CustomHeaderProps> = ({
             justifyContent: 'center',
             marginLeft: 5,
           }}>
-          <Text style={{fontSize: 12, textAlign: 'center'}}>{count}</Text>
+          <Text style={{fontSize: 12, textAlign: 'center',color:colors.GRey800}}>{count}</Text>
         </View>
       </View>
       <View

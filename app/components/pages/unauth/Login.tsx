@@ -18,7 +18,7 @@ import fontsize from '../../../themev1/fontstyle';
 import Button from '@components/atoms/button/Button';
 import {
   setActiveBillingFirm,
-  setActiveBillingFirmPaymentStatus,
+  // setActiveBillingFirmPaymentStatus,
   setActiveBranch,
   setActiveClient,
   setActiveFYears,
@@ -73,6 +73,8 @@ const Login = ({navigation}: any) => {
     } else {
       setErrorMessage('');
       setIsLoading(true);
+      console.log({email: email, password: password});
+      
       await token({email: email, password: password})
         .unwrap()
         .then(async data => {
@@ -88,7 +90,7 @@ const Login = ({navigation}: any) => {
             dispatch(setActiveBranch(data?.data?.consultant));
             dispatch(setActiveClient(data?.data?.client));
             dispatch(setActiveBillingFirm(data?.data?.billingfirm_id));
-            dispatch(setActiveBillingFirmPaymentStatus(data?.data?.billingfirm_payment_status));
+            // dispatch(setActiveBillingFirmPaymentStatus(data?.data?.billingfirm_payment_status));
             dispatch(setActiveFYears(data?.data?.financial_year));
 
             local.store(local.keys.GPANEL_FYEAR, data?.data?.financial_year);
@@ -107,7 +109,7 @@ const Login = ({navigation}: any) => {
           setIsLoading(false);
         })
         .catch(e => {
-          setErrorMessage(e.data?.data?.error ?? 'Invalid Credentails');
+          setErrorMessage(e.data?.data?.error ?? 'Invalid Credentials');
           clearTimeout();
           //toast.failure(e.data?.data?.error ?? 'Invalid Credentails');
           console.log('ERROR WHILE LOGIN', e);
@@ -153,7 +155,7 @@ const Login = ({navigation}: any) => {
       }}
       isSemiBold={false}
       heading="Welcome Back!"
-      subHeading="Manage Your Compliance On Fingertips & Stay Connected With Your Consultants">
+      subHeading="Manage Your Compliance On Fingertips & Stay Connected With Your Consultants" isDisabled={false} showIcon={undefined} showLabel={undefined} Inputfocused={undefined} Iskeyboardclosed={undefined}>
       <Input
         placeholder="Email Address"
         iconLeft={'mail'}

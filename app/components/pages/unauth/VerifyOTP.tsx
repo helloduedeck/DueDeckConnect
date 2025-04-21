@@ -1,10 +1,10 @@
-import {StyleSheet, View} from 'react-native';
+import {Keyboard, StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 // import { CountDownTimer, OTPInput} from '../components';
 import {colors} from '../../../theme';
 import {useNavigation, useRoute} from '@react-navigation/native';
 // import api from '../../../ClientScreens/services';
-import {moderateScale} from 'react-native-size-matters';
+import {moderateScale, verticalScale} from 'react-native-size-matters';
 import ROUTES from '@routes/routes';
 import AuthContainer from '@components/templates/AuthContainer';
 import OTPInput from '@components/organisms/OTPInput';
@@ -12,11 +12,11 @@ import {toast} from '@utils';
 import Icon from '@components/atoms/Icon';
 import fontsize from '@theme/fontstyle';
 import {useRequestOtpMutation, useVerifyOtpMutation} from '@api/auth.api';
-import ButtonComponent from '@components/atoms/Buttons/ButtonComponent';
+import Button from '@components/atoms/button/Button';
 
 const HEADING = 'Enter 4 digit recovery code';
 const SUB_HEADING =
-  'The recovery code was sent to your Mobile number/\nEmail address. Please enter the code';
+  'The recovery code was sent to your\nEmail address. Please enter the code';
 
 const VerifyOTP = () => {
   const refTimer = useRef<any>();
@@ -27,29 +27,53 @@ const VerifyOTP = () => {
   const [isLoading, setLoading] = useState(false);
   const [verifyOtp] = useVerifyOtpMutation();
   const [requestOtp] = useRequestOtpMutation();
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isOTPFocused, setIsOTPFocused] = useState(false);
+  const [isInputFocused, setIsInputFocused] = useState(false);
+
+
+
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false); // State for keyboard visibility
 
   useEffect(() => {
-    // Use setTimeout to update the message after 2000 milliseconds (2 seconds)
-    const timeoutId = setTimeout(() => {
-      setTimerEnd(true);
-    }, 8000);
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardVisible(true);
+    });
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardVisible(false);
+    });
 
-    // Cleanup function to clear the timeout if the component unmounts
-    return () => clearTimeout(timeoutId);
-  }, [isTimerEnd]); // Empty dependency array ensures the effect runs only once
+    // Cleanup listeners on component unmount
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   const onOTPEnter = (otp: any) => {
     setOtpvalue(otp);
   };
 
   const onResendOTPPress = async () => {
+    console.log("OTPPPPDDDD");
     setLoading(true);
-    setTimerEnd(false);
+    setIsDisabled(true);
+    setTimeout(() => {
+      setIsDisabled(false);
+    }, 5000); 
+ 
+    // toast.success('please wait...');
     await requestOtp(otpData)
       .unwrap()
       .then(data => {
         if (data.status == 200) {
+          toast.success(data?.message);
+         
           // refTimer.current?.resetTimer();
+        }else{
+          toast.failure(data?.message);
+          
+          console.log('failed'+data?.message);
         }
       })
       .finally(() => {
@@ -62,6 +86,11 @@ const VerifyOTP = () => {
 
   const onVerifyOTPPress = async () => {
     setLoading(true);
+    setIsDisabled(true);
+    
+    setTimeout(() => {
+      setIsDisabled(false);
+    }, 5000); 
 
     if (!otpvalue.trim().length || otpvalue.trim().length !== 4) {
       toast.failure('Please enter valid OTP');
@@ -71,6 +100,8 @@ const VerifyOTP = () => {
 
     let reqData: any = {
       otp: otpvalue,
+      email: otpData.email,
+      contact_no: otpData.contact_no
     };
 
     if (otpData.email) {
@@ -80,10 +111,15 @@ const VerifyOTP = () => {
     if (otpData.contact_no) {
       reqData.contact_no = otpData.contact_no;
     }
+
+    console.log("reqDataaaa"+JSON.stringify(reqData));
+
     await verifyOtp(reqData)
       .unwrap()
       .then(data => {
         if (data.status == 200) {
+          toast.success(data?.message);
+          console.log('suceess '+data?.message)
           navigation.push(ROUTES.RESETPASSWORD, {
             ...otpData,
             otp: otpvalue,
@@ -91,6 +127,7 @@ const VerifyOTP = () => {
         } else {
           if (data?.message) {
             toast.failure(data?.message);
+            console.log('failed '+data?.message)
           }
         }
       })
@@ -110,17 +147,23 @@ const VerifyOTP = () => {
 
   return (
     <AuthContainer
+    Iskeyboardclosed={isKeyboardVisible}
+    Inputfocused={isOTPFocused}
+    showIcon={true}
+    showLabel={true}
       button={{
         label: 'Verify',
         onPress: onVerifyOTPPress,
         isLoading: false,
       }}
       heading={HEADING}
-      subHeading={SUB_HEADING}
+      subHeading={isOTPFocused && isKeyboardVisible ? '':SUB_HEADING}
       isResendOTP={true}
-      isResendOTPEnable={isTimerEnd}
-      onResendOTPPress={onResendOTPPress}
-      isSemiBold={false}>
+      isResendOTPEnable={!isDisabled}
+      onResendOTPPress={onResendOTPPress} 
+      isDisabled={isDisabled}
+      isSemiBold={false}
+      >
       <View style={styles.counterContainer}>
         {/* <Icon name="Stopwatch" size={28} /> */}
         {/* <CountDownTimer
@@ -130,13 +173,16 @@ const VerifyOTP = () => {
           textStyle={styles.stopWatchText}
         /> */}
       </View>
-      <OTPInput onChange={onOTPEnter} digits={4} />
-
-      <ButtonComponent
-        label={'Verify'}
-        onPress={onVerifyOTPPress}
-        containerStyle={{marginVertical: moderateScale(10), marginTop: 20}}
-      />
+      <OTPInput onChange={onOTPEnter} digits={4}   
+        onFocus={() => setIsOTPFocused(true)}
+     onBlur={() => {}}
+    />
+        <View style={{marginTop:moderateScale(40)}}>
+          <TouchableOpacity>
+          <Button containerStyle={styles.btnContainerStyle} label={'Verify OTP'} isExtraSmall labelStyle={{color:colors.white}} onPress={onVerifyOTPPress}
+          isLoading={isLoading}  disabled={isDisabled} />
+          </TouchableOpacity>
+        </View>
     </AuthContainer>
   );
 };
@@ -161,5 +207,9 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontWeight: '500',
     letterSpacing: 0.25,
+  },
+  btnContainerStyle: {
+    height: verticalScale(40),
+    backgroundColor:colors.primary
   },
 });

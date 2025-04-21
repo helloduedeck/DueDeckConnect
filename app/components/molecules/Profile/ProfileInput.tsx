@@ -23,7 +23,7 @@ const ProfileInput: React.FC = props => {
             fontWeight={'bold'}
             fontStyle={'normal'}
             title={'Full Name'}
-            color={undefined}
+            color={colors.Grey600}
             align={undefined}
           />
         </View>
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     paddingLeft: moderateScale(16),
     borderColor: colors.profileinput,
     backgroundColor: 'white',
+    color:colors.GRey800
   },
   label: {
     position: 'absolute',
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
     left: 26,
     paddingHorizontal: 5,
     fontSize: fontsize.medium14,
-    color: '#666',
+    color:colors.GRey800,
     backgroundColor: 'white',
     zIndex: 1, // Ensure the label is above the border
   },

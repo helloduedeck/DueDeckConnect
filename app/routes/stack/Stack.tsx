@@ -22,6 +22,7 @@ import PrivacyPolicy from '@components/pages/auth/PrivacyPolicy';
 import Comments from '@components/templates/Details/Comments';
 import Payments from '@components/pages/auth/Payments';
 import Appointment from '@components/pages/auth/Appointment';
+import TaskRequests from '../../components/pages/auth/TaskRequests';
 
 const UnAuthorizedStack = createStackNavigator();
 
@@ -72,6 +73,8 @@ const AuthorizedContainer = () => {
       />
       <AuthorizedStack.Screen name={ROUTES.DOCPDFVIEW} component={DocpdfView} />
       <AuthorizedStack.Screen name={ROUTES.DOCUMENT} component={Documents} />
+      <AuthorizedStack.Screen name={ROUTES.TASKREQUESTS} component={TaskRequests} />
+
 
       <AuthorizedStack.Screen
         name={ROUTES.DOCUMENTUPLOADPANEL}

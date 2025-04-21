@@ -154,7 +154,7 @@ const DashBoardContainer: React.FC<IDashboardProps> = ({
         />
       ),
     },
-    {id: 6, title: 'Payment Board', component: <PaymentBoard />},
+    //{id: 6, title: 'Payment Board', component: <PaymentBoard />},
     {
       id: 7,
       title: 'Logo',
@@ -171,8 +171,8 @@ const DashBoardContainer: React.FC<IDashboardProps> = ({
           <>
             <LinearGradient
               start={{x: 0, y: 0}}
-              end={{x: 0, y: 0.35}}
-              colors={['#0789B5', '#0789B5', '#F4F6F8']}
+              end={{x: 0, y: 0.55}}
+              colors={['#0789B5', 'white', '#F4F6F8']}
               locations={[0, 0.3, 0.3]}
               style={styles.linearGradient}>
               <View style={styles.container}>
@@ -194,7 +194,7 @@ const DashBoardContainer: React.FC<IDashboardProps> = ({
                 />
               </View>
             </LinearGradient>
-            <View style={{marginBottom: moderateScale(-40)}}>
+            {/* <View style={{marginBottom: moderateScale(-40),}}>
               <FabButton
                 size={'small'}
                 background={colors.primary}
@@ -207,7 +207,7 @@ const DashBoardContainer: React.FC<IDashboardProps> = ({
                 }}
                 onRefresh={onRefresh}
               />
-            </View>
+            </View> */}
           </>
         </Content>
       </ParentContainer>

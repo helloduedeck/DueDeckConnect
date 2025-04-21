@@ -9,7 +9,7 @@ import {
   useRescheduleAppointmentMutation,
 } from '@api/appointments';
 import {toast} from '@utils';
-import ActionSheet from '@components/atoms/actionSheet/ActionSheet';
+// import ActionSheet from '@components/atoms/actionSheet/ActionSheet';
 import {Sublabel} from '@components/atoms/SubLabel';
 import {Label} from '@components/atoms/Label';
 import Button from '@components/atoms/button/Button';
@@ -19,6 +19,7 @@ import {useAppSelector} from '@hooks/redux_hooks';
 import {IResheduleAppointment} from '@types/components';
 import DropDownPickerComp from '../ActionSheet/DropDownPickerComp';
 import moment from 'moment';
+import ActionSheet from '../ActionSheet/ActionSheet';
 
 const ResheduleAppointment = ({
   AppointmentContent,

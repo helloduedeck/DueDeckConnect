@@ -16,6 +16,7 @@ const MenuBoardItem: React.FC<MenuBoardItemProps> = ({
 }) => {
   return (
     <TouchableOpacity style={styles.menuItem} onPress={onPress}>
+      
       <Circle
         size={size}
         background={backgroundColor}

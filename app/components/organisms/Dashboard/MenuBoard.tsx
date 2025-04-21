@@ -6,11 +6,13 @@ import {colors} from '../../../themev1';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTES} from '@routes';
 import React, {useState} from 'react';
-import {Platform, ScrollView, View} from 'react-native';
+import {Platform, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {ScaledSheet, moderateScale} from 'react-native-size-matters';
 import {getMenuBoarddBackgroundColor} from '@utils/helper';
 import {IMenuBoardItems} from '@types/components';
 import {useAppSelector} from '@hooks/redux_hooks';
+import TasklistWhiteIcon from '@components/atoms/Icon/icons/TasklistWhite';
+import TaskrequestCircle from '../../../components/atoms/Circle/Taskrequestcircle';
 const MenuBoard = () => {
   const dashboardData = useAppSelector(state => state?.dashboard);
   const navigation = useNavigation();
@@ -18,6 +20,8 @@ const MenuBoard = () => {
 
   const navigateTo = (screenName: string) => {
     switch (screenName) {
+      case 'TaskRequests':
+        return navigation.navigate(ROUTES.TASKREQUESTS);
       case 'Payments':
         return navigation.navigate(ROUTES.PAYMENTS);
       case 'Notices':
@@ -34,7 +38,7 @@ const MenuBoard = () => {
   };
 
   const menuBoradList = () => {
-    return dashboardData.menuBoard.map(
+    return dashboardData.menuBoard?.map(
       (item: IMenuBoardItems, index: number) => {
         const {title, icon, background, size, status} = item;
         return (
@@ -68,11 +72,16 @@ const MenuBoard = () => {
             setActiveIndex(index);
           }}
           scrollEventThrottle={16}>
+           <View>
+            <TouchableOpacity onPress={()=>{navigation.navigate(ROUTES.TASKREQUESTS)}}>
+              <TaskrequestCircle size={''} background={undefined} iconName={''} iconColor={undefined}/>
+              </TouchableOpacity>
+           </View>
           {menuBoradList()}
         </ScrollView>
       </View>
       <View style={styles.pagination}>
-        {dashboardData.menuBoard.slice(0, -3).map((_, index) => (
+        {dashboardData.menuBoard?.slice(0, -3)?.map((_, index) => (
           <View
             key={index}
             style={[

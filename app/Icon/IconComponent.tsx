@@ -18,6 +18,7 @@ import ListBadgeIcon from './icons/ListBadge';
 import EyeOpenIcon from './icons/OpenEye';
 import ListPrimary from './icons/ListPrimary';
 import AppointmentPrimary from './icons/AppointmentPrimary';
+import Taskrequests from './icons/Taskrequests';
 interface Props {
   name: string;
   width?: number;
@@ -39,13 +40,14 @@ const icons: {[key: string]: React.FC<Props>} = {
   tasklist: TasklistIcon,
   'document-white': DocumentWhiteIcon,
   'notice-white': NoticeWhiteIcon,
-  'rupee-white': RupeeWhiteIcon,
+   'rupee-white': RupeeWhiteIcon,
   'loader-outline': LoaderOutlineIcon,
   'stopwatch-outline': StopwatchOutlineIcon,
   'thumpsup-outline': ThumbsupOutlineIcon,
   'thumbsup-outline': ThumbsupOutlineIcon,
   'filter-white': FilterWhite,
   'list-badge': ListBadgeIcon,
+  'taskrequests-white':Taskrequests
   // Add more icon names and their corresponding components here
 };
 

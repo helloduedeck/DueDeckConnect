@@ -83,6 +83,13 @@ export interface CirclePropsType {
   children?: any;
   iconColor: any;
 }
+export interface TaskrequestCirclePropsType {
+  size: string;
+  background: any;
+  iconName: string;
+  children?: any;
+  iconColor: any;
+}
 
 export interface LabelPropsType {
   size: SizeEnum;

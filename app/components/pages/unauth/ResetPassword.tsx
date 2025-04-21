@@ -1,5 +1,5 @@
-import {Pressable, StyleSheet} from 'react-native';
-import React, {useState} from 'react';
+import {Keyboard, Pressable, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import Text from '@components/text/Text';
 
 // import api from '../../services';
@@ -41,6 +41,27 @@ const ResetPassword = () => {
   const [resetPassword] = useResetPasswordMutation();
   const [updateForgotPassword] = useUpdateForgotPasswordMutation();
   const dispatch = useAppDispatch();
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isInputFocused, setIsInputFocused] = useState(false);
+
+
+  
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false); // State for keyboard visibility
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardVisible(true);
+    });
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardVisible(false);
+    });
+
+    // Cleanup listeners on component unmount
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   const doLogout = () => {
     local.clearAll();
@@ -93,13 +114,20 @@ const ResetPassword = () => {
   };
 
   const onResetPasswordPress = async () => {
+    setIsDisabled(true);
+    
+    setTimeout(() => {
+      setIsDisabled(false);
+    }, 7000); 
     if (!otpData?.otp && !currentPassword) {
       toast.failure('Please enter current password');
+      setIsDisabled(true);
       return;
     }
 
     if (!password) {
       toast.failure('Please enter valid new password');
+      setIsDisabled(true);
       return;
     }
 
@@ -120,6 +148,7 @@ const ResetPassword = () => {
     }
 
     console.log('otpData?.otp-- ', otpData?.otp);
+    setIsDisabled(true);
 
     setLoading(true);
     if (otpData?.otp) {
@@ -143,6 +172,9 @@ const ResetPassword = () => {
         })
         .finally(() => {
           setLoading(false);
+          setIsDisabled(false);
+         
+
         })
         .catch(e => {
           console.log('ERROR PENDING LIST', e);
@@ -167,6 +199,9 @@ const ResetPassword = () => {
           })
           .finally(() => {
             setLoading(false);
+            setIsDisabled(false);
+           
+
           })
           .catch(e => {
             console.log('ERROR PENDING LIST', e);
@@ -187,15 +222,18 @@ const ResetPassword = () => {
     setSecureTextEntryCurrentPasword(c => !c);
   };
 
+ 
   return (
     <AuthContainer
+      Iskeyboardclosed={isKeyboardVisible}
+      Inputfocused={isInputFocused}
       button={{
         label: otpData?.otp ? 'Reset Password' : 'Change Password',
         onPress: onResetPasswordPress,
       }}
       isLoading={isLoading}
       heading={HEADING}
-      isSemiBold={false}>
+      isSemiBold={false} isDisabled={false} showIcon={true} showLabel={undefined}>
       {!otpData?.otp && (
         <Input
           placeholder="Current Password"
@@ -205,6 +243,9 @@ const ResetPassword = () => {
           value={currentPassword}
           onChangeText={setCurrentPassword}
           iconRight={isSecureTextEntryCurrentPassword ? 'eyeoff' : 'openeye'}
+          onFocus={() => setIsInputFocused(true)}
+        //  onBlur={() => setIsInputFocused(false)}
+
         />
       )}
       <Input
@@ -215,6 +256,9 @@ const ResetPassword = () => {
         value={password}
         onChangeText={setPassword}
         iconRight={isSecureTextEntry ? 'eyeoff' : 'openeye'}
+        onFocus={() => setIsInputFocused(true)}
+        //  onBlur={() => setIsInputFocused(false)}
+
       />
       <Input
         placeholder="Confirm Password"
@@ -224,11 +268,20 @@ const ResetPassword = () => {
         value={confirmpassword}
         onChangeText={setConfirmPassword}
         iconRight={isSecureTextEntryConfirmPassword ? 'eyeoff' : 'openeye'}
+        onFocus={() => setIsInputFocused(true)}
+              //  onBlur={() => setIsInputFocused(false)}
+
+
       />
       <Button
         label={otpData?.otp ? 'Reset Password' : 'Change Password'}
         onPress={onResetPasswordPress}
-        containerStyle={{marginVertical: moderateScale(10)}}
+        containerStyle={{
+          marginVertical: moderateScale(10),
+          backgroundColor: colors.primary,
+        }}
+        disabled={isDisabled}
+
       />
     </AuthContainer>
   );

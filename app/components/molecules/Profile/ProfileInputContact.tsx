@@ -16,7 +16,7 @@ const ProfileInputContact: React.FC = props => {
             fontWeight={'bold'}
             fontStyle={'normal'}
             title={'Contact No'}
-            color={undefined}
+            color={colors.Grey600}
             align={undefined}
           />
         </View>
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     paddingLeft: moderateScale(16),
     borderColor: colors.profileinput,
     backgroundColor: 'white',
+    color:colors.GRey800
   },
   label: {
     position: 'absolute',

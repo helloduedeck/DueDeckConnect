@@ -15,6 +15,8 @@ import ThumbsupOutlineIcon from './icons/ThumsUpOutline';
 import FilterWhite from './icons/FilterWhite';
 import ListBadgeIcon from './icons/ListBadge';
 import EyeOpenIcon from './icons/OpenEye';
+import Taskrequests from '../../../Icon/icons/Taskrequests';
+import Taskreqicon from './icons/Taskrequests';
 interface Props {
   name: string;
   width?: number;
@@ -40,6 +42,7 @@ const icons: {[key: string]: React.FC<Props>} = {
   'thumpsup-outline': ThumbsupOutlineIcon,
   'filter-white': FilterWhite,
   'list-badge': ListBadgeIcon,
+  'taskrequests-white':Taskrequests
   // Add more icon names and their corresponding components here
 };
 

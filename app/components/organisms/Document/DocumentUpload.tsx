@@ -12,18 +12,28 @@ export interface DocumentUploadPropsType {
   Doclabelprop: any;
   DocSublabelprop: any;
   DocSublabelprop1: any;
+  DocSubabelcount:any,
   attachments: [];
   onDocUpload?: () => void;
   onImagePress?: () => void;
+  isNoDocument:any
 }
 const DocumentUpload = ({
   Doclabelprop,
   DocSublabelprop,
   DocSublabelprop1,
+  DocSubabelcount,
   attachments,
   onDocUpload,
   onImagePress,
+  isNoDocument
+
 }: DocumentUploadPropsType) => {
+  const checkFileType = (fileUri: any) => {
+    const videoExtensions = ['mp4', 'mov', 'avi', 'mkv'];
+    const fileExtension = fileUri?.split('.').pop();
+    return videoExtensions.includes(fileExtension);
+  };
   return (
     <View
       style={{
@@ -43,6 +53,10 @@ const DocumentUpload = ({
           },
         }),
       }}>
+                  <View style={{marginTop:moderateScale(0),height:20,width:20}}>
+    
+    <Sublabel {...DocSubabelcount} />
+    </View>
       <View
         style={{
           top: moderateScale(8),
@@ -61,6 +75,7 @@ const DocumentUpload = ({
         )}
       </View>
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        
         {attachments?.path ? (
           <TouchableOpacity
             onPress={() => {

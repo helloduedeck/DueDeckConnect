@@ -19,7 +19,7 @@ const ProfileInputEmail: React.FC = props => {
             fontWeight={'bold'}
             fontStyle={'normal'}
             title={'Email ID'}
-            color={undefined}
+            color={colors.Grey600}
             align={undefined}></Sublabel>
         </View>
         <TextInput
@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     paddingLeft: moderateScale(16),
     borderColor: colors.profileinput,
     backgroundColor: 'white',
+    color:colors.GRey800
     // marginHorizontal: moderateScale(24),
   },
   label: {
