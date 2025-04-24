@@ -1,7 +1,7 @@
 import CustomHeaderW from "@components/organisms/Headers/CustomHeaderW";
 import { colors } from "../../../themev1";
 import React, { useEffect, useRef, useState } from "react";
-import {  Dimensions, FlatList, Modal, Pressable, StyleSheet, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import {  Dimensions, FlatList, Keyboard, Modal, Pressable, RefreshControl, StyleSheet, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import Card from '@components/atoms/Card/Card';
 import { moderateScale } from "react-native-size-matters";
 import { Sublabel } from "@components/atoms/SubLabel";
@@ -62,8 +62,9 @@ const TaskRequests: React.FC<IProps> = ({
         setDeleteModalVisible(false);
         console.log("Item deleted");
     };
-    const [createNewTaskRequests] = useGetTaskRequestMutation();
+    const [getTaskRequests] = useGetTaskRequestMutation();
     const [updateNewTaskRequests] = useUpdateTaskRequestMutation();
+    const inputRef = useRef<TextInput>(null);
 
 
     const handleEdit = () => {
@@ -71,9 +72,17 @@ const TaskRequests: React.FC<IProps> = ({
         setEditModalVisible(true);
     };
     const closeEditModal = () => setEditModalVisible(false);
+    const CloseActionsheet =()=>{
+        setIsSheetOpen(false)
+        Keyboard.dismiss()
+    }
 
     const GetUpdateTaskRequests = async () => {
         setModalVisible(true); // Show the modal when the button is pressed
+        if (!serviceNotes || serviceNotes.trim().length === 0) {
+            Alert.alert('Please fill the required Task Request field!!');
+            return; // Exit early if validation fails
+        }
 
         const reqData: any = {
             client_id: clientId,
@@ -117,15 +126,14 @@ const TaskRequests: React.FC<IProps> = ({
               client_id: clientId,
         };
     
-        await createNewTaskRequests(reqData)
+        await getTaskRequests(reqData)
           .unwrap()
           .then(data => {
             
             if (data?.success) {
                 SetTaskrequestdata(data.data)
-              toast.success(data?.message);
             } else {
-              toast.failure(data?.message ?? 'Please Enter Manadatory Fields!!!');
+              toast.failure(data?.message ?? 'Something went wrong!!!');
             }
           })
           .finally(() => {
@@ -262,9 +270,9 @@ const TaskRequests: React.FC<IProps> = ({
                         {getHeaderText(item.task_note, 30)}
                     </Text>
                 </TouchableOpacity>
-                <View style={{ position: 'absolute', right: moderateScale(6), top: moderateScale(10) }}>
+                <View style={{ position: 'absolute', right: moderateScale(10), top: moderateScale(10) }}>
                     <MaterialCommunityIcons
-                        name="pencil"
+                        name="dots-vertical"
                         color={colors.Grey600}
                         size={15}
                         onPress={() => togglePopover(item.id,item.task_note)} // Pass item id to toggle popover
@@ -358,14 +366,20 @@ const TaskRequests: React.FC<IProps> = ({
                             }}>
                                 <View style={{
                                     backgroundColor: getStatusBGColor(item.status),
-                                    paddingStart: moderateScale(2),
-                                    paddingEnd: moderateScale(5),
+                                    paddingStart: moderateScale(5),
+                                    paddingEnd: moderateScale(6),
                                     paddingVertical: moderateScale(2),
                                     borderRadius: 3,
                                     flexDirection: 'row',
                                     alignItems: 'center'
                                 }}>
-                                    <MaterialCommunityIcons name={getIcon(item.status)} style={{ marginRight: 5 }} color={getStatusColor(item.status)} size={12} />
+                                    <MaterialCommunityIcons name={getIcon(item.status)} style={{ marginRight: 0,borderRadius:item.status == 'Accept'? moderateScale(40) : 0 ,
+                                    backgroundColor:item.status == 'Accept'? colors.SemGreen500:null,
+                                        paddingHorizontal:item.status == 'Accept'? moderateScale(3) : 0,
+                                        paddingVertical:item.status == 'Accept'? moderateScale(2.8) : 0,
+                                    }} 
+                                        color={item.status == 'Accept'?colors.white:getStatusColor(item.status)} size={item.status == 'Accept'? 5:13} />
+                                        <View style={{marginLeft:moderateScale(4)}}>
                                     <Sublabel
                                         size={'exsmall'}
                                         fontWeight={'semibold'}
@@ -374,6 +388,7 @@ const TaskRequests: React.FC<IProps> = ({
                                         align={undefined}
                                         fontStyle={'normal'}
                                     />
+                                    </View>
                                 </View>
                             </View>
                         </View>
@@ -398,7 +413,9 @@ const TaskRequests: React.FC<IProps> = ({
                         onViewableItemsChanged={viewableItems}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id}
-                    />
+                        refreshControl={
+                            <RefreshControl refreshing={isLoading} onRefresh={Getalltaskrequests} />
+                          }                    />
                                           {/* Delete Confirmation Modal */}
             {isDeleteModalVisible && (
                 <Modal transparent={true} animationType="fade" visible={isDeleteModalVisible}>
@@ -425,9 +442,7 @@ const TaskRequests: React.FC<IProps> = ({
                 <ActionSheet
                 // disableableClosePressingBackDrop={true}
                 onClose={() => {
-                  setIsSheetOpen(false);
-                //   closeActionsheet();
-                }}
+                    CloseActionsheet()  }}
                 isVisible={isSheetOpen}>
                 <View>
                   {/* view of New Service*/}
@@ -465,6 +480,7 @@ const TaskRequests: React.FC<IProps> = ({
                           align={undefined}
                         />
                         <TextInput
+                          ref={inputRef}
                           placeholder="Type"
                           placeholderTextColor={colors.Grey600}
                           maxLength={250}
@@ -472,6 +488,8 @@ const TaskRequests: React.FC<IProps> = ({
                           onChangeText={(value)=>{setServiceNotes(value), setCharacterCount(value.length);
                           }}
                           style={{color:colors.GRey800}}
+                        //   onSubmitEditing={()=>{setIsSheetOpen(false)}}
+                        //   onBlur={()=>{setIsSheetOpen(false)}}
                         />
                         <View
                           style={{
@@ -520,8 +538,10 @@ const TaskRequests: React.FC<IProps> = ({
                           <Button
                             label={'Cancel'}
                             onPress={() => {
-                                setIsSheetOpen(false)
-                            }}
+                                inputRef.current?.blur(); // force blur first
+                                setTimeout(() => {
+                                  CloseActionsheet();     // close after blur to allow ActionSheet to collapse
+                                }, 100);     }}
                             containerStyle={{
                               height: moderateScale(36),
                               marginVertical: moderateScale(0),

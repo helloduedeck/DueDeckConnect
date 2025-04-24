@@ -16,15 +16,11 @@ const ParentContainer: React.FC<IProps> = ({children, onProfileIconPress}) => {
 
   const userProfileData = useAppSelector(state => state?.user.user);
 
-  console.log(
-    'userProfileData?.data?.profile_photo_path',
-    userProfileData?.data?.profile_photo_path,
-  );
-
   const onProfilePress = () => {
     navigation.navigate(ROUTES.PROFILE);
   };
-
+  console.log(userProfileData?.data?.profile_photo_path,'deleted');
+  
   return (
     <View style={styles.container}>
       <DashhboardHeader

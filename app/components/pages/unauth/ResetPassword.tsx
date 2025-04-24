@@ -227,13 +227,14 @@ const ResetPassword = () => {
     <AuthContainer
       Iskeyboardclosed={isKeyboardVisible}
       Inputfocused={isInputFocused}
+
       button={{
         label: otpData?.otp ? 'Reset Password' : 'Change Password',
         onPress: onResetPasswordPress,
       }}
       isLoading={isLoading}
-      heading={HEADING}
-      isSemiBold={false} isDisabled={false} showIcon={true} showLabel={undefined}>
+      heading={(isInputFocused ) ?'':HEADING}
+      isSemiBold={false} isDisabled={false} showIcon={true} showLabel={false}>  
       {!otpData?.otp && (
         <Input
           placeholder="Current Password"
@@ -243,8 +244,9 @@ const ResetPassword = () => {
           value={currentPassword}
           onChangeText={setCurrentPassword}
           iconRight={isSecureTextEntryCurrentPassword ? 'eyeoff' : 'openeye'}
-          onFocus={() => setIsInputFocused(true)}
-        //  onBlur={() => setIsInputFocused(false)}
+          onFocus={() => {setIsInputFocused(true),console.log('inputfocused');
+          }}
+         onBlur={() => setIsInputFocused(false)}
 
         />
       )}
@@ -257,7 +259,7 @@ const ResetPassword = () => {
         onChangeText={setPassword}
         iconRight={isSecureTextEntry ? 'eyeoff' : 'openeye'}
         onFocus={() => setIsInputFocused(true)}
-        //  onBlur={() => setIsInputFocused(false)}
+         onBlur={() => setIsInputFocused(false)}
 
       />
       <Input
@@ -269,7 +271,7 @@ const ResetPassword = () => {
         onChangeText={setConfirmPassword}
         iconRight={isSecureTextEntryConfirmPassword ? 'eyeoff' : 'openeye'}
         onFocus={() => setIsInputFocused(true)}
-              //  onBlur={() => setIsInputFocused(false)}
+          onBlur={() => setIsInputFocused(false)}
 
 
       />

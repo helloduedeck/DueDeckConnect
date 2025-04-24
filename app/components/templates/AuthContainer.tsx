@@ -69,6 +69,88 @@ const AuthContainer: React.FC<IProps> = ({
     setShowLoader(isLoading ?? false);
   }, [isLoading]);
 
+  const styles = ScaledSheet.create({
+    btnContainerStyle: {
+      height: verticalScale(40),
+    },
+     headingContainer: {
+      alignItems: 'center',
+      width: width * 0.85,
+      marginBottom:( height <= 800) ? 250 : 0,
+    },
+    subheadingContainer: {
+      marginTop: moderateScale(30),
+      marginBottom:( height <= 800) ? 50 : 0,
+      alignItems: 'center',
+      width: width * 0.670,
+      backgroundColor: colors.primary,
+      justifyContent: 'center',
+      lineHeight: moderateScale(350),
+    },
+    heading: {
+      fontSize: fontsize.large,
+      textAlign: 'center',
+    },
+    subheading: {
+      textAlign: 'center',
+    },
+    container: {
+      flex: 1,
+      backgroundColor: colors.white,
+    },
+    seperator: {
+      padding: scale(10),
+    },
+    iosStatusBar: {
+      backgroundColor: colors.white,
+    },
+    subContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.primary,
+      //flex:0.5
+    },
+    footerContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingBottom: moderateScale(10),
+    },
+    footerNote: {
+      textAlign: 'center',
+      fontSize: fontsize.medium14,
+    },
+    cardContainer: {
+      marginTop: moderateScale(-60),
+      paddingHorizontal: moderateScale(25),
+      paddingTop: moderateScale(15),
+      width: width * 0.85,
+      borderRadius: 10,
+      backgroundColor: 'white',
+      ...Platform.select({
+        ios: {
+          shadowColor: colors.black,
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.25,
+          shadowRadius: 4,
+        },
+        android: {
+          elevation: 2,
+        },
+      }),
+  
+    },
+    resendContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: moderateScale(15),
+    },
+    receivedOtp: {
+      color: colors.black,
+      fontSize: fontsize.large,
+    },
+    resend: resendStyle,
+  });
   const onOTPEnter = (otp: any) => {
     setOtpvalue(otp);
   };
@@ -87,7 +169,7 @@ const AuthContainer: React.FC<IProps> = ({
           isFailed={isFailed}
           isLoading={showLoader}>
           <View style={{ backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center', height: "55%" }}>
-        <View style={{ backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center', height: "45%",   marginBottom:
+        <View style={{ backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center', height: "50%",   marginBottom:
                     Inputfocused && Iskeyboardclosed
                       ? moderateScale(
                           height === 780
@@ -143,7 +225,7 @@ const AuthContainer: React.FC<IProps> = ({
           </View>
           <View style={{ backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', }}>
             <View style={styles.cardContainer}>
-              {!showLabel && <View style={{ alignItems: 'center' }}>
+              {showLabel && <View style={{ alignItems: 'center' }}>
                 <Text style={{ fontSize: fontsize.medium14, color: colors.Grey600 }}>Enter your email and password to log in</Text>
               </View>}
               {children}
@@ -179,84 +261,5 @@ const resendStyle: any = (isEnabled: any) => ({
   paddingStart: 5,
 });
 
-const styles = ScaledSheet.create({
-  btnContainerStyle: {
-    height: verticalScale(40),
-  },
-   headingContainer: {
-    alignItems: 'center',
-    width: width * 0.85,
-  },
-  subheadingContainer: {
-    marginTop: moderateScale(30),
-    alignItems: 'center',
-    width: width * 0.670,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    lineHeight: moderateScale(350),
-  },
-  heading: {
-    fontSize: fontsize.large,
-    textAlign: 'center',
-  },
-  subheading: {
-    textAlign: 'center',
-  },
-  container: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  seperator: {
-    padding: scale(10),
-  },
-  iosStatusBar: {
-    backgroundColor: colors.white,
-  },
-  subContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.primary,
-    //flex:0.5
-  },
-  footerContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingBottom: moderateScale(10),
-  },
-  footerNote: {
-    textAlign: 'center',
-    fontSize: fontsize.medium14,
-  },
-  cardContainer: {
-    marginTop: moderateScale(-60),
-    paddingHorizontal: moderateScale(25),
-    paddingTop: moderateScale(15),
-    width: width * 0.85,
-    borderRadius: 10,
-    backgroundColor: 'white',
-    ...Platform.select({
-      ios: {
-        shadowColor: colors.black,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-      },
-      android: {
-        elevation: 2,
-      },
-    }),
 
-  },
-  resendContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: moderateScale(15),
-  },
-  receivedOtp: {
-    color: colors.black,
-    fontSize: fontsize.large,
-  },
-  resend: resendStyle,
-});
 export default AuthContainer;

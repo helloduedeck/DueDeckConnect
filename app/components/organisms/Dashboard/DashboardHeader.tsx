@@ -5,7 +5,7 @@ import {View} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 import {moderateScale} from 'react-native-size-matters';
 import GlobalFilterHeader from './GlobalFilter/GlobalFilterHeader';
-import {STORAGE_URL} from '@api/api-client';
+import {PROFILE_URL, STORAGE_URL} from '@api/api-client';
 import { useAppSelector } from '@hooks/redux_hooks';
 import { getHeaderText } from '../ServiceItem/ServiceItemCard';
 
@@ -19,15 +19,18 @@ const DashhboardHeader: React.FC<DashboardHeaderPropsType> = ({
 }) => {
   const [profilePics, setProfilePics] = useState({uri: ''});
   const dashboardState = useAppSelector(state => state?.dashboard);
+  console.log(dashboardState.activeClient.name,'clientnam');
 
-  const isDuedeck = STORAGE_URL.includes("duedeck.com");
-  const finalUrl = isDuedeck ? `${STORAGE_URL}public/storage/` : `${STORAGE_URL}storage/`;
+  const isDuedeck = PROFILE_URL.includes("duedeck.com");
+  const finalUrl = isDuedeck ? `${PROFILE_URL}public/storage/profile/` : `${PROFILE_URL}storage/profile/`;
 
   useEffect(() => {
-    if (profilePic) {
+    if (profilePic || profilePic != undefined) {
       setProfilePics({
         uri: finalUrl.concat(profilePic),
       });
+    }else{
+      setProfilePics('')
     }
   }, [profilePic]);
 

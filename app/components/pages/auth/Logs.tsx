@@ -21,6 +21,16 @@ const Logs = ({route, navigation}: any) => {
         return colors.primary;
     }
   };
+
+  const getHeaderText = (heading: string, length: number) => {
+    try {
+      return heading.length < length
+        ? `${heading}`
+        : `${heading.substring(0, length)}..`;
+    } catch (error) {
+      return '';
+    }
+  };
   // Alert.alert('ff',(JSON.stringify(logs)))
   const renderItem = ({item}: any) => (
     <>
@@ -44,7 +54,7 @@ const Logs = ({route, navigation}: any) => {
        LabelPropsType={{
         size: 'medium',
         fontWeight: 'semibold',
-        title: serviceData.service_name,
+        title: getHeaderText(serviceData.service_name,30),
         color: colors.GRey800,
         align: {undefined},
       }}
@@ -58,7 +68,7 @@ const Logs = ({route, navigation}: any) => {
       LabelPropsType2={{
         size: 'small',
         fontWeight: 'normal',
-        title: serviceData?.act_name,
+        title: getHeaderText(serviceData?.act_name,30),
         color: colors.GRey800,
         align: {undefined},
       }}
@@ -77,7 +87,7 @@ const Logs = ({route, navigation}: any) => {
         color: getGStatusColor(serviceData?.g_status),
         align: undefined,
       }}
-      clientName={serviceData.client_name}
+      clientName={getHeaderText(serviceData.client_name,30)}
         />
       </View>
       <View style={{flex: 1}}>

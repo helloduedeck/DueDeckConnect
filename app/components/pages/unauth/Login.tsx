@@ -43,6 +43,7 @@ const Login = ({navigation}: any) => {
   const onLoginPress = async () => {
     // Alert.alert('Please enter valid email id')
     // disptach(actions.dashboard.setActiveAlert(OVERDUE));
+    
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
     if (!email) {
@@ -65,7 +66,8 @@ const Login = ({navigation}: any) => {
 
       return;
     }
-    if (password.length <= 8) {
+    
+    if (password.length < 8) {
       setErrorMessage('Password must be greater than 8 charecters.');
       clearTimeout();
 
@@ -74,11 +76,13 @@ const Login = ({navigation}: any) => {
       setErrorMessage('');
       setIsLoading(true);
       console.log({email: email, password: password});
-      
+
       await token({email: email, password: password})
         .unwrap()
         .then(async data => {
           console.log(data, 'emailshhhhh');
+          console.log(data?.data,'profilelogin');
+
           if (data?.success) {
             await reduxStorage.setItem(
               'USERDETAILS',
@@ -101,6 +105,7 @@ const Login = ({navigation}: any) => {
             );
             local.store(local.keys.GPANEL_CONSULTATNT, data?.data?.consultant);
             dispatch(setUserCredentials(data?.data));
+            
           } else {
             //toast.failure()
           }

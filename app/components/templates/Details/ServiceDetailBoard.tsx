@@ -32,6 +32,16 @@ const ServiceDetailBoard = ({id}: IProps) => {
     fetchDetails();
   }, []);
 
+
+   const getHeaderText = (heading: string, length: number) => {
+    try {
+      return heading.length < length
+        ? `${heading}`
+        : `${heading.substring(0, length)}..`;
+    } catch (error) {
+      return '';
+    }
+  };
   const fetchDetails = async () => {
     const reqData: any = {
       id: id,
@@ -41,6 +51,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
       .then(data => {
         if (data?.success) {
           setServiceData(data?.data.singletask);
+          console.log(data?.data.singletask,'taskidd');
           setLogseData(data?.data.singletask.logs);
           setCommentsData(data?.data.singletask.comments);
           setDocumentsData(data?.data.singletask.documents);
@@ -116,7 +127,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
             LabelPropsType={{
               size: 'medium',
               fontWeight: 'semibold',
-              title: serviceData.service_name,
+              title: getHeaderText(serviceData.service_name,30),
               color: colors.GRey800,
               align: {undefined},
             }}
@@ -130,7 +141,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
             LabelPropsType2={{
               size: 'small',
               fontWeight: 'normal',
-              title: serviceData?.act_name,
+              title:getHeaderText( serviceData?.act_name,30),
               color: colors.GRey800,
               align: {undefined},
             }}
@@ -149,7 +160,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
               color: getGStatusColor(serviceData?.g_status),
               align: undefined,
             }}
-            clientName={serviceData.client_name}
+            clientName={getHeaderText(serviceData.client_name,30)}
           />
         )}
       </View>

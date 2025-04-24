@@ -40,6 +40,7 @@ import fontsize from '../../../themev1/fontstyle';
 import {useFocus} from '@utils/useFocus';
 import FeatureDisableComp from '@components/molecules/TopHeader/FeatureDisableComp';
 import { getHeaderText } from '@components/organisms/ServiceItem/ServiceItemCard';
+import CustomHeaderW from '@components/organisms/Headers/CustomHeaderW';
 
 const tabs = [
   {
@@ -237,7 +238,9 @@ const Appointment = () => {
 
   return (
     <Container isSubLabel={true} backLabel={['Dashboard', 'Notice']}>
-      <CustomHeader title="Appointment" />
+            <View style={{backgroundColor:colors.primary,height:42,justifyContent:'center',alignItems:'center'}}>
+      <CustomHeaderW title="Appointment" />
+      </View>
 
       <View style={{marginHorizontal: 0}}>
         <ScrollView horizontal style={{flexGrow: 0}}>
@@ -302,7 +305,7 @@ const Appointment = () => {
               }
               ListEmptyComponent={
                 packageStatus == false ? null : (
-                  <EmptyOther navigation={undefined}  style={{marginTop:'40%'}}/>
+                  <EmptyOther navigation={undefined}  style={{marginTop:'50%'}}/>
                 )
               }
               keyExtractor={item => `${item.id}`}
@@ -409,7 +412,7 @@ const Appointment = () => {
                 showActionSheet={showResheduleSheet}
               />
             )}
-            <FAB
+            {/* <FAB
               style={{
                 position: 'absolute',
                 margin: 16,
@@ -422,7 +425,7 @@ const Appointment = () => {
               color="white"
               size="medium"
               onPress={() => setShowResheduleSheet(true)}
-            />
+            /> */}
           </>
         </Content>
       )}

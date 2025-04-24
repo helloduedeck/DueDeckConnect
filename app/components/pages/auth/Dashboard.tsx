@@ -17,6 +17,7 @@ import {
 } from '@store/slices/dashboardSlice';
 import {useFocus} from '@utils/useFocus';
 import {useBranchEmployeesMutation} from '@api/appointments';
+import { setProfilePictures } from '@store/slices/userSlice';
 
 const DashBoard = () => {
   const {focusCount, isFocused} = useFocus();
@@ -125,7 +126,7 @@ const DashBoard = () => {
       .unwrap()
       .then(data => {
         dispatch(setDashboardData(data?.data));
-        // setIsLoading(false);
+        dispatch(setProfilePictures(data?.data.user.profile_photo_path));
       })
       .finally(() => {
         setIsLoading(false);

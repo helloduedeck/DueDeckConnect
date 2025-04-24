@@ -38,7 +38,7 @@ const MenuBoard = () => {
   };
 
   const menuBoradList = () => {
-    return dashboardData.menuBoard?.map(
+    return dashboardData.menuBoard?.slice(0, -1).map(// hide payment icon by SG for module deactivation
       (item: IMenuBoardItems, index: number) => {
         const {title, icon, background, size, status} = item;
         return (

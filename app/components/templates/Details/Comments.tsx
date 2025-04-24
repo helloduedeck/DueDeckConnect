@@ -32,6 +32,15 @@ const Comments = ({route, navigation}: any) => {
         return colors.primary;
     }
   };
+  const getHeaderText = (heading: string, length: number) => {
+    try {
+      return heading.length < length
+        ? `${heading}`
+        : `${heading.substring(0, length)}..`;
+    } catch (error) {
+      return '';
+    }
+  };
   return (
     <Container style={{backgroundColor: colors.Dashboard}}>
       <CustomHeader title="Comments" />
@@ -49,7 +58,7 @@ const Comments = ({route, navigation}: any) => {
           LabelPropsType={{
             size: 'medium',
             fontWeight: 'semibold',
-            title: serviceData?.service_name,
+            title: getHeaderText(serviceData?.service_name,30),
             color: colors.GRey800,
             align: { undefined },
           }}
@@ -63,7 +72,7 @@ const Comments = ({route, navigation}: any) => {
           LabelPropsType2={{
             size: 'small',
             fontWeight: 'normal',
-            title: serviceData?.act_name,
+            title: getHeaderText(serviceData?.act_name,30),
             color: colors.GRey800,
             align: { undefined },
           }}
@@ -82,7 +91,7 @@ const Comments = ({route, navigation}: any) => {
             color: getGStatusColor(serviceData?.g_status),
             align: undefined,
           }}
-          clientName={serviceData.client_name} SubLabelPropsType1={undefined}        />
+          clientName={getHeaderText(serviceData.client_name,30)} SubLabelPropsType1={undefined}        />
       </View>
       <ChatView
         comments={commentsData}

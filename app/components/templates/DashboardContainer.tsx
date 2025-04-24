@@ -88,7 +88,7 @@ const DashBoardContainer: React.FC<IDashboardProps> = ({
         <AppointmentTitle
           id={appointmentData?.id}
           onSheduleNew={function (): void {
-            setShowAppointmentSheet(true);
+           setShowAppointmentSheet(true);
           }}
         />
       ),
@@ -194,7 +194,8 @@ const DashBoardContainer: React.FC<IDashboardProps> = ({
                 />
               </View>
             </LinearGradient>
-            {/* <View style={{marginBottom: moderateScale(-40),}}>
+            <View style={{bottom:-120,right:135.5, zIndex:0
+         }}>
               <FabButton
                 size={'small'}
                 background={colors.primary}
@@ -207,7 +208,7 @@ const DashBoardContainer: React.FC<IDashboardProps> = ({
                 }}
                 onRefresh={onRefresh}
               />
-            </View> */}
+            </View>
           </>
         </Content>
       </ParentContainer>

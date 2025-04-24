@@ -9,6 +9,7 @@ const initialState = {
   isProfileLoading: true,
   isNotificationStatus: false,
   isTasklistOpen: [],
+  profilePictures:'ABC',
 };
 
 const userSlice = createSlice({
@@ -24,12 +25,15 @@ const userSlice = createSlice({
     updateToken(state, action) {
       state.token = action.payload.token;
     },
+    setProfilePictures(state, action) {
+      state.profilePictures = action.payload;
+    },
     clearUser() {
       return initialState;
     },
   },
 });
 
-export const {setUserCredentials, updateToken, clearUser} = userSlice.actions;
+export const {setUserCredentials, updateToken, clearUser,setProfilePictures} = userSlice.actions;
 
 export default userSlice.reducer;

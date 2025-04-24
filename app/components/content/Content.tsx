@@ -15,7 +15,7 @@ const Content: React.FC<IProps> = ({children, isLoading, isFailed, style}) => {
   return (
     <View style={[styles.container, style]}>
       {isLoading ? (
-        <View style={styles.subContainer}>{<Loader size={100} />}</View>
+        <View style={styles.subContainer}>{<Loader size={60} />}</View>
       ) : isFailed ? (
         <View style={styles.subContainer}>
           <Text isBold={true}>Something went wrong</Text>

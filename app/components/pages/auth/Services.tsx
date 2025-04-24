@@ -23,43 +23,45 @@ import {
   useGetOnHoldServicesMutation,
 } from '@api/services';
 import SearchBox from '@components/molecules/SearchBox/SearchBox';
-import {fontsize} from '../../../themev1';
 import ServiceItemCard from '@components/organisms/ServiceItem/ServiceItemCard';
 import {useFocus} from '@utils/useFocus';
 import {useIsFocused} from '@react-navigation/native';
 import FeatureDisableComp from '@components/molecules/TopHeader/FeatureDisableComp';
+import CustomHeaderW from '@components/organisms/Headers/CustomHeaderW';
+import GlobalFilter from '@components/molecules/GlobalFilter';
+import fontsize from '../../../themev1/fontstyle';
 
 const tabs = [
   {
     id: 1,
     name: 'Assigned',
-    background: colors.white,
-    color: colors.Grey600,
-    selectedColor: colors.semorange,
+    background: colors.semorange,
+    color: colors.GRey800,
+    selectedColor: colors.white,
     selectedbackgroundColor: `${colors.semorange}13`,
   },
   {
     id: 2,
     name: 'In Progress',
-    background: colors.white,
-    color: colors.Grey600,
-    selectedColor: colors.semblue,
+    background: colors.semblue,
+    color: colors.GRey800,
+    selectedColor: colors.white,
     selectedbackgroundColor: `${colors.semblue}13`,
   },
   {
     id: 3,
     name: 'On Hold',
-    background: colors.white,
-    color: colors.Grey600,
-    selectedColor: colors.darkred,
+    background: colors.darkred,
+    color: colors.GRey800,
+    selectedColor: colors.white,
     selectedbackgroundColor: `${colors.darkred}13`,
   },
   {
     id: 4,
     name: 'Completed',
-    background: colors.white,
-    color: colors.Grey600,
-    selectedColor: colors.SemGreen500,
+    background: colors.SemGreen500,
+    color: colors.GRey800,
+    selectedColor: colors.white,
     selectedbackgroundColor: `${colors.SemGreen500}13`,
   },
   // {
@@ -276,8 +278,10 @@ const Services = (props: any) => {
   );
   return (
     <Container isSubLabel={true} backLabel={['Dashboard', 'Notice']}>
-      <CustomHeader title="Tasks" />
-      <ScrollView horizontal style={{flexGrow: 0}} ref={scrollViewRef}>
+      <View style={{backgroundColor:colors.primary,height:42,justifyContent:'center',alignItems:'center'}}>
+      <CustomHeaderW title="Tasks" />
+      </View>
+      <ScrollView horizontal style={{flexGrow: 0,marginLeft:moderateScale(10)}} ref={scrollViewRef}>
         {tabs?.map(item => {
           return (
             <Pressable
@@ -315,7 +319,7 @@ const Services = (props: any) => {
                       paddingVertical: 1,
                       fontSize: fontsize.medium10,
                     }}>
-                    {listCount}
+                    {'('+ listCount +')'}
                   </Text>
                 </View>
               )}
@@ -366,7 +370,7 @@ const styles = ScaledSheet.create({
     margin: '6@ms',
     paddingHorizontal: '6@ms',
     marginHorizontal: moderateScale(16),
-    borderRadius: 4,
+    borderRadius: 40,
   },
   countContainer: {
     marginLeft: '5@ms',

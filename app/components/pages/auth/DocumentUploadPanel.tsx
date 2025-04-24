@@ -129,6 +129,16 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
     }
   };
 
+
+  const getHeaderText = (heading: string, length: number) => {
+    try {
+      return heading.length < length
+        ? `${heading}`
+        : `${heading.substring(0, length)}..`;
+    } catch (error) {
+      return '';
+    }
+  };
   const getGStatusColor = (gStatus: string) => {
     switch (gStatus) {
       case 'Overdue':
@@ -317,7 +327,7 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
             LabelPropsType={{
               size: 'medium',
               fontWeight: 'semibold',
-              title: serviceData.service_name,
+              title:getHeaderText( serviceData.service_name,30),
               color: colors.GRey800,
               align: {undefined},
             }}
@@ -331,7 +341,7 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
             LabelPropsType2={{
               size: 'small',
               fontWeight: 'normal',
-              title: serviceData?.act_name,
+              title: getHeaderText(serviceData?.act_name,30),
               color: colors.GRey800,
               align: {undefined},
             }}
@@ -350,7 +360,7 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
               color: getGStatusColor(serviceData?.g_status),
               align: undefined,
             }}
-            clientName={serviceData.client_name}
+            clientName={getHeaderText(serviceData.client_name,30)}
           />
         </View>
 

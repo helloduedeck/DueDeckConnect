@@ -107,7 +107,7 @@ const SendOTP = () => {
       Iskeyboardclosed={isKeyboardVisible}
       Inputfocused={isInputFocused}
       showIcon={true}
-      showLabel={true}
+      showLabel={false}
       button={{
         label: 'Send OTP',
         onPress: onSendOTPPress,

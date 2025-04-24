@@ -26,6 +26,8 @@ const CircleBadge: React.FC<CircleBadgePropsType> = ({
     return initials;
   };
 
+  console.log(profilePic,'profilePicprofilePicprofilePic');
+  
   return (
     <TouchableOpacity style={styles.container} onPress={onProfileIconPress}>
       <View>

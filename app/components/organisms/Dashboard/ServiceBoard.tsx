@@ -22,7 +22,7 @@ const ServiceBoard = (props: any) => {
       case 'Completed':
         return navigation.navigate(ROUTES.SERVICES, {selectedTab: 4});
       default:
-        return navigation.navigate(ROUTES.SERVICES, {selectedTab: 1});
+        return null
     }
   };
 
