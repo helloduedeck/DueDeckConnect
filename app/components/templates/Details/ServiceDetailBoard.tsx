@@ -11,6 +11,7 @@ import {ROUTES} from '@routes';
 import {useGetSingleTaskMutation} from '@api/services';
 import Content from '@components/content/Content';
 import moment from 'moment';
+import CustomHeaderW from '@components/organisms/Headers/CustomHeaderW';
 type IProps = {
   id: number;
 };
@@ -110,7 +111,8 @@ const ServiceDetailBoard = ({id}: IProps) => {
   return (
     <View style={styles.main}>
       <View style={{marginHorizontal: -2, backgroundColor: colors.Dashboard}}>
-        <CustomHeader
+        <View style={{backgroundColor:colors.primary,justifyContent:'center',alignItems:'center',height:40}}>
+        <CustomHeaderW
           LabelPropsType={{
             size: 'large',
             fontWeight: 'semibold',
@@ -120,6 +122,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
           }}
           title="Task Details"
         />
+        </View>
       </View>
       <View style={{marginVertical: moderateScale(17)}}>
         {!isLoading && (
@@ -127,7 +130,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
             LabelPropsType={{
               size: 'medium',
               fontWeight: 'semibold',
-              title: getHeaderText(serviceData.service_name,30),
+              title: getHeaderText(serviceData.service_name,25),
               color: colors.GRey800,
               align: {undefined},
             }}
@@ -141,7 +144,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
             LabelPropsType2={{
               size: 'small',
               fontWeight: 'normal',
-              title:getHeaderText( serviceData?.act_name,30),
+              title:getHeaderText( serviceData?.act_name,25),
               color: colors.GRey800,
               align: {undefined},
             }}
@@ -160,7 +163,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
               color: getGStatusColor(serviceData?.g_status),
               align: undefined,
             }}
-            clientName={getHeaderText(serviceData.client_name,30)}
+            clientName={getHeaderText(serviceData.client_name,25)}
           />
         )}
       </View>

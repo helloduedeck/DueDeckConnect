@@ -114,7 +114,9 @@ const FabButton = (props: FabPropsType) => {
       .finally(() => {
         setServiceNotes('');
         setShowServiceView(false);
-        props?.onSheetClose?.();
+        setTaskModalVisible(true);
+        console.log('service created ');
+        
       })
       .catch(e => {
         toast.failure('Something went wrong! Please try again.');
@@ -139,8 +141,9 @@ const FabButton = (props: FabPropsType) => {
           visible={modalVisible}
           onRequestClose={() => {
             setModalVisible(!modalVisible);
-            props?.onSheetClose?.();
-          }}>
+            // props?.onSheetClose?.();
+          }}
+          >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View style={styles.title}>
@@ -255,7 +258,7 @@ const FabButton = (props: FabPropsType) => {
         animationType="slide"
         transparent={true}
         visible={taskmodalVisible}
-        onRequestClose={() => setTaskModalVisible(false)}
+        onRequestClose={() => setTaskModalVisible(true)}
       >
         <View
           style={{
@@ -338,7 +341,7 @@ const FabButton = (props: FabPropsType) => {
             showActionSheet={showAppointmentView}
           />
           <ActionSheet
-            disableableClosePressingBackDrop={true}
+            // disableableClosePressingBackDrop={true}
             onClose={() => {
               setIsSheetOpen(false);
               props?.onSheetClose?.();

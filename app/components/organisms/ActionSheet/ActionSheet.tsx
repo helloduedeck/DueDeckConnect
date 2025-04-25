@@ -74,7 +74,10 @@ const ActionSheet: React.FC<IProps> = ({isVisible, children, onClose}) => {
       }}
       backdropComponent={renderBackdrop}
       detached={true}
-      onDismiss={onClose}>
+onDismiss={() => {
+  onClose(); // This should set isVisible = false in parent
+}}
+      >
       <TouchableOpacity
         style={{
           borderBottomWidth: moderateScale(4),

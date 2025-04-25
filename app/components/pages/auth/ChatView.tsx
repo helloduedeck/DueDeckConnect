@@ -66,7 +66,7 @@ const MessageBubble = ({name, text, direction, time}: LabelPropsType) => {
                   fontWeight={'normal'}
                   fontStyle={'normal'}
                   title={time}
-                  color={undefined}
+                  color={colors.GRey800}
                   align={undefined}
                 />
                 {/* <Sublabel
@@ -102,7 +102,7 @@ const MessageBubble = ({name, text, direction, time}: LabelPropsType) => {
                 fontWeight={'bold'}
                 fontStyle={'normal'}
                 title={'You'}
-                color={undefined}
+                color={colors.GRey800}
                 align={undefined}
               />
             </View>
@@ -135,7 +135,7 @@ const MessageBubble = ({name, text, direction, time}: LabelPropsType) => {
                   fontWeight={'bold'}
                   fontStyle={'normal'}
                   title={'User'}
-                  color={undefined}
+                  color={colors.GRey800}
                   align={undefined}
                 />
               </View>
@@ -164,7 +164,7 @@ const MessageBubble = ({name, text, direction, time}: LabelPropsType) => {
                   fontWeight={'normal'}
                   fontStyle={'normal'}
                   title={time}
-                  color={undefined}
+                  color={colors.GRey800}
                   align={undefined}
                 />
                 {/* <Sublabel

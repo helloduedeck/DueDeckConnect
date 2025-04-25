@@ -54,7 +54,7 @@ const Logs = ({route, navigation}: any) => {
        LabelPropsType={{
         size: 'medium',
         fontWeight: 'semibold',
-        title: getHeaderText(serviceData.service_name,30),
+        title: getHeaderText(serviceData.service_name,25),
         color: colors.GRey800,
         align: {undefined},
       }}
@@ -68,7 +68,7 @@ const Logs = ({route, navigation}: any) => {
       LabelPropsType2={{
         size: 'small',
         fontWeight: 'normal',
-        title: getHeaderText(serviceData?.act_name,30),
+        title: getHeaderText(serviceData?.act_name,25),
         color: colors.GRey800,
         align: {undefined},
       }}
@@ -87,7 +87,7 @@ const Logs = ({route, navigation}: any) => {
         color: getGStatusColor(serviceData?.g_status),
         align: undefined,
       }}
-      clientName={getHeaderText(serviceData.client_name,30)}
+      clientName={getHeaderText(serviceData.client_name,25)}
         />
       </View>
       <View style={{flex: 1}}>

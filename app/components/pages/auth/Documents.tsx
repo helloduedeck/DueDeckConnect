@@ -25,6 +25,7 @@ import {
   useStoreDocumentsMutation,
 } from '@api/documents';
 import FeatureDisableComp from '@components/molecules/TopHeader/FeatureDisableComp';
+import CustomHeaderW from '@components/organisms/Headers/CustomHeaderW';
 // import fontsize from '@themev1/fontstyle';
 
 const tabs = [
@@ -32,24 +33,24 @@ const tabs = [
     id: 1,
     name: 'Pending',
     background: colors.white,
-    color: colors.toptab,
-    selectedColor: colors.Grey600,
+    color: colors.GRey800,
+    selectedColor: colors.white,
     selectedbackgroundColor: `${colors.Grey600}13`,
   },
   {
     id: 2,
     name: 'Stores',
     background: colors.white,
-    color: colors.toptab,
-    selectedColor: colors.Grey600,
+    color: colors.GRey800,
+    selectedColor: colors.white,
     selectedbackgroundColor: `${colors.Grey600}13`,
   },
   {
     id: 3,
     name: 'Outward',
     background: colors.white,
-    color: colors.toptab,
-    selectedColor: colors.Grey600,
+    color: colors.GRey800,
+    selectedColor: colors.white,
     selectedbackgroundColor: `${colors.Grey600}13`,
   },
 ];
@@ -150,8 +151,10 @@ const Documents = () => {
 
   return (
     <Container isSubLabel={true} backLabel={['Dashboard', 'Notice']}>
-      <CustomHeader title={'Documents'} />
-      <View style={{marginHorizontal: 40}}>
+      <View style={{height:40,backgroundColor:colors.primary,justifyContent:'center',alignItems:'center'}}>
+      <CustomHeaderW title={'Documents'} />
+      </View>
+      <View style={{marginHorizontal: moderateScale(40),marginTop:moderateScale(10)}}>
         <View style={{flexGrow: 0, flexDirection: 'row'}}>
           {tabs?.map(item => {
             return (
@@ -159,7 +162,11 @@ const Documents = () => {
                 key={item.id}
                 style={[
                   styles.tabContainer,
-                  selectedId === item.id ? {backgroundColor: colors.white} : {},
+                  selectedId === item.id ? {backgroundColor: colors.primary} : {},
+                
+                  selectedId === item.id
+                    ? item.selectedbackgroundColor
+                    : item.background,
                 ]}
                 disabled={moduleStatus === 0}
                 onPress={() => {
@@ -237,7 +244,10 @@ const styles = ScaledSheet.create({
     width: '90@ms',
     height: '30@ms',
     margin: '6@ms',
-    borderRadius: 4,
+    borderRadius: 40,
+    borderColor:colors.toptab,
+    borderWidth:1,
+    backgroundColor:colors.white
   },
   countContainer: {},
 });

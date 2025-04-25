@@ -18,7 +18,7 @@ const LogDate = (props: any) => {
         fontWeight={'bold'}
         fontStyle={'normal'}
         title={props.date}
-        color={undefined}
+        color={colors.GRey800}
         align={undefined}
       />
     </View>

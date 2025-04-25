@@ -291,8 +291,8 @@ const styles = ScaledSheet.create({
   },
   status: {
     position: 'absolute',
-    bottom: moderateScale(3),
-    right: moderateScale(-10),
+    bottom: moderateScale(1),
+    right: moderateScale(7),
 
     // marginLeft: moderateScale(73),
   },

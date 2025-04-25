@@ -17,6 +17,15 @@ const LogContent = ({details}: IProps) => {
     return moment(updated_at).format('hh:mm A');
   };
 
+  const getHeaderText = (heading: string, length: number) => {
+    try {
+      return heading.length < length
+        ? `${heading}`
+        : `${heading.substring(0, length)}..`;
+    } catch (error) {
+      return '';
+    }
+  };
   return (
     <View>
       {particulars && (
@@ -27,7 +36,7 @@ const LogContent = ({details}: IProps) => {
               fontWeight={'normal'}
               fontStyle={'normal'}
               title={'Particulars: '}
-              color={undefined}
+              color={colors.GRey800}
               align={undefined}
             />
           </View>
@@ -37,7 +46,7 @@ const LogContent = ({details}: IProps) => {
               fontWeight={'bold'}
               fontStyle={'normal'}
               title={particulars}
-              color={undefined}
+              color={colors.GRey800}
               align={undefined}
             />
           </View>
@@ -50,7 +59,7 @@ const LogContent = ({details}: IProps) => {
             fontWeight={'normal'}
             fontStyle={'normal'}
             title={'Status: '}
-            color={undefined}
+            color={colors.GRey800}
             align={undefined}
           />
           <Sublabel
@@ -71,14 +80,14 @@ const LogContent = ({details}: IProps) => {
               fontWeight={'normal'}
               fontStyle={'normal'}
               title={'Assigned To: '}
-              color={undefined}
+              color={colors.GRey800}
               align={undefined}
             />
             <Sublabel
               size={'small'}
               fontWeight={'semibold'}
               fontStyle={'normal'}
-              title={assigned_to}
+              title={getHeaderText(assigned_to,35)}
               color={colors.GRey800}
               align={undefined}
             />
@@ -92,14 +101,14 @@ const LogContent = ({details}: IProps) => {
             fontWeight={'normal'}
             fontStyle={'normal'}
             title={'Updated By: '}
-            color={undefined}
+            color={colors.GRey800}
             align={undefined}
           />
           <Sublabel
             size={'small'}
             fontWeight={'semibold'}
             fontStyle={'normal'}
-            title={updated_by}
+            title={getHeaderText(updated_by,35)}
             color={colors.GRey800}
             align={undefined}
           />

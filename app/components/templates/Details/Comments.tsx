@@ -58,7 +58,7 @@ const Comments = ({route, navigation}: any) => {
           LabelPropsType={{
             size: 'medium',
             fontWeight: 'semibold',
-            title: getHeaderText(serviceData?.service_name,30),
+            title: getHeaderText(serviceData?.service_name,25),
             color: colors.GRey800,
             align: { undefined },
           }}
@@ -72,7 +72,7 @@ const Comments = ({route, navigation}: any) => {
           LabelPropsType2={{
             size: 'small',
             fontWeight: 'normal',
-            title: getHeaderText(serviceData?.act_name,30),
+            title: getHeaderText(serviceData?.act_name,25),
             color: colors.GRey800,
             align: { undefined },
           }}
@@ -91,7 +91,7 @@ const Comments = ({route, navigation}: any) => {
             color: getGStatusColor(serviceData?.g_status),
             align: undefined,
           }}
-          clientName={getHeaderText(serviceData.client_name,30)} SubLabelPropsType1={undefined}        />
+          clientName={getHeaderText(serviceData.client_name,25)} SubLabelPropsType1={undefined}        />
       </View>
       <ChatView
         comments={commentsData}

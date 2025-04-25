@@ -25,7 +25,7 @@ import {
 import SearchBox from '@components/molecules/SearchBox/SearchBox';
 import ServiceItemCard from '@components/organisms/ServiceItem/ServiceItemCard';
 import {useFocus} from '@utils/useFocus';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import FeatureDisableComp from '@components/molecules/TopHeader/FeatureDisableComp';
 import CustomHeaderW from '@components/organisms/Headers/CustomHeaderW';
 import GlobalFilter from '@components/molecules/GlobalFilter';
@@ -104,6 +104,18 @@ const Services = (props: any) => {
     (state: any) => state.dashboard?.packageStatus,
   );
   const viewableItems = useSharedValue<ViewToken[]>([]);
+  useFocusEffect(
+    React.useCallback(() => {
+      // Focused - do nothing
+      return () => {
+        // On screen blur (unfocused), clear selectedTab param
+        if (props?.navigation?.setParams) {
+          props.navigation.setParams({ selectedTab: undefined });
+        }
+      };
+    }, [props?.navigation])
+  );
+  
 
   useEffect(() => {
     if (props?.route?.params?.selectedTab) {
@@ -122,6 +134,8 @@ const Services = (props: any) => {
       getListData();
     }
   }, [selectedId, isFocused]);
+
+  
 
   const getListData = async () => {
     setListData([]);
@@ -299,6 +313,8 @@ const Services = (props: any) => {
                 style={{
                   color:
                     selectedId === item.id ? item.selectedColor : item.color,
+                  
+
                 }}>
                 {item.name}
               </Text>
@@ -370,7 +386,10 @@ const styles = ScaledSheet.create({
     margin: '6@ms',
     paddingHorizontal: '6@ms',
     marginHorizontal: moderateScale(16),
+     borderColor:colors.toptab,
+    borderWidth:1,
     borderRadius: 40,
+    backgroundColor:colors.white
   },
   countContainer: {
     marginLeft: '5@ms',

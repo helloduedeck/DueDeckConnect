@@ -25,6 +25,7 @@ const ChatBoxInput: React.FC<ChatBoxProps> = ({onSubmit}) => {
       <TextInput
         value={message}
         placeholder="Add Comment..."
+        placeholderTextColor={colors.Grey600}
         style={styles.input}
         maxLength={250}
         onChangeText={newText => setMessage(newText)}
@@ -59,6 +60,7 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(16),
     paddingHorizontal: moderateScale(10),
     borderRadius: moderateScale(5),
+    color:colors.GRey800
   },
   inputContainer: {
     flexDirection: 'row',

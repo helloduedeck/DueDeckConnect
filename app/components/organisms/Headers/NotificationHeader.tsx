@@ -32,7 +32,7 @@ const NotificationHeader: React.FunctionComponent<CustomHeaderProps> = ({
         style={{marginLeft: moderateScale(10)}}>
         <MaterialCommunityIcons
           name={'arrow-left'}
-          color={colors.GRey800}
+          color={colors.white}
           size={20}
         />
       </TouchableOpacity>
@@ -85,12 +85,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'transparent',
-    height: 80,
-    marginLeft: moderateScale(8),
+    backgroundColor: colors.primary,
+    height: 55,
+    // marginLeft: moderateScale(8),
   },
   text: {
-    color: 'black',
+    color: 'white',
     alignContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
