@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
+import { Subheader } from 'react-native-paper/lib/typescript/components/List/List';
 
 const initialState = {
   isLoading: false,
@@ -9,7 +10,8 @@ const initialState = {
   isProfileLoading: true,
   isNotificationStatus: false,
   isTasklistOpen: [],
-  profilePictures:'ABC',
+  profilePictures:'',
+  SubheaderName:''
 };
 
 const userSlice = createSlice({
@@ -28,12 +30,15 @@ const userSlice = createSlice({
     setProfilePictures(state, action) {
       state.profilePictures = action.payload;
     },
+    setSubheaderName(state, action) {
+      state.SubheaderName = action.payload;
+    },
     clearUser() {
       return initialState;
     },
   },
 });
 
-export const {setUserCredentials, updateToken, clearUser,setProfilePictures} = userSlice.actions;
+export const {setUserCredentials, updateToken, clearUser,setProfilePictures,setSubheaderName} = userSlice.actions;
 
 export default userSlice.reducer;

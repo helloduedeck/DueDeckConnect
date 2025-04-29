@@ -112,7 +112,7 @@ const styles = ScaledSheet.create({
     paddingTop: moderateScale(16),
     // paddingHorizontal: moderateScale(22),
     paddingLeft:moderateScale(15),
-    paddingEnd:moderateScale(23.5),
+    paddingEnd:moderateScale(20.5),
     paddingBottom: moderateScale(8),
     backgroundColor: colors.white,
     // width: moderateScale(343),

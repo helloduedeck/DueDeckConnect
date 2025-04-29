@@ -311,7 +311,7 @@ const ServiceItemCard: React.FC<IProps> = ({
               fontSize: fontsize.medium,
               marginTop: moderateScale(10),
             }}>
-            {`${item.pending_count == 0 ? 'No' : item.pending_count} ${item.pending_count == 1 ? 'Doc' : 'Docs'} Pending`}
+            {item.dstatus_id == 9 ? 'No Docs Required' : item.total_count}
           </Text>
         </View>
 

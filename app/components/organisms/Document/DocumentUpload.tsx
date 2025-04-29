@@ -59,8 +59,8 @@ const DocumentUpload = ({
     </View>
       <View
         style={{
-          top: moderateScale(8),
-          right: moderateScale(8),
+          top: moderateScale(9),
+          right: moderateScale(10),
           position: 'absolute',
         }}>
         {attachments?.path && (
@@ -76,7 +76,7 @@ const DocumentUpload = ({
       </View>
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
         
-        {attachments?.path ? (
+        {attachments?.path ? ( 
           <TouchableOpacity
             onPress={() => {
               console.log('TEST');

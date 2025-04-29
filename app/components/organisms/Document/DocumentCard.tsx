@@ -45,7 +45,7 @@ const DocumentCard = ({item, viewableItems}: DocumentCardPropsType) => {
             <Icon
               name="file"
               size={moderateScale(8)}
-              style={{marginRight: moderateScale(4)}}
+              style={{marginRight: moderateScale(4),color:colors.Grey600}}
             />
             <Sublabel
               size={'small'}

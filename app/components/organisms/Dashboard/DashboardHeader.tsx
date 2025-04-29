@@ -19,7 +19,8 @@ const DashhboardHeader: React.FC<DashboardHeaderPropsType> = ({
 }) => {
   const [profilePics, setProfilePics] = useState({uri: ''});
   const dashboardState = useAppSelector(state => state?.dashboard);
-  console.log(dashboardState.activeClient.name,'clientnam');
+  const usersState = useAppSelector(state => state?.user.SubheaderName)
+  console.log(usersState,'usernamessssss');
 
   const isDuedeck = PROFILE_URL.includes("duedeck.com");
   const finalUrl = isDuedeck ? `${PROFILE_URL}public/storage/profile/` : `${PROFILE_URL}storage/profile/`;
@@ -33,12 +34,13 @@ const DashhboardHeader: React.FC<DashboardHeaderPropsType> = ({
       setProfilePics('')
     }
   }, [profilePic]);
+console.log(dashboardState.activeClient.user_id,'userrrrrn');
 
   return (
     <View style={styles.container}>
       <View style={styles.organizationtitle}>
         <CircleBadge
-          userName={getHeaderText(dashboardState.activeClient?.name ??  clientName,20) }
+          userName={getHeaderText(usersState ??  clientName,20) }
           profilePic={profilePics ?? undefined} //require('../../assets/images/avtar.png')}
           onProfileIconPress={onProfileIconPress}
         />

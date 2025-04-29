@@ -88,6 +88,7 @@ const styles = ScaledSheet.create({
   },
   icon: {
     marginRight: moderateScale(6),
+    color:colors.GRey800
   },
   icon1: {
     marginRight: moderateScale(8),

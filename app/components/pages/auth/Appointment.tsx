@@ -114,8 +114,13 @@ const Appointment = () => {
     if (isFocused) {
       setSelectedId(1);
       getListData();
+    } else {
+      setSelectedId(0); // Clear selectedId when screen is unfocused
+      setListData([]); // Optional: clear the list too if you want
+      setListCount(0); // Optional: clear count too if needed
     }
   }, [isFocused]);
+  
 
   const getListData = async () => {
     setIsLoading(true);

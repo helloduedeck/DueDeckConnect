@@ -7,7 +7,7 @@ export default StyleSheet.create({
   smallcircle: {
     height: moderateScale(32),
     width: moderateScale(32),
-    borderWidth: 2,
+    borderWidth: 0.5,
     borderRadius: moderateScale(32) / 2,
     borderColor: 'white',
     justifyContent: 'center',
@@ -27,7 +27,7 @@ export default StyleSheet.create({
   mediumcircle: {
     height: moderateScale(90),
     width: moderateScale(90),
-    borderWidth: 2,
+    borderWidth: 0.5,
     borderRadius: moderateScale(90) / 2,
     borderColor: 'white',
     justifyContent: 'center',

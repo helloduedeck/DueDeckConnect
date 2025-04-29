@@ -370,8 +370,8 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
               size: 'exsmall',
               fontWeight: 'bold',
               fontStyle: 'normal',
-              title: 'Updated:',
-              color: undefined,
+              title: 'Updated : ',
+              color: colors.Grey600,
               align: undefined,
             }}
             DocSublabelprop1={{
@@ -379,7 +379,7 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
               fontWeight: 'bold',
               fontStyle: 'normal',
               title: formatDate(item.updated_at),
-              color: undefined,
+              color: colors.GRey800,
               align: undefined,
             }}
             onDocUpload={function (): void {
@@ -734,6 +734,7 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
               underlineColorAndroid={colors.primary}
               maxLength={40}
               onChangeText={newText => setDocumentName(newText)}
+              style={{color:colors.GRey800}}
               // style={styles.input}
             />
             <View

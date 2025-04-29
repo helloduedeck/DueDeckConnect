@@ -325,9 +325,11 @@ const ResheduleAppointment = ({
           </View>
           <TextInput
             placeholder="Write a purpose"
+            placeholderTextColor={colors.Grey600}
             maxLength={100}
             value={purpose}
             onChangeText={handleChangeText}
+            style={{color:colors.GRey800}}
           />
           <View style={{borderWidth: 0.3, borderColor: colors.Grey600}} />
           <View

@@ -13,7 +13,11 @@ const ProfileUserDetails = () => {
 
   const userProfileData = useAppSelector(state => state?.user?.user);
   const dashboardState = useAppSelector(state => state?.dashboard);
-console.log(userProfileData?.data?.profile_photo_path,'puserdetails');
+// console.log(userProfileData?.data?.profile_photo_path,'puserdetails');
+// console.log(userProfileData?.,'contactss');
+console.log(userProfileData?.data,'emailss');
+
+
 
   return (
     <>

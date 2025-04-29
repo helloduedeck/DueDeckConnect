@@ -107,6 +107,8 @@ const FabButton = (props: FabPropsType) => {
         if (data?.success) {
           toast.success(data?.message);
           onRefresh?.();
+             // ✅ Call parent (Dashboard) to open modal
+      props.onTaskRequestCreated?.();
         } else {
           toast.failure(data?.message ?? 'Please enter the required fields!');
         }
@@ -114,7 +116,7 @@ const FabButton = (props: FabPropsType) => {
       .finally(() => {
         setServiceNotes('');
         setShowServiceView(false);
-        setTaskModalVisible(true);
+        // setTaskModalVisible(true);
         console.log('service created ');
         
       })
@@ -321,7 +323,7 @@ const FabButton = (props: FabPropsType) => {
                   size={'medium'}
                   fontWeight={'semibold'}
                   fontStyle={'normal'}
-                  title={'View TaskRequest'}
+                  title={'View Task Request'}
                   color={colors.primary}
                   align={undefined}
                 />

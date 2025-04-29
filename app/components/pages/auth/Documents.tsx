@@ -26,6 +26,8 @@ import {
 } from '@api/documents';
 import FeatureDisableComp from '@components/molecules/TopHeader/FeatureDisableComp';
 import CustomHeaderW from '@components/organisms/Headers/CustomHeaderW';
+import { useFocusEffect } from '@react-navigation/native';
+import { useFocus } from '@utils/useFocus';
 // import fontsize from '@themev1/fontstyle';
 
 const tabs = [
@@ -62,6 +64,7 @@ const Documents = () => {
   const [storeDocuments] = useStoreDocumentsMutation();
   const [getOutwardDocuments] = useGetOutwardDocumentsMutation();
   const [listCount, setListCount] = useState(0);
+  const {isFocused} = useFocus();
 
   const [moduleStatus, setModuleStatus] = useState();
   const [packagesDisbaleMessage, setPackageDisableMessage] = useState('');
@@ -135,10 +138,11 @@ const Documents = () => {
     }
   };
 
-  useEffect(() => {
-    getListData();
-  }, [selectedId]);
-
+  useFocusEffect(
+    useCallback(() => {
+      getListData();
+    }, [selectedId])
+  );
   const onListRefresh = () => {
     getListData();
   };

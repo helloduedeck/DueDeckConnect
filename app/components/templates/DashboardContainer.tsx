@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {SectionList, View} from 'react-native';
+import {Modal, Pressable, SectionList, TouchableOpacity, View} from 'react-native';
 import {ScaledSheet, moderateScale} from 'react-native-size-matters';
 import DocumentLabel from '@components/organisms/Dashboard/DocumentLabel';
 import {colors} from '@theme';
@@ -17,6 +17,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import AppointmentTitle from '@components/atoms/Dashboard/AppointmentTitle';
 import {useNavigation} from '@react-navigation/native';
 import ROUTES from '@routes/routes';
+import { Sublabel } from '@components/atoms/SubLabel';
+import { Label } from '@components/atoms/Label';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type IDashboardProps = {
   isDataLoading: boolean;
@@ -35,6 +38,7 @@ const DashBoardContainer: React.FC<IDashboardProps> = ({
   const [showServiceSheet, setShowServiceSheet] = useState(false);
 
   const [showAppointmentSheet, setShowAppointmentSheet] = useState(false);
+  const [showTaskRequestModal, setShowTaskRequestModal] = useState(false);
 
   const appointmentData =
     dashboardData?.appoinmentSection?.['appointment-card'];
@@ -207,11 +211,83 @@ const DashBoardContainer: React.FC<IDashboardProps> = ({
                   setShowServiceSheet(false);
                 }}
                 onRefresh={onRefresh}
+                onTaskRequestCreated={() => setShowTaskRequestModal(true)} // <<<<<< Added this
+
               />
             </View>
           </>
         </Content>
       </ParentContainer>
+      <Modal
+    animationType="slide"
+    transparent={true}
+    visible={showTaskRequestModal}
+    onRequestClose={() => setShowTaskRequestModal(false)}
+  >
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      }}
+    >
+      <View
+        style={{
+          width: 343,
+          height: 230,
+          backgroundColor: 'white',
+          borderRadius: 4,
+          alignItems: 'center',
+          padding: 24,
+          justifyContent: 'center',
+        }}
+      >
+        <Pressable
+          style={{position: 'absolute', right: 10, top: 10}}
+          onPress={() => setShowTaskRequestModal(false)}
+        >
+          <MaterialCommunityIcons name="close" size={20} color={colors.black} />
+        </Pressable>
+        <View>
+          <MaterialCommunityIcons
+            name="checkbox-marked-circle-outline"
+            color={colors.SemGreen500}
+            size={50}
+            style={{
+              marginLeft: 75,
+              justifyContent: 'center',
+              marginBottom: 16,
+            }}
+          />
+          <Label
+            size="small"
+            fontWeight="semibold"
+            title="New Task Request has been created!"
+            color={colors.GRey800}
+          />
+        </View>
+
+        <View style={{position: 'absolute', bottom: 20, right: 20}}>
+          <TouchableOpacity
+            onPress={() => {
+              setShowTaskRequestModal(false);
+              navigation.navigate(ROUTES.TASKREQUESTS);
+            }}
+          >
+            <Sublabel
+              size="medium"
+              fontWeight="semibold"
+              fontStyle="normal"
+              title="View Task Request"
+              color={colors.primary}
+              align={undefined}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  </Modal>
     </DashboardContainer>
   );
 };

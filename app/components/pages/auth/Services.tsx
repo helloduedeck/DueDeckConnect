@@ -21,6 +21,7 @@ import {
   useGetCompletedServicesMutation,
   useGetInProgressServicesMutation,
   useGetOnHoldServicesMutation,
+  useGetTaskcountMutation,
 } from '@api/services';
 import SearchBox from '@components/molecules/SearchBox/SearchBox';
 import ServiceItemCard from '@components/organisms/ServiceItem/ServiceItemCard';
@@ -90,7 +91,7 @@ const Services = (props: any) => {
   const [moduleStatus, setModuleStatus] = useState();
   const [packagesDisbaleMessage, setPackageDisableMessage] = useState();
   const scrollViewRef = useRef<ScrollView>(null);
-
+  const[getalltaskcount] = useGetTaskcountMutation();
   useEffect(() => {
     isFocused && setSearchText('');
     if (isFocused && props?.route?.params?.selectedTab === 1) {
@@ -136,6 +137,33 @@ const Services = (props: any) => {
   }, [selectedId, isFocused]);
 
   
+//   const Getalltaskrequests = async () => {
+//     setIsLoading(true)
+
+
+//     const reqData: any = {
+//         client_id: clientId,
+//         branch_id :
+//     };
+
+
+//     await getalltaskcount(reqData)
+//         .unwrap()
+//         .then(data => {
+
+//             if (data?.success) {
+//             } else {
+//                 toast.failure(data?.message ?? 'Something went wrong!!!');
+//             }
+//         })
+//         .finally(() => {
+//             setIsLoading(false)
+
+//         })
+//         .catch(e => {
+//             toast.failure('Please Enter Manadatory Fields!!!');
+//         });
+// };
 
   const getListData = async () => {
     setListData([]);
@@ -313,8 +341,6 @@ const Services = (props: any) => {
                 style={{
                   color:
                     selectedId === item.id ? item.selectedColor : item.color,
-                  
-
                 }}>
                 {item.name}
               </Text>

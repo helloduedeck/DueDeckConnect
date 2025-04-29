@@ -24,7 +24,7 @@ import {
   DropDownPickerProps,
   RenderListItemPropsInterface,
 } from 'react-native-dropdown-picker';
-import { setUserCredentials } from '@store/slices/userSlice';
+import { setSubheaderName, setUserCredentials } from '@store/slices/userSlice';
 
 type IProps = {
   isVisible: boolean;
@@ -135,12 +135,16 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
       billingfirm_id: selectedBillingFirm,
       deviceName: deviceName,
     };
+   console.log(req,'reqreqreq');
    
     await saveSubHeader(req)
       .unwrap()
       .then(data => {
-        console.log("saveSubHeader- ",data.data)
+        console.log("saveSubHeader- ",data.data.username)
         dispatch(setUserCredentials(data?.data))
+        dispatch(setSubheaderName(data.data.username))
+        console.log(setUserCredentials(data?.data),'+++-');
+
       })
       .finally(() => {
         dispatch(setFilterStatus(true));

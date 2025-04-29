@@ -136,10 +136,17 @@ console.log(getprofilepic,'prpicpath');
                   const photo_url = finalUrl?.concat(
                     uploadResponse.data.data.profile_photo_path,
                   );
+                  console.log(photo_url,'photo_urlphoto_url');
+                  
                   setProfilePic({uri: photo_url});
                   dispatch(setUserCredentials(uploadResponse?.data));
-                  toast.success(uploadResponse?.message);
-                  toast.success(uploadResponse.message);
+                  dispatch(setProfilePictures(uploadResponse?.data))
+                  console.log(setProfilePictures(uploadResponse?.data) ,'dxtdtdtdt');
+
+                  // toast.success(uploadResponse?.message+'profileee');
+                   toast.success(uploadResponse.message);
+                  //  console.log(uploadResponse.message,'promssgss');
+                   
                 } else {
                   toast.failure(uploadResponse.message);
                 }
@@ -274,6 +281,8 @@ console.log(getprofilepic,'prpicpath');
             );
             setProfilePic({uri: photo_url});
             dispatch(setUserCredentials(data?.data));
+            console.log(setUserCredentials(data?.data),'ppphoto');
+            
             toast.success(data?.message);
           }
         })

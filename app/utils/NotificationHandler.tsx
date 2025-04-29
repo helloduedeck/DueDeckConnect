@@ -18,17 +18,19 @@ const NotificationHandler = () => {
   const [subscribeNotification] = useSubscribeNotificationMutation();
   const [isConnected, setIsConnected] = useState(true);
   const dashboardData = useAppSelector(state => state?.dashboard);
-  const userState = useAppSelector(state => state?.user);
+  const userState = useAppSelector(state => state?.user.user);
   let id = 0;
   const navigation = useNavigation();
+  console.log(userState,'##');
+  
 
 
   let user_id = '';
   try {
-    user_id = dashboardData.serviceBoard.data[0].user_id;
+    user_id = dashboardData.activeClient.user_id;
   } catch (error) {
     user_id = '';
-  }
+  }  
 
   const getNotification = () => {
     OneSignal.Debug.setLogLevel(LogLevel.Verbose);
@@ -93,24 +95,24 @@ const NotificationHandler = () => {
 
   useEffect(() => {
 
-    if(userState.notificationPermission){
+    // if(userState.notificationPermission){
       
       getNotification()
       console.log('---- NOTIFICATION HELPER1');
-    }else{
+    // }else{
       
-      // Disable notifications if state is false
-      OneSignal.Debug.setLogLevel(LogLevel.Verbose);
-      OneSignal.initialize('7e03d89f-6a91-41b1-8ee6-cad5063ea8ff');
-      OneSignal.Notifications.requestPermission(false); // This disables notifications
-      if(user_id){
-        const USERID = "DD"+user_id.toString();
-        const osur = OneSignal.User.removeTag(USERID);
-        console.log(osur,USERID,'---- NOTIFICATION HELPER2');
+    //   // Disable notifications if state is false
+    //   OneSignal.Debug.setLogLevel(LogLevel.Verbose);
+    //   OneSignal.initialize('7e03d89f-6a91-41b1-8ee6-cad5063ea8ff');
+    //   OneSignal.Notifications.requestPermission(false); // This disables notifications
+    //   if(user_id){
+    //     const USERID = "DD"+user_id.toString();
+    //     const osur = OneSignal.User.removeTag(USERID);
+    //     console.log(osur,USERID,'---- NOTIFICATION HELPER2');
 
-      }
+    //   }
 
-    }
+    // }
     
   }, []);
 
