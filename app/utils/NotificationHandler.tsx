@@ -47,12 +47,12 @@ const NotificationHandler = () => {
     
     // Method for listening for notification clicks
       OneSignal.Notifications.addEventListener('click', (data) => {
-        const route = data?.notification?.additionalData.Route;
-        const instance_id = data?.notification?.additionalData.instance_id;
-        const request_id = data?.notification?.additionalData.request_id;
+        const route = data?.notification?.additionalData?.Route;
+        const instance_id = data?.notification?.additionalData?.instance_id;
+        const request_id = data?.notification?.additionalData?.request_id;
 
         // Split the route into an array
-        const parts = route.split('/');
+        const parts = route?.split('/');
 
         // Check if the route contains a '/'
         let action;

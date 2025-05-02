@@ -42,6 +42,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import { VELOCITY_EPS } from 'react-native-reanimated/lib/typescript/reanimated2/animation/decay/utils';
 import fontsize from '../../../themev1/fontstyle';
 import Svg, { Path } from 'react-native-svg';
+import CustomHeaderW from '@components/organisms/Headers/CustomHeaderW';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -402,13 +403,15 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
   const caroselRef = useRef(null);
   return (
     <View style={{backgroundColor: colors.Dashboard, flex: 1}}>
-      <CustomHeader title={'Documents'} />
+      <View style={{height:moderateScale(40),backgroundColor:colors.primary,justifyContent:'center',alignItems:'center'}}>
+      <CustomHeaderW title={'Documents'} />
+      </View>
       <View
         style={{
-          paddingHorizontal: moderateScale(28),
-          alignItems: 'center',
+          // paddingHorizontal: moderateScale(28),
+          // alignItems: 'center',
         }}>
-        <View>
+        <View style={{marginVertical:15}}>
           <DetailContent
             LabelPropsType={{
               size: 'medium',
@@ -442,7 +445,7 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
               size: 'exsmall',
               fontWeight: 'bold',
               fontStyle: 'italic',
-              title: serviceData?.g_status,
+              title: serviceData?.due_in,
               color: getGStatusColor(serviceData?.g_status),
               align: undefined,
             }}

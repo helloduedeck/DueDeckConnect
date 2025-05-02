@@ -15,6 +15,7 @@ const ParentContainer: React.FC<IProps> = ({children, onProfileIconPress}) => {
   const navigation = useNavigation();
 
   const userProfileData = useAppSelector(state => state?.user.user);
+  const profilePhoto = useAppSelector(state => state?.user.profilePictures)
 
   const onProfilePress = () => {
     navigation.navigate(ROUTES.PROFILE);
@@ -25,7 +26,7 @@ const ParentContainer: React.FC<IProps> = ({children, onProfileIconPress}) => {
     <View style={styles.container}>
       <DashhboardHeader
         userName={userProfileData?.username}
-        profilePic={userProfileData?.data?.profile_photo_path ?? undefined}
+        profilePic={profilePhoto?? undefined}
         clientName={userProfileData?.name}
         consultantName={''}
         onGlobalPanelPress={function (): void {}}

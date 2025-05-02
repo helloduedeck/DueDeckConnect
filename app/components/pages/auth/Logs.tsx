@@ -6,6 +6,7 @@ import DetailContent from '@components/templates/Details/DetailContent';
 import {moderateScale} from 'react-native-size-matters';
 import LogBoard from '@components/organisms/ServiceDetails/LogBoard';
 import LogDate from '@components/molecules/Logs/LogDate';
+import CustomHeaderW from '@components/organisms/Headers/CustomHeaderW';
 
 const Logs = ({route, navigation}: any) => {
   const {logs, serviceData} = route.params;
@@ -47,9 +48,12 @@ const Logs = ({route, navigation}: any) => {
 
   return (
     <View style={{backgroundColor: colors.Dashboard, flex: 1}}>
-      <CustomHeader title="Logs" />
+            <View style={{height:40,backgroundColor:colors.primary,justifyContent:'center',alignItems:'center'}}>
 
-      <View style={{marginVertical: moderateScale(5)}}>
+      <CustomHeaderW title="Logs" />
+      </View>
+
+      <View style={{marginVertical: moderateScale(12)}}>
         <DetailContent
        LabelPropsType={{
         size: 'medium',
@@ -83,7 +87,7 @@ const Logs = ({route, navigation}: any) => {
         size: 'exsmall',
         fontWeight: 'bold',
         fontStyle: 'italic',
-        title: serviceData?.g_status,
+        title: serviceData?.due_in,
         color: getGStatusColor(serviceData?.g_status),
         align: undefined,
       }}

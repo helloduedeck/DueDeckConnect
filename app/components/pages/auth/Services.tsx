@@ -31,6 +31,7 @@ import FeatureDisableComp from '@components/molecules/TopHeader/FeatureDisableCo
 import CustomHeaderW from '@components/organisms/Headers/CustomHeaderW';
 import GlobalFilter from '@components/molecules/GlobalFilter';
 import fontsize from '../../../themev1/fontstyle';
+import { toast } from '@utils';
 
 const tabs = [
   {
@@ -97,7 +98,7 @@ const Services = (props: any) => {
     if (isFocused && props?.route?.params?.selectedTab === 1) {
       setSelectedId(1);
       scrollViewRef &&
-        scrollViewRef.current.scrollTo({x: 0, y: 0, animated: true});
+        scrollViewRef?.current?.scrollTo({x: 0, y: 0, animated: true});
     }
   }, [isFocused]);
 
@@ -121,11 +122,11 @@ const Services = (props: any) => {
   useEffect(() => {
     if (props?.route?.params?.selectedTab) {
       if (props?.route?.params?.selectedTab === 4) {
-        scrollViewRef && scrollViewRef.current.scrollToEnd({animated: true});
+        scrollViewRef && scrollViewRef?.current?.scrollToEnd({animated: true});
       }
       setSelectedId(props?.route?.params?.selectedTab);
     } else {
-      scrollViewRef.current.scrollTo(0);
+      scrollViewRef?.current?.scrollTo(0);
       setSelectedId(props?.route?.params?.selectedTab ?? 1);
     }
   }, [props?.route?.params?.selectedTab]);
@@ -137,33 +138,34 @@ const Services = (props: any) => {
   }, [selectedId, isFocused]);
 
   
-//   const Getalltaskrequests = async () => {
-//     setIsLoading(true)
+   const Getalltaskcount = async (data:any) => {
+    setIsLoading(true)
 
 
-//     const reqData: any = {
-//         client_id: clientId,
-//         branch_id :
-//     };
+    const firstTask = data.data[0];
+    const reqData = {
+      branch_id: firstTask.branch_id,
+      client_id: firstTask.client_id,
+      financial_year: firstTask.financial_year,
+    };
 
-
-//     await getalltaskcount(reqData)
-//         .unwrap()
-//         .then(data => {
-
-//             if (data?.success) {
-//             } else {
-//                 toast.failure(data?.message ?? 'Something went wrong!!!');
-//             }
-//         })
-//         .finally(() => {
-//             setIsLoading(false)
-
-//         })
-//         .catch(e => {
-//             toast.failure('Please Enter Manadatory Fields!!!');
-//         });
-// };
+    console.log(reqData,'reqDatareqData')
+    await getalltaskcount(reqData)
+        .unwrap()
+        .then(data => {
+            if (data?.success) {
+             
+            } else {
+                toast.failure(data?.message ?? 'Something went wrong!!!');
+            }
+        })
+        .finally(() => {
+            setIsLoading(false)
+        })
+        .catch(e => {
+            toast.failure('Please Enter Manadatory Fields!!!');
+        });
+};
 
   const getListData = async () => {
     setListData([]);
@@ -173,6 +175,8 @@ const Services = (props: any) => {
       await assignedServices({})
         .unwrap()
         .then(data => {
+          console.log(data,'1sttabdata');
+          
           if (data?.success) {
             if (data?.module_status === 1) {
               setListData(data?.data);

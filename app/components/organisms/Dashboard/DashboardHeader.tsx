@@ -20,7 +20,8 @@ const DashhboardHeader: React.FC<DashboardHeaderPropsType> = ({
   const [profilePics, setProfilePics] = useState({uri: ''});
   const dashboardState = useAppSelector(state => state?.dashboard);
   const usersState = useAppSelector(state => state?.user.SubheaderName)
-  console.log(usersState,'usernamessssss');
+  const profilePhoto = useAppSelector(state => state?.user.profilePictures)
+  console.log(profilePhoto,'ppiccsss');
 
   const isDuedeck = PROFILE_URL.includes("duedeck.com");
   const finalUrl = isDuedeck ? `${PROFILE_URL}public/storage/profile/` : `${PROFILE_URL}storage/profile/`;

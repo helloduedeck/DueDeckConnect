@@ -12,9 +12,10 @@ type IProps = {
   isVisible: boolean;
   onClose: () => void;
   children: any;
+  disableableClosePressingBackDrop : boolean;
 };
 
-const ActionSheet: React.FC<IProps> = ({isVisible, children, onClose}) => {
+const ActionSheet: React.FC<IProps> = ({isVisible, children, onClose,disableableClosePressingBackDrop}) => {
   const isPaymentPageOpened = true;
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['30%', '50%', '60%', '76%',], []);
@@ -61,7 +62,8 @@ const ActionSheet: React.FC<IProps> = ({isVisible, children, onClose}) => {
   );
   // renders
   const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
-    return <BottomSheetBackdrop {...props} pressBehavior={'close'} />;
+    return <BottomSheetBackdrop {...props}         pressBehavior={disableableClosePressingBackDrop ? 'collapse' : 'close'}
+    />;
   }, []);
 
   return (

@@ -6,6 +6,7 @@ import DetailContent from '@components/templates/Details/DetailContent';
 import {moderateScale} from 'react-native-size-matters';
 import ChatView from '@components/pages/auth/ChatView';
 import Container from '@components/atoms/Container';
+import CustomHeaderW from '@components/organisms/Headers/CustomHeaderW';
 
 const Comments = ({route, navigation}: any) => {
   const {serviceData, commentsData, taskId, onDataBack} = route.params;
@@ -43,9 +44,11 @@ const Comments = ({route, navigation}: any) => {
   };
   return (
     <Container style={{backgroundColor: colors.Dashboard}}>
-      <CustomHeader title="Comments" />
+      <View style={{height:40,backgroundColor:colors.primary,justifyContent:'center',alignItems:'center'}}>
+      <CustomHeaderW title="Comments" />
+      </View>
 
-      <View style={{marginVertical: moderateScale(5)}}>
+      <View style={{marginVertical: moderateScale(15)}}>
         <DetailContent
           // SubLabelPropsType={{
           //   size: 'exsmall',
@@ -87,7 +90,7 @@ const Comments = ({route, navigation}: any) => {
             size: 'exsmall',
             fontWeight: 'bold',
             fontStyle: 'italic',
-            title: serviceData?.g_status,
+            title: serviceData?.due_in,
             color: getGStatusColor(serviceData?.g_status),
             align: undefined,
           }}

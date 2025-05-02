@@ -159,7 +159,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
               size: 'exsmall',
               fontWeight: 'bold',
               fontStyle: 'italic',
-              title: serviceData?.g_status,
+              title: serviceData?.due_in,
               color: getGStatusColor(serviceData?.g_status),
               align: undefined,
             }}
@@ -295,6 +295,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
               marginBottom: moderateScale(17),
             }}>
             <ProfileField
+            showicon={true}
               title={'Documents'}
               color={colors.GRey800}
               size={fontsize.medium}
@@ -311,6 +312,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
               }
             />
             <ProfileField
+            showchaticon={true}
               title={'Comments'}
               color={colors.GRey800}
               size={fontsize.medium}
@@ -327,6 +329,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
               }}
             />
             <ProfileField
+            showlogicon={true}
               title={'Logs'}
               color={colors.GRey800}
               size={fontsize.medium}

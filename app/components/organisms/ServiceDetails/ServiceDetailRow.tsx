@@ -64,7 +64,7 @@ const styles = ScaledSheet.create({
       },
     }),
   },
-  column: {flexDirection: 'column', flex: 0.35, marginLeft: 3},
+  column: {flexDirection: 'column', flex: 0.20, marginLeft: 3},
   row: {
     marginBottom: moderateScale(4),
   },

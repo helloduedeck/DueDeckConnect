@@ -20,7 +20,7 @@ const SearchBox: React.FC<IProps> = ({
   searchText,
 }) => {
   return (
-    <View style={{marginVertical: moderateScale(16),marginHorizontal:30}}>
+    <View style={{marginVertical: moderateScale(16),marginStart:moderateScale(18)}}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <View style={styles.search}>
           <TextInput

@@ -40,6 +40,7 @@ const CircleProfile = (props: CircleBadgePropsType) => {
   const userProfileData = useAppSelector(state => state);
 const getprofilepic = userProfileData?.profilePictures
 console.log(getprofilepic,'prpicpath');
+const profilePhoto = useAppSelector(state => state?.user.profilePictures)
 
   const isDuedeck = PROFILE_URL.includes("duedeck.com");
   const finalUrl = isDuedeck ? `${PROFILE_URL}public/storage/profile/` : `${PROFILE_URL}storage/profile/`;
@@ -142,7 +143,7 @@ console.log(getprofilepic,'prpicpath');
                   dispatch(setUserCredentials(uploadResponse?.data));
                   dispatch(setProfilePictures(uploadResponse?.data))
                   console.log(setProfilePictures(uploadResponse?.data) ,'dxtdtdtdt');
-
+                  hideActionSheet()
                   // toast.success(uploadResponse?.message+'profileee');
                    toast.success(uploadResponse.message);
                   //  console.log(uploadResponse.message,'promssgss');
@@ -230,6 +231,8 @@ console.log(getprofilepic,'prpicpath');
                   );
                   setProfilePic({uri: photo_url});
                   dispatch(setUserCredentials(uploadResponse?.data));
+                  hideActionSheet()
+
                   toast.success(uploadResponse?.message);
                 } else {
                   toast.failure(uploadResponse.message);
@@ -348,6 +351,7 @@ console.log(getprofilepic,'prpicpath');
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
+        <TouchableOpacity onPress={showActionSheet}>
         <CircleImage
           size={'medium'}
           IsOutlined={false}
@@ -358,8 +362,9 @@ console.log(getprofilepic,'prpicpath');
             props.onPronProfileIconPress();
           }}
           backgroundColor={colors.primary}
-          source={profilePic}
+          source={profilePic }
         />
+        </TouchableOpacity>
         <View style={styles.badge}>
           <TouchableOpacity onPress={showActionSheet}>
             {/* <MaterialCommunityIcons

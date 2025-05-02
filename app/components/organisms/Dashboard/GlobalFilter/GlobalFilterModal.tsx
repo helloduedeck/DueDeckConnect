@@ -122,10 +122,10 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
       toast.failure('Please select financial year');
       return;
     }
-    if (!selectedBillingFirm) {
-      toast.failure('Please select billing firm');
-      return;
-    }
+    // if (!selectedBillingFirm) {
+    //   toast.failure('Please select billing firm');
+    //   return;
+    // }
     setIsSheetOpen(false);
     onClose();
     const req = {
@@ -287,7 +287,7 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
               marginEnd: moderateScale(23),
             }}
           />
-          <DropDownPickerComp
+          {/* <DropDownPickerComp
             pickername={'billingFirmPicker'}
             isOpen={openPicker === 'billingFirmPicker'}
             onOpen={onOpen}
@@ -318,7 +318,7 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
               marginStart: moderateScale(32),
               marginEnd: moderateScale(23),
             }}
-          />
+          /> */}
           <Pressable onPress={onApplyFilterPress}>
             <Text style={styles.applyButton}>Done</Text>
           </Pressable>
