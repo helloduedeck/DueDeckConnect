@@ -34,8 +34,8 @@ type IProps = {
     onPress: () => void;
     isLoading?: boolean;
   };
-  Inputfocused:any ;
-  Iskeyboardclosed:any ;
+  Inputfocused: any;
+  Iskeyboardclosed: any;
 };
 
 const COPY_RIGTH_NOTE =
@@ -64,7 +64,7 @@ const AuthContainer: React.FC<IProps> = ({
 
   const width = Dimensions.get('screen').width;
   const height = Dimensions.get('screen').height;
-  console.log(width,height,'devicesssss')
+  console.log(width, height, 'devicesssss')
   useEffect(() => {
     setShowLoader(isLoading ?? false);
   }, [isLoading]);
@@ -73,14 +73,14 @@ const AuthContainer: React.FC<IProps> = ({
     btnContainerStyle: {
       height: verticalScale(40),
     },
-     headingContainer: {
+    headingContainer: {
       alignItems: 'center',
       width: width * 0.85,
-      marginBottom:( height <= 800) ? 250 : 0,
+      marginBottom: (height <= 800) ? 250 : 0,
     },
     subheadingContainer: {
       marginTop: moderateScale(30),
-      marginBottom:( height <= 800) ? 50 : 0,
+      marginBottom: (height <= 800) ? 50 : 0,
       alignItems: 'center',
       width: width * 0.670,
       backgroundColor: colors.primary,
@@ -137,7 +137,7 @@ const AuthContainer: React.FC<IProps> = ({
           elevation: 2,
         },
       }),
-  
+
     },
     resendContainer: {
       flexDirection: 'row',
@@ -169,59 +169,62 @@ const AuthContainer: React.FC<IProps> = ({
           isFailed={isFailed}
           isLoading={showLoader}>
           <View style={{ backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center', height: "55%" }}>
-        <View style={{ backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center', height: "50%",   marginBottom:
-                    Inputfocused && Iskeyboardclosed
-                      ? moderateScale(
-                          height === 780
-                            ? 40
-                            : height >= 960
-                            ? 30
-                            : 10
-                        )
-                      : 0,}}>
-        <View style={{ marginVertical: moderateScale(10) }}>
-              {/* <Logo style={undefined} size={'large'} /> */}
-              <LOGOwhite/>
-            </View>
-            {/* <Image source={images.Logo} /> */}
-            {heading ? (
-              <View style={[styles.headingContainer,   
+            <View style={{
+              backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center', height: "50%", marginBottom:
+                Inputfocused && Iskeyboardclosed
+                  ? moderateScale(
+                    height === 780
+                      ? 40
+                      : height >= 960
+                        ? 30
+                        : 10
+                  )
+                  : 0,
+            }}>
+              <View style={{ marginVertical: moderateScale(10), backgroundColor: 'white', borderRadius: 10, width: moderateScale(130), height: moderateScale(78) }}>
+                {/* <Logo style={undefined} size={'large'} /> */}
+                <Logo size={'large'} />
+                {/* <LOGOwhite/> */}
+              </View>
+              {/* <Image source={images.Logo} /> */}
+              {heading ? (
+                <View style={[styles.headingContainer,
                 {
                   marginBottom:
                     Inputfocused && Iskeyboardclosed
                       ? moderateScale(
-                          height === 780
-                            ? 80
-                            : height >= 960
+                        height === 780
+                          ? 80
+                          : height >= 960
                             ? 50
                             : 40
-                        )
+                      )
                       : 0,
                 }
-                
-          ]}>
-                <Label
-                  size={'large'}
-                  fontWeight={'bold'}
-                  title={heading}
-                  color={colors.white}
-                />
-              </View>
-            ) : null}
-            {subHeading ? (
-              <View style={styles.subheadingContainer}
-              > 
-                <Sublabel
-                  size={'medium'}
-                  fontWeight={'normal'}
-                  title={subHeading}
-                  color={colors.white}
-                  align={'center'}
-                  fontStyle={'normal'}
-                />
-              </View>
-            ) : null}
-        </View>
+
+                ]}>
+                  <Label
+                    size={'large'}
+                    fontWeight={'bold'}
+                    title={heading}
+                    color={colors.white}
+                  />
+                </View>
+              ) : null}
+              {subHeading ? (
+                <View style={styles.subheadingContainer}
+                >
+                  <Sublabel
+                    size={'medium'}
+                    fontWeight={'normal'}
+                    title={subHeading}
+                    color={colors.white}
+                    align={'center'}
+                    fontStyle={'normal'}
+                  />
+                </View>
+              ) : null}
+            </View>
           </View>
           <View style={{ backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', }}>
             <View style={styles.cardContainer}>

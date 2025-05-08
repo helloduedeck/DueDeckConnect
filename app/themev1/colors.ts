@@ -58,7 +58,8 @@ const colors = {
   paymentbg: '#F5F5F5',
   payment: '#D4D4D4',
   documentGray: '#D3D3D3',
-  taskrequestbg:'#FFCD29'
+  taskrequestbg:'#FFCD29',
+  actionsheetheader:'#59B0CD'
 };
 
 export default colors;

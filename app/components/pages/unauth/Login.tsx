@@ -115,6 +115,8 @@ const Login = ({navigation}: any) => {
         })
         .catch(e => {
           setErrorMessage(e.data?.data?.error ?? 'Invalid Credentials');
+          console.log(e.data?.data?.error,'errrrr');
+          
           clearTimeout();
           //toast.failure(e.data?.data?.error ?? 'Invalid Credentails');
           console.log('ERROR WHILE LOGIN', e);

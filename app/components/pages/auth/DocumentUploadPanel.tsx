@@ -453,7 +453,7 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
           />
         </View>
 
-        <View style={{paddingBottom: 150, height: '85%'}}>
+        <View style={{paddingBottom: 150, height: '85%',marginHorizontal:30}}>
           <FlatList
             style={{height: '100%'}}
             data={dataSource}

@@ -23,6 +23,7 @@ import Comments from '@components/templates/Details/Comments';
 import Payments from '@components/pages/auth/Payments';
 import Appointment from '@components/pages/auth/Appointment';
 import TaskRequests from '../../components/pages/auth/TaskRequests';
+import GlobalFilterModal from '../../components/organisms/Dashboard/GlobalFilter/GlobalFilterModal';
 
 const UnAuthorizedStack = createStackNavigator();
 
@@ -66,6 +67,10 @@ const AuthorizedContainer = () => {
       <AuthorizedStack.Screen
         name={ROUTES.NOTICEDETAILS}
         component={NoticeDetails}
+      />
+         <AuthorizedStack.Screen
+        name={ROUTES.GLOBALFILTER}
+        component={GlobalFilterModal}
       />
       <AuthorizedStack.Screen
         name={ROUTES.PAYMENTDOC}
