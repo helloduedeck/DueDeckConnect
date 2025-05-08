@@ -26,6 +26,18 @@ const CircleBadge: React.FC<CircleBadgePropsType> = ({
     return initials;
   };
 
+  console.log(profilePic,'profilePicprofilePicprofilePic');
+
+  const getHeaderText = (heading: string, length: number) => {
+    try {
+      return heading.length < length
+        ? `${heading}`
+        : `${heading.substring(0, length)}..`;
+    } catch (error) {
+      return '';
+    }
+  };
+  
   return (
     <TouchableOpacity style={styles.container} onPress={onProfileIconPress}>
       <View>
@@ -55,7 +67,7 @@ const CircleBadge: React.FC<CircleBadgePropsType> = ({
         <Sublabel
           size={'small'}
           fontWeight={'bold'}
-          title={` Hi, ${userName}`}
+          title={` Hi, ${getHeaderText(userName,14)}`}
           color={colors.white}
           align={'center'}
           fontStyle={'normal'}

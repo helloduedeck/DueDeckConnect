@@ -38,7 +38,7 @@ const MenuBoard = () => {
   };
 
   const menuBoradList = () => {
-    return dashboardData.menuBoard?.map(
+    return dashboardData.menuBoard?.slice(0, -1).map(// hide payment icon by SG for module deactivation
       (item: IMenuBoardItems, index: number) => {
         const {title, icon, background, size, status} = item;
         return (
@@ -112,7 +112,7 @@ const styles = ScaledSheet.create({
     paddingTop: moderateScale(16),
     // paddingHorizontal: moderateScale(22),
     paddingLeft:moderateScale(15),
-    paddingEnd:moderateScale(23.5),
+    paddingEnd:moderateScale(20.5),
     paddingBottom: moderateScale(8),
     backgroundColor: colors.white,
     // width: moderateScale(343),

@@ -154,6 +154,7 @@ export interface FabPropsType {
   showServiceSheet?: boolean;
   onSheetClose?: () => void;
   onRefresh?: () => void;
+  onTaskRequestCreated?: () => void;
 }
 
 export interface ServiceCardPropsType {

@@ -20,6 +20,15 @@ export const servicesApi = api.injectEndpoints({
         },
       }),
     }),
+    getTaskcount: builder.mutation({
+      query: data => ({
+        url: 'getTaskCount',
+        method: 'POST',
+        body: {
+          ...data,
+        },
+      }),
+    }),
     updateTaskRequest: builder.mutation({
       query: data => ({
         url: 'updateTaskRequest',
@@ -101,5 +110,6 @@ export const {
   useSendMessageMutation,
   useGetCommentsMutation,
   useGetTaskRequestMutation,
-  useUpdateTaskRequestMutation
+  useUpdateTaskRequestMutation,
+  useGetTaskcountMutation
 } = servicesApi;

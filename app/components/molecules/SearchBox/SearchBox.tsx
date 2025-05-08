@@ -20,12 +20,13 @@ const SearchBox: React.FC<IProps> = ({
   searchText,
 }) => {
   return (
-    <View style={{margin: moderateScale(16)}}>
+    <View style={{marginVertical: moderateScale(16),marginStart:moderateScale(18)}}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <View style={styles.search}>
           <TextInput
-            style={{flex: 1}} // Take up remaining space
+            style={{flex: 1,color:colors.GRey800}} // Take up remaining space
             placeholder="Search services"
+            placeholderTextColor={colors.payment}
             value={searchText}
             onChangeText={onTextChange}
             returnKeyType="search"

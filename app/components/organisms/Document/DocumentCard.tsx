@@ -40,11 +40,12 @@ const DocumentCard = ({item, viewableItems}: DocumentCardPropsType) => {
               backgroundColor: `${colors.gray}43`,
               paddingHorizontal: 7,
               borderRadius: 2,
+              height:moderateScale(30)
             }}>
             <Icon
               name="file"
               size={moderateScale(8)}
-              style={{marginRight: moderateScale(4)}}
+              style={{marginRight: moderateScale(4),color:colors.Grey600}}
             />
             <Sublabel
               size={'small'}

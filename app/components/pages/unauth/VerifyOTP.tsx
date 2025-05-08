@@ -150,7 +150,7 @@ const VerifyOTP = () => {
     Iskeyboardclosed={isKeyboardVisible}
     Inputfocused={isOTPFocused}
     showIcon={true}
-    showLabel={true}
+    showLabel={false}
       button={{
         label: 'Verify',
         onPress: onVerifyOTPPress,

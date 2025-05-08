@@ -40,14 +40,15 @@ import fontsize from '../../../themev1/fontstyle';
 import {useFocus} from '@utils/useFocus';
 import FeatureDisableComp from '@components/molecules/TopHeader/FeatureDisableComp';
 import { getHeaderText } from '@components/organisms/ServiceItem/ServiceItemCard';
+import CustomHeaderW from '@components/organisms/Headers/CustomHeaderW';
 
 const tabs = [
   {
     id: 1,
     name: 'Scheduled',
     background: colors.white,
-    color: colors.toptab,
-    selectedColor: colors.Grey600,
+    color: colors.GRey800,
+    selectedColor: colors.white,
     selectedbackgroundColor: `${colors.Grey600}13`,
     // component: Pending,
   },
@@ -55,8 +56,8 @@ const tabs = [
     id: 2,
     name: 'Pending',
     background: colors.white,
-    color: colors.toptab,
-    selectedColor: colors.Grey600,
+    color: colors.GRey800,
+    selectedColor: colors.white,
     selectedbackgroundColor: `${colors.Grey600}13`,
     // component: Completed,
   },
@@ -64,8 +65,8 @@ const tabs = [
     id: 3,
     name: 'Rejected',
     background: colors.white,
-    color: colors.toptab,
-    selectedColor: colors.Grey600,
+    color: colors.GRey800,
+    selectedColor: colors.white,
     selectedbackgroundColor: `${colors.Grey600}13`,
     // component: Cancelled,
   },
@@ -73,8 +74,8 @@ const tabs = [
     id: 4,
     name: 'Closed',
     background: colors.white,
-    color: colors.toptab,
-    selectedColor: colors.Grey600,
+    color: colors.GRey800,
+    selectedColor: colors.white,
     selectedbackgroundColor: `${colors.Grey600}13`,
     // component: Cancelled,
   },
@@ -113,8 +114,13 @@ const Appointment = () => {
     if (isFocused) {
       setSelectedId(1);
       getListData();
+    } else {
+      setSelectedId(0); // Clear selectedId when screen is unfocused
+      setListData([]); // Optional: clear the list too if you want
+      setListCount(0); // Optional: clear count too if needed
     }
   }, [isFocused]);
+  
 
   const getListData = async () => {
     setIsLoading(true);
@@ -237,7 +243,9 @@ const Appointment = () => {
 
   return (
     <Container isSubLabel={true} backLabel={['Dashboard', 'Notice']}>
-      <CustomHeader title="Appointment" />
+            <View style={{backgroundColor:colors.primary,height:42,justifyContent:'center',alignItems:'center'}}>
+      <CustomHeaderW title="Appointment" />
+      </View>
 
       <View style={{marginHorizontal: 0}}>
         <ScrollView horizontal style={{flexGrow: 0}}>
@@ -246,7 +254,9 @@ const Appointment = () => {
               <Pressable
                 style={[
                   styles.tabContainer,
-                  selectedId === item.id ? {backgroundColor: colors.white} : {},
+                  selectedId === item.id ? {backgroundColor: colors.primary} : {},
+                  selectedId === 1 && item.id === 1 ? {marginLeft: 20} : {},
+          selectedId === 4 && item.id === 4 ? {marginRight: 60} : {},
                 ]}
                 disabled={moduleStatus === 0}
                 onPress={() => {
@@ -302,7 +312,7 @@ const Appointment = () => {
               }
               ListEmptyComponent={
                 packageStatus == false ? null : (
-                  <EmptyOther navigation={undefined}  style={{marginTop:'40%'}}/>
+                  <EmptyOther navigation={undefined}  style={{marginTop:'50%'}}/>
                 )
               }
               keyExtractor={item => `${item.id}`}
@@ -409,7 +419,7 @@ const Appointment = () => {
                 showActionSheet={showResheduleSheet}
               />
             )}
-            <FAB
+            {/* <FAB
               style={{
                 position: 'absolute',
                 margin: 16,
@@ -422,7 +432,7 @@ const Appointment = () => {
               color="white"
               size="medium"
               onPress={() => setShowResheduleSheet(true)}
-            />
+            /> */}
           </>
         </Content>
       )}
@@ -437,8 +447,11 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     width: '90@ms',
     height: '30@ms',
-    margin: '6@ms',
-    borderRadius: 4,
+    margin: '16@ms',
+    borderRadius: 40,
+    borderColor:colors.toptab,
+    borderWidth:1,
+    backgroundColor:colors.white
   },
   countContainer: {},
 });

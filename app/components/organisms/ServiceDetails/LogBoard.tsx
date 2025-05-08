@@ -43,6 +43,7 @@ const styles = ScaledSheet.create({
   logupdate: {
     marginStart: 23,
     marginVertical: 6,
+    
   },
 });
 export default React.memo(LogBoard);

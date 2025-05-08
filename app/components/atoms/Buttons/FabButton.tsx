@@ -8,6 +8,7 @@ import {
   Keyboard,
   Pressable,
   Animated,
+  Alert,
 } from 'react-native';
 import {ScaledSheet, moderateScale} from 'react-native-size-matters';
 import {FabPropsType} from '../../../types/components';
@@ -90,38 +91,44 @@ const FabButton = (props: FabPropsType) => {
     setIsSheetOpen(false);
   };
   const onNewService = async () => {
-    if (!serviceNotes && serviceNotes.trim().length === 0) {
-      return toast.failure('Please Enter Manadatory Field!!!');
+    if (!serviceNotes || serviceNotes.trim() === '') {
+      return Alert.alert('Please enter a valid service note!');
     }
-    setTaskModalVisible(true)
-
+  
+    setTaskModalVisible(true);
+  
     const reqData: any = {
-      task_note: serviceNotes,
+      task_note: serviceNotes.trim(), // Trimmed before sending
     };
-
+  
     await createNewTask(reqData)
       .unwrap()
       .then(data => {
         if (data?.success) {
           toast.success(data?.message);
           onRefresh?.();
+             // ✅ Call parent (Dashboard) to open modal
+      props.onTaskRequestCreated?.();
         } else {
-          toast.failure(data?.message ?? 'Please Enter Manadatory Fields!!!');
+          toast.failure(data?.message ?? 'Please enter the required fields!');
         }
       })
       .finally(() => {
         setServiceNotes('');
         setShowServiceView(false);
-        props?.onSheetClose?.();
+        // setTaskModalVisible(true);
+        console.log('service created ');
+        
       })
       .catch(e => {
-        toast.failure('Please Enter Manadatory Fields!!!');
+        toast.failure('Something went wrong! Please try again.');
       });
   };
+  
 
   const iconMovement = animation.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, -15], // Icon moves 10 units upwards when animated
+    inputRange: [0, 0],
+    outputRange: [0, 10], // Icon moves 10 units upwards when animated
   });
   function alert(arg0: string) {
     throw new Error('Function not implemented.');
@@ -136,8 +143,9 @@ const FabButton = (props: FabPropsType) => {
           visible={modalVisible}
           onRequestClose={() => {
             setModalVisible(!modalVisible);
-            props?.onSheetClose?.();
-          }}>
+            // props?.onSheetClose?.();
+          }}
+          >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View style={styles.title}>
@@ -160,7 +168,7 @@ const FabButton = (props: FabPropsType) => {
                   setModalVisible(!modalVisible);
                   props?.onSheetClose?.();
                 }}>
-                <Icon name="close" size={16} color={colors.GRey800} />
+                <Icon name="close" size={20} color={colors.GRey800} />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
@@ -252,7 +260,7 @@ const FabButton = (props: FabPropsType) => {
         animationType="slide"
         transparent={true}
         visible={taskmodalVisible}
-        onRequestClose={() => setTaskModalVisible(false)}
+        onRequestClose={() => setTaskModalVisible(true)}
       >
         <View
           style={{
@@ -291,7 +299,7 @@ const FabButton = (props: FabPropsType) => {
                 color={colors.SemGreen500}
                 size={50}
                 style={{
-                  marginLeft: moderateScale(50),
+                  marginLeft: moderateScale(75),
                   justifyContent: 'center',
                   marginBottom: moderateScale(16),
                 }}
@@ -315,7 +323,7 @@ const FabButton = (props: FabPropsType) => {
                   size={'medium'}
                   fontWeight={'semibold'}
                   fontStyle={'normal'}
-                  title={'View Taskrequest'}
+                  title={'View Task Request'}
                   color={colors.primary}
                   align={undefined}
                 />
@@ -335,7 +343,7 @@ const FabButton = (props: FabPropsType) => {
             showActionSheet={showAppointmentView}
           />
           <ActionSheet
-            disableableClosePressingBackDrop={true}
+            // disableableClosePressingBackDrop={true}
             onClose={() => {
               setIsSheetOpen(false);
               props?.onSheetClose?.();
@@ -467,19 +475,8 @@ const FabButton = (props: FabPropsType) => {
           backgroundColor: colors.primary,
           borderRadius: 60,
         }}
-        icon={() => (
-          <Animated.View style={{ transform: [{ translateY: iconMovement }] }}>
-          <Svg width="28" height="28" viewBox="2.5 1 22 24">
-            <Path
-              fill="none"
-              stroke="white"
-              strokeWidth="2" // Thinner stroke width for a lighter effect
-              d="M12 5v14M5 12h14"
-            />
-          </Svg>
-        </Animated.View>
-        )}    
-            color="white"
+        icon='plus'
+        color="white"
         size="medium"
         onPress={() => setModalVisible(true)}
         

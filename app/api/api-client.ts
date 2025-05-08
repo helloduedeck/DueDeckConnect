@@ -7,6 +7,7 @@ import {
 import {RootState} from '../store/store';
 export const BASE_URL = 'https://api.due-deck.com/api/';
 export const STORAGE_URL = 'https://api.due-deck.com/';
+export const PROFILE_URL = 'https://due-deck.com/';
 const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
   credentials: 'include',

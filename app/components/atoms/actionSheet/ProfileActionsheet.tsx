@@ -4,6 +4,7 @@ import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
   BottomSheetModal,
+  BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import {moderateScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
@@ -12,20 +13,31 @@ type IProps = {
   isVisible: boolean;
   onClose: () => void;
   children: any;
-  disableableClosePressingBackDrop : boolean;
+  disableableClosePressingBackDrop?: boolean;
+    overlayPointerEvents?:any // <-- Add this line
+IsEditMode?:any
 };
 
-const ActionSheet: React.FC<IProps> = ({isVisible, children, onClose,disableableClosePressingBackDrop}) => {
-  const isPaymentPageOpened = true;
+const ProfileActionSheet: React.FC<IProps> = ({
+  isVisible,
+  children,
+  onClose,
+  IsEditMode,
+  disableableClosePressingBackDrop = false,
+  overlayPointerEvents
+}) => {
+  const isPaymentPageOpened = useSelector(
+    (state: any) => state.dashboard?.isPaymentPageOpened,
+  );
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['30%', '50%', '60%', '76%',], []);
-  const [snapPoint, setsnapPoint] = useState('53%');
+  const snapPoints = useMemo(() => ['30%', '33%', '33%'], []);
+  const [snapPoint, setsnapPoint] = useState('93%');
 
   useEffect(() => {
     if (isVisible) {
-      bottomSheetRef.current?.present();
+      bottomSheetRef?.current?.present();
     } else {
-      bottomSheetRef.current.close();
+      bottomSheetRef?.current?.close();
     }
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -33,7 +45,6 @@ const ActionSheet: React.FC<IProps> = ({isVisible, children, onClose,disableable
         console.log('true');
       },
     );
-
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
       () => {
@@ -61,9 +72,18 @@ const ActionSheet: React.FC<IProps> = ({isVisible, children, onClose,disableable
     [onClose],
   );
   // renders
-  const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
-    return <BottomSheetBackdrop {...props}         pressBehavior={disableableClosePressingBackDrop ? 'collapse' : 'close'}
-    />;
+  // const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
+  //   return <BottomSheetBackdrop {...props} pressBehavior={'close'} />;
+  // }, []);
+  const renderBackDrop = useCallback((props: any) => {
+    return (
+      <BottomSheetBackdrop
+        appearsOnIndex={0}
+        disappearsOnIndex={-1}
+        pressBehavior={disableableClosePressingBackDrop ? 'collapse' : 'close'}
+        {...props}
+      />
+    );
   }, []);
 
   return (
@@ -71,16 +91,13 @@ const ActionSheet: React.FC<IProps> = ({isVisible, children, onClose,disableable
       ref={bottomSheetRef}
       index={isPaymentPageOpened ? 3 : 1}
       snapPoints={snapPoints}
-      enablePanDownToClose={false} // disables pull-down gesture to close
       handleComponent={() => {
         return null;
       }}
-      backdropComponent={renderBackdrop}
+      backdropComponent={renderBackDrop}
       detached={true}
-onDismiss={() => {
-  onClose(); // This should set isVisible = false in parent
-}}
-      >
+      onDismiss={onClose}
+      enablePanDownToClose={true}>
       <TouchableOpacity
         style={{
           borderBottomWidth: moderateScale(4),
@@ -89,11 +106,11 @@ onDismiss={() => {
           marginEnd: moderateScale(160),
           alignItems: 'center',
           borderRadius: moderateScale(18),
-        }}></TouchableOpacity>
-
-      {children}
+        }}
+      />
+      <BottomSheetView>{children}</BottomSheetView>
     </BottomSheetModal>
   );
 };
 
-export default ActionSheet;
+export default ProfileActionSheet;

@@ -87,6 +87,9 @@ const BottomTabContainer = () => {
   const setPaymentPageOpened = (value: Boolean) => {
     // dispatch(actions.dashboard.setPaymentPageOpened(value));
   };
+  const [showServiceSheet, setShowServiceSheet] = useState(false);
+
+  const [showAppointmentSheet, setShowAppointmentSheet] = useState(false);
 
   const Stack = createNativeStackNavigator();
 
@@ -233,6 +236,7 @@ const BottomTabContainer = () => {
     name={ROUTES.SERVICES}
     component={Services}
     options={{
+      tabBarLabel: 'Tasks',
       tabBarIcon: ({ color }) => 
         <View style={{margin:0,}}>
       <Ionicons name="list" size={24} color={color} style={{padding:5}} />
@@ -264,8 +268,18 @@ const BottomTabContainer = () => {
       >
         <TouchableOpacity>
           <View style={styles.fabButton}>
-            <FabButton size={'small'} background={''} iconName={''} />
-          </View>
+          <FabButton
+                size={'small'}
+                background={colors.primary}
+                iconName={'plus'}
+                showAppointmentSheet={showAppointmentSheet}
+                showServiceSheet={showServiceSheet}
+                onSheetClose={() => {
+                  setShowAppointmentSheet(false);
+                  setShowServiceSheet(false);                  
+                }}
+              />         
+               </View>
         </TouchableOpacity>
       </LinearGradient>
     ),
@@ -296,6 +310,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     // justifyContent:'space-evenly',
     paddingBottom:20,
+    zIndex: 1
     
   },
   tabBarLabelStyle: {
@@ -303,7 +318,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '600',
     marginHorizontal:5,
-    zIndex:1
+    zIndex:2
   },
   // tabBarIconStyle: {
   //   width: 50,

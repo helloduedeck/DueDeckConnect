@@ -21,7 +21,7 @@ const LogsUpdates = ({iconname, sublabel}: any) => {
           fontWeight={'normal'}
           fontStyle={'normal'}
           title={sublabel} // Dynamic sublabel text
-          color={undefined}
+          color={colors.GRey800}
           align={undefined}
         />
       </View>

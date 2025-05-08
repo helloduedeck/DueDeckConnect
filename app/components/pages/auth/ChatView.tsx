@@ -17,6 +17,7 @@ import CircleImage from '@components/atoms/Circleimage/CircleImage';
 import ChatBoxInput from '@components/organisms/ServiceDetails/ChatBoxInput';
 import {useGetCommentsMutation, useSendMessageMutation} from '@api/services';
 import {toast} from '@utils';
+import moment from 'moment';
 
 export interface LabelPropsType {
   name: string;
@@ -26,7 +27,9 @@ export interface LabelPropsType {
 }
 
 const MessageBubble = ({name, text, direction, time}: LabelPropsType) => {
-  console.log('LabelPropsType', text);
+  console.log('LabelPropsType', time);
+  const formatted = moment(time).format('MMM DD, YYYY | h:mm a');
+
   var rightSpacer =
     direction === 'left' ? (
       <View style={{width: 20, backgroundColor: 'red'}} />
@@ -65,8 +68,8 @@ const MessageBubble = ({name, text, direction, time}: LabelPropsType) => {
                   size={'exsmall'}
                   fontWeight={'normal'}
                   fontStyle={'normal'}
-                  title={time}
-                  color={undefined}
+                  title={formatted}
+                  color={colors.GRey800}
                   align={undefined}
                 />
                 {/* <Sublabel
@@ -102,7 +105,7 @@ const MessageBubble = ({name, text, direction, time}: LabelPropsType) => {
                 fontWeight={'bold'}
                 fontStyle={'normal'}
                 title={'You'}
-                color={undefined}
+                color={colors.GRey800}
                 align={undefined}
               />
             </View>
@@ -135,7 +138,7 @@ const MessageBubble = ({name, text, direction, time}: LabelPropsType) => {
                   fontWeight={'bold'}
                   fontStyle={'normal'}
                   title={'User'}
-                  color={undefined}
+                  color={colors.GRey800}
                   align={undefined}
                 />
               </View>
@@ -163,8 +166,8 @@ const MessageBubble = ({name, text, direction, time}: LabelPropsType) => {
                   size={'exsmall'}
                   fontWeight={'normal'}
                   fontStyle={'normal'}
-                  title={time}
-                  color={undefined}
+                  title={formatted}
+                  color={colors.GRey800}
                   align={undefined}
                 />
                 {/* <Sublabel

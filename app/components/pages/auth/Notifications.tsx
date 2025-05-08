@@ -248,7 +248,7 @@ const Notifications = () => {
                 style={{paddingHorizontal: moderateScale(10)}}
               />
               <TextInput
-                style={{flex: 1, paddingHorizontal: moderateScale(10)}}
+                style={{flex: 1, paddingHorizontal: moderateScale(10),color:colors.GRey800}}
                 placeholder="Search Notification.."
                 placeholderTextColor={colors.Grey600}
                 onChangeText={changeTextDebouncer}

@@ -5,7 +5,7 @@ import {View} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 import {moderateScale} from 'react-native-size-matters';
 import GlobalFilterHeader from './GlobalFilter/GlobalFilterHeader';
-import {STORAGE_URL} from '@api/api-client';
+import {PROFILE_URL, STORAGE_URL} from '@api/api-client';
 import { useAppSelector } from '@hooks/redux_hooks';
 import { getHeaderText } from '../ServiceItem/ServiceItemCard';
 
@@ -19,23 +19,29 @@ const DashhboardHeader: React.FC<DashboardHeaderPropsType> = ({
 }) => {
   const [profilePics, setProfilePics] = useState({uri: ''});
   const dashboardState = useAppSelector(state => state?.dashboard);
+  const usersState = useAppSelector(state => state?.user.SubheaderName)
+  const profilePhoto = useAppSelector(state => state?.user.profilePictures)
+  console.log(profilePhoto,'ppiccsss');
 
-  const isDuedeck = STORAGE_URL.includes("duedeck.com");
-  const finalUrl = isDuedeck ? `${STORAGE_URL}public/storage/` : `${STORAGE_URL}storage/`;
+  const isDuedeck = PROFILE_URL.includes("duedeck.com");
+  const finalUrl = isDuedeck ? `${PROFILE_URL}public/storage/profile/` : `${PROFILE_URL}storage/profile/`;
 
   useEffect(() => {
-    if (profilePic) {
+    if (profilePic || profilePic != undefined) {
       setProfilePics({
         uri: finalUrl.concat(profilePic),
       });
+    }else{
+      setProfilePics('')
     }
   }, [profilePic]);
+console.log(dashboardState.activeClient.user_id,'userrrrrn');
 
   return (
     <View style={styles.container}>
       <View style={styles.organizationtitle}>
         <CircleBadge
-          userName={getHeaderText(dashboardState.activeClient?.name ??  clientName,20) }
+          userName={getHeaderText(usersState ??  clientName,20) }
           profilePic={profilePics ?? undefined} //require('../../assets/images/avtar.png')}
           onProfileIconPress={onProfileIconPress}
         />

@@ -21,45 +21,49 @@ import {
   useGetCompletedServicesMutation,
   useGetInProgressServicesMutation,
   useGetOnHoldServicesMutation,
+  useGetTaskcountMutation,
 } from '@api/services';
 import SearchBox from '@components/molecules/SearchBox/SearchBox';
-import {fontsize} from '../../../themev1';
 import ServiceItemCard from '@components/organisms/ServiceItem/ServiceItemCard';
 import {useFocus} from '@utils/useFocus';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import FeatureDisableComp from '@components/molecules/TopHeader/FeatureDisableComp';
+import CustomHeaderW from '@components/organisms/Headers/CustomHeaderW';
+import GlobalFilter from '@components/molecules/GlobalFilter';
+import fontsize from '../../../themev1/fontstyle';
+import { toast } from '@utils';
 
 const tabs = [
   {
     id: 1,
     name: 'Assigned',
-    background: colors.white,
-    color: colors.Grey600,
-    selectedColor: colors.semorange,
+    background: colors.semorange,
+    color: colors.GRey800,
+    selectedColor: colors.white,
     selectedbackgroundColor: `${colors.semorange}13`,
   },
   {
     id: 2,
     name: 'In Progress',
-    background: colors.white,
-    color: colors.Grey600,
-    selectedColor: colors.semblue,
+    background: colors.semblue,
+    color: colors.GRey800,
+    selectedColor: colors.white,
     selectedbackgroundColor: `${colors.semblue}13`,
   },
   {
     id: 3,
     name: 'On Hold',
-    background: colors.white,
-    color: colors.Grey600,
-    selectedColor: colors.darkred,
+    background: colors.darkred,
+    color: colors.GRey800,
+    selectedColor: colors.white,
     selectedbackgroundColor: `${colors.darkred}13`,
   },
   {
     id: 4,
     name: 'Completed',
-    background: colors.white,
-    color: colors.Grey600,
-    selectedColor: colors.SemGreen500,
+    background: colors.SemGreen500,
+    color: colors.GRey800,
+    selectedColor: colors.white,
     selectedbackgroundColor: `${colors.SemGreen500}13`,
   },
   // {
@@ -88,13 +92,13 @@ const Services = (props: any) => {
   const [moduleStatus, setModuleStatus] = useState();
   const [packagesDisbaleMessage, setPackageDisableMessage] = useState();
   const scrollViewRef = useRef<ScrollView>(null);
-
+  const[getalltaskcount] = useGetTaskcountMutation();
   useEffect(() => {
     isFocused && setSearchText('');
     if (isFocused && props?.route?.params?.selectedTab === 1) {
       setSelectedId(1);
       scrollViewRef &&
-        scrollViewRef.current.scrollTo({x: 0, y: 0, animated: true});
+        scrollViewRef?.current?.scrollTo({x: 0, y: 0, animated: true});
     }
   }, [isFocused]);
 
@@ -102,15 +106,27 @@ const Services = (props: any) => {
     (state: any) => state.dashboard?.packageStatus,
   );
   const viewableItems = useSharedValue<ViewToken[]>([]);
+  useFocusEffect(
+    React.useCallback(() => {
+      // Focused - do nothing
+      return () => {
+        // On screen blur (unfocused), clear selectedTab param
+        if (props?.navigation?.setParams) {
+          props.navigation.setParams({ selectedTab: undefined });
+        }
+      };
+    }, [props?.navigation])
+  );
+  
 
   useEffect(() => {
     if (props?.route?.params?.selectedTab) {
       if (props?.route?.params?.selectedTab === 4) {
-        scrollViewRef && scrollViewRef.current.scrollToEnd({animated: true});
+        scrollViewRef && scrollViewRef?.current?.scrollToEnd({animated: true});
       }
       setSelectedId(props?.route?.params?.selectedTab);
     } else {
-      scrollViewRef.current.scrollTo(0);
+      scrollViewRef?.current?.scrollTo(0);
       setSelectedId(props?.route?.params?.selectedTab ?? 1);
     }
   }, [props?.route?.params?.selectedTab]);
@@ -121,6 +137,36 @@ const Services = (props: any) => {
     }
   }, [selectedId, isFocused]);
 
+  
+   const Getalltaskcount = async (data:any) => {
+    setIsLoading(true)
+
+
+    const firstTask = data.data[0];
+    const reqData = {
+      branch_id: firstTask.branch_id,
+      client_id: firstTask.client_id,
+      financial_year: firstTask.financial_year,
+    };
+
+    console.log(reqData,'reqDatareqData')
+    await getalltaskcount(reqData)
+        .unwrap()
+        .then(data => {
+            if (data?.success) {
+             
+            } else {
+                toast.failure(data?.message ?? 'Something went wrong!!!');
+            }
+        })
+        .finally(() => {
+            setIsLoading(false)
+        })
+        .catch(e => {
+            toast.failure('Please Enter Manadatory Fields!!!');
+        });
+};
+
   const getListData = async () => {
     setListData([]);
     setListCount(0);
@@ -129,6 +175,8 @@ const Services = (props: any) => {
       await assignedServices({})
         .unwrap()
         .then(data => {
+          console.log(data,'1sttabdata');
+          
           if (data?.success) {
             if (data?.module_status === 1) {
               setListData(data?.data);
@@ -276,8 +324,10 @@ const Services = (props: any) => {
   );
   return (
     <Container isSubLabel={true} backLabel={['Dashboard', 'Notice']}>
-      <CustomHeader title="Tasks" />
-      <ScrollView horizontal style={{flexGrow: 0}} ref={scrollViewRef}>
+      <View style={{backgroundColor:colors.primary,height:42,justifyContent:'center',alignItems:'center'}}>
+      <CustomHeaderW title="Tasks" />
+      </View>
+      <ScrollView horizontal style={{flexGrow: 0,marginLeft:moderateScale(10)}} ref={scrollViewRef}>
         {tabs?.map(item => {
           return (
             <Pressable
@@ -315,7 +365,7 @@ const Services = (props: any) => {
                       paddingVertical: 1,
                       fontSize: fontsize.medium10,
                     }}>
-                    {listCount}
+                    {'('+ listCount +')'}
                   </Text>
                 </View>
               )}
@@ -366,7 +416,10 @@ const styles = ScaledSheet.create({
     margin: '6@ms',
     paddingHorizontal: '6@ms',
     marginHorizontal: moderateScale(16),
-    borderRadius: 4,
+     borderColor:colors.toptab,
+    borderWidth:1,
+    borderRadius: 40,
+    backgroundColor:colors.white
   },
   countContainer: {
     marginLeft: '5@ms',

@@ -6,6 +6,7 @@ import DetailContent from '@components/templates/Details/DetailContent';
 import {moderateScale} from 'react-native-size-matters';
 import LogBoard from '@components/organisms/ServiceDetails/LogBoard';
 import LogDate from '@components/molecules/Logs/LogDate';
+import CustomHeaderW from '@components/organisms/Headers/CustomHeaderW';
 
 const Logs = ({route, navigation}: any) => {
   const {logs, serviceData} = route.params;
@@ -19,6 +20,16 @@ const Logs = ({route, navigation}: any) => {
         return colors.SemGreen500;
       default:
         return colors.primary;
+    }
+  };
+
+  const getHeaderText = (heading: string, length: number) => {
+    try {
+      return heading.length < length
+        ? `${heading}`
+        : `${heading.substring(0, length)}..`;
+    } catch (error) {
+      return '';
     }
   };
   // Alert.alert('ff',(JSON.stringify(logs)))
@@ -37,14 +48,17 @@ const Logs = ({route, navigation}: any) => {
 
   return (
     <View style={{backgroundColor: colors.Dashboard, flex: 1}}>
-      <CustomHeader title="Logs" />
+            <View style={{height:40,backgroundColor:colors.primary,justifyContent:'center',alignItems:'center'}}>
 
-      <View style={{marginVertical: moderateScale(5)}}>
+      <CustomHeaderW title="Logs" />
+      </View>
+
+      <View style={{marginVertical: moderateScale(12)}}>
         <DetailContent
        LabelPropsType={{
         size: 'medium',
         fontWeight: 'semibold',
-        title: serviceData.service_name,
+        title: getHeaderText(serviceData.service_name,25),
         color: colors.GRey800,
         align: {undefined},
       }}
@@ -58,7 +72,7 @@ const Logs = ({route, navigation}: any) => {
       LabelPropsType2={{
         size: 'small',
         fontWeight: 'normal',
-        title: serviceData?.act_name,
+        title: getHeaderText(serviceData?.act_name,25),
         color: colors.GRey800,
         align: {undefined},
       }}
@@ -73,11 +87,11 @@ const Logs = ({route, navigation}: any) => {
         size: 'exsmall',
         fontWeight: 'bold',
         fontStyle: 'italic',
-        title: serviceData?.g_status,
+        title: serviceData?.due_in,
         color: getGStatusColor(serviceData?.g_status),
         align: undefined,
       }}
-      clientName={serviceData.client_name}
+      clientName={getHeaderText(serviceData.client_name,25)}
         />
       </View>
       <View style={{flex: 1}}>

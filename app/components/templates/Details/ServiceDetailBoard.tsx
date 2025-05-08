@@ -11,6 +11,7 @@ import {ROUTES} from '@routes';
 import {useGetSingleTaskMutation} from '@api/services';
 import Content from '@components/content/Content';
 import moment from 'moment';
+import CustomHeaderW from '@components/organisms/Headers/CustomHeaderW';
 type IProps = {
   id: number;
 };
@@ -32,6 +33,16 @@ const ServiceDetailBoard = ({id}: IProps) => {
     fetchDetails();
   }, []);
 
+
+   const getHeaderText = (heading: string, length: number) => {
+    try {
+      return heading.length < length
+        ? `${heading}`
+        : `${heading.substring(0, length)}..`;
+    } catch (error) {
+      return '';
+    }
+  };
   const fetchDetails = async () => {
     const reqData: any = {
       id: id,
@@ -41,6 +52,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
       .then(data => {
         if (data?.success) {
           setServiceData(data?.data.singletask);
+          console.log(data?.data.singletask,'taskidd');
           setLogseData(data?.data.singletask.logs);
           setCommentsData(data?.data.singletask.comments);
           setDocumentsData(data?.data.singletask.documents);
@@ -99,7 +111,8 @@ const ServiceDetailBoard = ({id}: IProps) => {
   return (
     <View style={styles.main}>
       <View style={{marginHorizontal: -2, backgroundColor: colors.Dashboard}}>
-        <CustomHeader
+        <View style={{backgroundColor:colors.primary,justifyContent:'center',alignItems:'center',height:40}}>
+        <CustomHeaderW
           LabelPropsType={{
             size: 'large',
             fontWeight: 'semibold',
@@ -109,6 +122,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
           }}
           title="Task Details"
         />
+        </View>
       </View>
       <View style={{marginVertical: moderateScale(17)}}>
         {!isLoading && (
@@ -116,7 +130,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
             LabelPropsType={{
               size: 'medium',
               fontWeight: 'semibold',
-              title: serviceData.service_name,
+              title: getHeaderText(serviceData.service_name,25),
               color: colors.GRey800,
               align: {undefined},
             }}
@@ -130,7 +144,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
             LabelPropsType2={{
               size: 'small',
               fontWeight: 'normal',
-              title: serviceData?.act_name,
+              title:getHeaderText( serviceData?.act_name,25),
               color: colors.GRey800,
               align: {undefined},
             }}
@@ -145,11 +159,11 @@ const ServiceDetailBoard = ({id}: IProps) => {
               size: 'exsmall',
               fontWeight: 'bold',
               fontStyle: 'italic',
-              title: serviceData?.g_status,
+              title: serviceData?.due_in,
               color: getGStatusColor(serviceData?.g_status),
               align: undefined,
             }}
-            clientName={serviceData.client_name}
+            clientName={getHeaderText(serviceData.client_name,25)}
           />
         )}
       </View>
@@ -281,6 +295,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
               marginBottom: moderateScale(17),
             }}>
             <ProfileField
+            showicon={true}
               title={'Documents'}
               color={colors.GRey800}
               size={fontsize.medium}
@@ -297,6 +312,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
               }
             />
             <ProfileField
+            showchaticon={true}
               title={'Comments'}
               color={colors.GRey800}
               size={fontsize.medium}
@@ -313,6 +329,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
               }}
             />
             <ProfileField
+            showlogicon={true}
               title={'Logs'}
               color={colors.GRey800}
               size={fontsize.medium}

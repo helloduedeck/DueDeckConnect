@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Alert, Image, Modal, Platform, Pressable, StyleSheet, Text, View} from 'react-native';
 import CircleImage from '../../atoms/Circleimage/CircleImage';
 import {moderateScale} from 'react-native-size-matters';
 
@@ -7,7 +7,7 @@ import {colors} from '../../../themev1';
 import {CircleBadgePropsType} from '@types/components';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import ActionSheet from '@components/atoms/actionSheet/ActionSheet';
+// import ActionSheet from '@components/atoms/actionSheet/ActionSheet';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {
@@ -17,31 +17,45 @@ import {
 import {RESULTS} from 'react-native-permissions';
 import Svg, {Circle, Path} from 'react-native-svg';
 import fontsize from '../../../themev1/fontstyle';
-import {useUpdateUserProfileMutation} from '@api/profileApi';
-import {STORAGE_URL} from '@api/api-client';
+import {useDeleteProfilePicMutation, useUpdateProfilePicMutation, useUpdateUserProfileMutation} from '@api/profileApi';
+import {PROFILE_URL, STORAGE_URL} from '@api/api-client';
 import {toast} from '@utils';
-import {useAppDispatch} from '@hooks/redux_hooks';
-import {setUserCredentials} from '@store/slices/userSlice';
+import {useAppDispatch, useAppSelector} from '@hooks/redux_hooks';
+import {setProfilePictures, setUserCredentials} from '@store/slices/userSlice';
+import ActionSheet from '@components/organisms/ActionSheet/ActionSheet';
+import ImageCropPicker from 'react-native-image-crop-picker';
+import ProfileActionSheet from '@components/atoms/actionSheet/ProfileActionsheet';
+import { Label } from '@components/atoms/Label';
 
 const CircleProfile = (props: CircleBadgePropsType) => {
   const [isActionSheetVisible, setIsActionSheetVisible] = useState(false);
-
+  const userState = useAppSelector(state => state?.user);
+  const [profilePicture, setProfilePicture] = useState(userState?.profilePhoto);
   const [profilePic, setProfilePic] = useState({uri: ''});
   const [updateUserProfile] = useUpdateUserProfileMutation();
+  const [uploadProfilePic] = useUpdateProfilePicMutation();
+  const [deleteProfilePic] = useDeleteProfilePicMutation();
   const dispatch = useAppDispatch();
+  const [isModalVisible, setModalVisible] = useState(false);
+  const userProfileData = useAppSelector(state => state);
+const getprofilepic = userProfileData?.profilePictures
+console.log(getprofilepic,'prpicpath');
+const profilePhoto = useAppSelector(state => state?.user.profilePictures)
 
-  const isDuedeck = STORAGE_URL.includes("duedeck.com");
-  const finalUrl = isDuedeck ? `${STORAGE_URL}public/storage/` : `${STORAGE_URL}storage/`;
+  const isDuedeck = PROFILE_URL.includes("duedeck.com");
+  const finalUrl = isDuedeck ? `${PROFILE_URL}public/storage/profile/` : `${PROFILE_URL}storage/profile/`;
 
   useEffect(() => {
-    if (props?.profilePic) {
+    if (props?.profilePic && props?.profilePic != undefined) {
         setProfilePic({
           uri: finalUrl+props?.profilePic,
         });
+    }else{
+      setProfilePic('');
     }
   }, [props.profilePic]);
   
-  console.log("finalUrl Hereee: "+(finalUrl+props?.profilePic));
+  console.log("finalUrl Hereee:"+JSON.stringify(profilePic));
   
   const showActionSheet = () => {
     setIsActionSheetVisible(true);
@@ -70,25 +84,89 @@ const CircleProfile = (props: CircleBadgePropsType) => {
     saveToPhotos: true, // Save the image to the device's photo library
   };
   const onGalleryPress = async () => {
-    await requestMediaPermission()
-      .then(async permissionStatus => {
-        if (permissionStatus === RESULTS.GRANTED) {
-          await launchImageLibrary(options, response => {
+    try {
+      const permissionStatus = await requestMediaPermission();
+
+      if (permissionStatus === RESULTS.GRANTED) {
+        await launchImageLibrary(
+          { mediaType: 'photo', includeBase64: false },
+          async response => {
             if (response.errorCode) {
-              console.log('GOTERROR', response?.errorCode);
-            } else {
-              console.log('RESPONSE', response);
-              updateProfile(response);
+              console.error('Error selecting image:', response?.errorCode);
+              toast.failure('Error selecting image.');
+              return;
             }
-          });
-        }
-      })
-      .catch(error => {
-        console.error(
-          'Error occurred while selecting image from gallery:',
-          error,
+
+            if (response.assets && response.assets.length > 0) {
+              const selectedImage = response.assets[0];
+
+              // Validate file size (e.g., limit to 2MB)
+              if (selectedImage?.fileSize > 10000000) {
+                toast.failure('File size should be less than 10 MB.');
+                return;
+              }
+
+              // Validate file type (e.g., only allow JPEG/PNG)
+              const allowedTypes = ['image/jpeg', 'image/png'];
+              if (!allowedTypes.includes(selectedImage?.type)) {
+                toast.failure('Only JPEG or PNG images are allowed.');
+                return;
+              }
+
+              try {
+                // Crop the selected image
+                const croppedImage = await ImageCropPicker.openCropper({
+                  path: selectedImage.uri,
+                  width: 500,
+                  height: 500,
+                  cropping: true,
+                  cropperCircleOverlay: false,
+                });
+
+                // Prepare the cropped image for upload
+                const formData = new FormData();
+                formData.append('profile_photo_path', {
+                  uri: croppedImage.path,
+                  name: 'profile_pic.jpg',
+                  type: 'image/jpeg',
+                });
+
+                const uploadResponse = await uploadProfilePic(formData).unwrap();
+
+                if (uploadResponse?.success) {
+                  const photo_url = finalUrl?.concat(
+                    uploadResponse.data.data.profile_photo_path,
+                  );
+                  console.log(photo_url,'photo_urlphoto_url');
+                  
+                  setProfilePic({uri: photo_url});
+                  dispatch(setUserCredentials(uploadResponse?.data));
+                  dispatch(setProfilePictures(uploadResponse?.data))
+                  console.log(setProfilePictures(uploadResponse?.data) ,'dxtdtdtdt');
+                  hideActionSheet()
+                  // toast.success(uploadResponse?.message+'profileee');
+                   toast.success(uploadResponse.message);
+                  //  console.log(uploadResponse.message,'promssgss');
+                   
+                } else {
+                  toast.failure(uploadResponse.message);
+                }
+              } catch (error) {
+                console.error('Error while cropping image:', error);
+              }
+            } else {
+              console.log('No image selected.');
+              toast.info('No image selected.');
+            }
+          }
         );
-      });
+      } else {
+        // toast.failure('Gallery permission is required to upload a profile picture.');
+      }
+    } catch (error) {
+      console.error('Error occurred while selecting image from gallery:', error);
+      toast.failure('Something went wrong while selecting the image.');
+    }
   };
 
   const onButtonPress = React.useCallback(type => {
@@ -101,19 +179,79 @@ const CircleProfile = (props: CircleBadgePropsType) => {
 
   const onCameraPress = async () => {
     try {
-      await requestCameraPermission().then(async permissionStatus => {
-        if (permissionStatus === RESULTS.GRANTED) {
-          await launchCamera(options, response => {
+      const permissionStatus = await requestCameraPermission();
+
+      if (permissionStatus === RESULTS.GRANTED) {
+        await launchCamera(
+          { mediaType: 'photo', includeBase64: false },
+          async response => {
             if (response.errorCode) {
-              console.log('ERROR', response.errorCode);
-            } else {
-              updateProfile(response);
+              console.error('Error capturing image:', response?.errorCode);
+              toast.failure('Error capturing image.');
+              return;
             }
-          });
-        }
-      });
+
+            if (response.assets && response.assets.length > 0) {
+              const capturedImage = response.assets[0];
+
+              // Validate file size (e.g., limit to 2MB)
+              if (capturedImage?.fileSize > 10000000) {
+                toast.failure('File size should be less than 10 MB.');
+                return;
+              }
+
+              // Validate file type (e.g., only allow JPEG/PNG)
+              const allowedTypes = ['image/jpeg', 'image/png'];
+              if (!allowedTypes.includes(capturedImage?.type)) {
+                toast.failure('Only JPEG or PNG images are allowed.');
+                return;
+              }
+
+              try {
+                // Crop the captured image
+                const croppedImage = await ImageCropPicker.openCropper({
+                  path: capturedImage.uri,
+                  width: 500,
+                  height: 500,
+                  cropping: true,
+                  cropperCircleOverlay: false,
+                });
+
+                // Prepare the cropped image for upload
+                const formData = new FormData();
+                formData.append('profile_photo_path', {
+                  uri: croppedImage.path,
+                  name: 'profile_pic.jpg',
+                  type: 'image/jpeg',
+                });
+                const uploadResponse = await uploadProfilePic(formData).unwrap();
+                if (uploadResponse?.success) {
+                  const photo_url = finalUrl?.concat(
+                    uploadResponse.data.data.profile_photo_path,
+                  );
+                  setProfilePic({uri: photo_url});
+                  dispatch(setUserCredentials(uploadResponse?.data));
+                  hideActionSheet()
+
+                  toast.success(uploadResponse?.message);
+                } else {
+                  toast.failure(uploadResponse.message);
+                }
+              } catch (error) {
+                console.error('Error while cropping image:', error);
+              }
+            } else {
+
+              toast.info('No image captured.');
+            }
+          }
+        );
+      } else {
+        // toast.failure('Camera permission is required to capture and upload a profile picture.');
+      }
     } catch (error) {
       console.error('Error occurred while capturing image from camera:', error);
+      toast.failure('Something went wrong while capturing the image.');
     }
   };
   const updateProfile = async (data: any) => {
@@ -146,6 +284,8 @@ const CircleProfile = (props: CircleBadgePropsType) => {
             );
             setProfilePic({uri: photo_url});
             dispatch(setUserCredentials(data?.data));
+            console.log(setUserCredentials(data?.data),'ppphoto');
+            
             toast.success(data?.message);
           }
         })
@@ -155,7 +295,46 @@ const CircleProfile = (props: CircleBadgePropsType) => {
     }
     hideActionSheet();
   };
-  
+  console.log(profilePic,'circlprofi');
+
+
+  const OnProfilepicDeletePress = () => { // Modified by Sahil Gaikwad for deleting profile pic on 21-1-25 .
+    Alert.alert(
+      'Delete Profile Picture',
+      'Are you sure, You want to delete your profile picture?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const reqData = {}; // Add required data for deletion if needed
+              const response = await deleteProfilePic(reqData).unwrap();
+              console.log(response,'responseresponse')
+              if (response?.success) {
+                toast.success('Profile picture deleted successfully');
+                // Clear profile picture from state and Redux store
+                dispatch(setProfilePictures(''));
+                setProfilePicture('');
+                setProfilePic('');
+                setIsActionSheetVisible(false);
+              } else {
+                toast.failure(response.message);
+              }
+            } catch (error) {
+              console.error('Error in deleting profile picture:', error);
+              toast.failure('Failed to delete profile picture.');
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
   const UploadIcon = () => {
     return (
       <Svg width={18} height={18} viewBox="0 0 18 18" fill="none">
@@ -172,6 +351,7 @@ const CircleProfile = (props: CircleBadgePropsType) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
+        <TouchableOpacity onPress={showActionSheet}>
         <CircleImage
           size={'medium'}
           IsOutlined={false}
@@ -182,8 +362,9 @@ const CircleProfile = (props: CircleBadgePropsType) => {
             props.onPronProfileIconPress();
           }}
           backgroundColor={colors.primary}
-          source={profilePic}
+          source={profilePic }
         />
+        </TouchableOpacity>
         <View style={styles.badge}>
           <TouchableOpacity onPress={showActionSheet}>
             {/* <MaterialCommunityIcons
@@ -199,7 +380,7 @@ const CircleProfile = (props: CircleBadgePropsType) => {
       </View>
       {/* You can add other components here */}
 
-      <ActionSheet
+      <ProfileActionSheet
         onClose={hideActionSheet}
         isVisible={isActionSheetVisible}
         // You can adjust the position and styles of the ActionSheet as per your need
@@ -215,7 +396,7 @@ const CircleProfile = (props: CircleBadgePropsType) => {
                 onPress={() => onButtonPress('capture')}>
                 <MaterialIcons
                   name="camera-alt"
-                  size={32}
+                  size={24}
                   color={colors.primary}
                 />
               </TouchableOpacity>
@@ -227,15 +408,76 @@ const CircleProfile = (props: CircleBadgePropsType) => {
                 onPress={() => onButtonPress('gallery')}>
                 <MaterialIcons
                   name="photo-library"
-                  size={32}
+                  size={24}
                   color={colors.primary}
                 />
               </TouchableOpacity>
               <Text style={styles.iconLabel}>Gallery</Text>
             </View>
+            <View style={styles.iconTextContainer}>
+              <TouchableOpacity
+                style={styles.iconContainer}
+                onPress={() => { hideActionSheet(), setModalVisible(true) }}>
+                <MaterialCommunityIcons
+                  name="eye-circle"
+                  size={24}
+                  color={colors.primary}
+                />
+              </TouchableOpacity>
+              <Text style={styles.iconLabel}>View</Text>
+            </View>
+            {/* <View style={styles.iconTextContainer}>
+              <TouchableOpacity
+                style={styles.iconContainer}
+                onPress={() => {OnProfilepicDeletePress()}}>
+                <MaterialCommunityIcons
+                  name="delete"
+                  size={24}
+                  color={colors.primary}
+                />
+              </TouchableOpacity>
+              <Text style={styles.iconLabel}>Delete</Text>
+            </View> */}
           </View>
         </View>
-      </ActionSheet>
+      </ProfileActionSheet>
+      <Modal
+        visible={isModalVisible}
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)} // Close modal on back button press
+      >
+        <View style={styles.modalContainer}>
+
+          <View style={{ backgroundColor: 'black', width: '100%', height: 50, alignItems: 'center', position: 'absolute', top: 0, justifyContent: 'center', }}>
+
+            <View style={{ flexDirection: 'row' }}>
+              <View >
+                <Pressable     // pressable used because touchableopacity is not working here 
+                  onPress={() => setModalVisible(false)}
+                   style={{width:50,height:50, position: 'absolute', left: moderateScale(-120), alignItems: 'center'}}
+                >
+                  <MaterialCommunityIcons
+                    name={'arrow-left'}
+                    color={colors.white}
+                    size={28}
+                    // style={{ position: 'absolute', left: moderateScale(-120), alignItems: 'center', }}
+                  />
+                </Pressable>
+              </View>
+              <View style={{ alignItems: 'center' }}>
+                <Label size={'medium'} fontWeight={'normal'} title={'Profile Photo'} color={'white'} />
+              </View>
+            </View>
+          </View>
+
+          {/* Enlarged Image */}
+          <Image
+            source={profilePic}
+            style={styles.enlargedImage}
+            resizeMode="contain"
+          />
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -296,8 +538,8 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     borderRadius: 35,
-    height: moderateScale(70, 0.25),
-    width: moderateScale(70, 0.25),
+    height: moderateScale(50, 0.25),
+    width: moderateScale(50, 0.25),
     borderWidth: 1,
     // backgroundColor: colors.grayLight,
     marginBottom: moderateScale(10, 0.25),
@@ -326,5 +568,19 @@ const styles = StyleSheet.create({
         ? moderateScale(10, 0.25)
         : moderateScale(50, 0.25),
     paddingTop: moderateScale(20, 0.25),
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  enlargedImage: {
+    margin:moderateScale(5),
+    width: moderateScale(350),
+    height: moderateScale(350),
+    borderRadius:moderateScale(230),
+    borderWidth:1,
+    borderColor:'white',
   },
 });

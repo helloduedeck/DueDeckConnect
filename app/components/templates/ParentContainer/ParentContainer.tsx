@@ -15,21 +15,18 @@ const ParentContainer: React.FC<IProps> = ({children, onProfileIconPress}) => {
   const navigation = useNavigation();
 
   const userProfileData = useAppSelector(state => state?.user.user);
-
-  console.log(
-    'userProfileData?.data?.profile_photo_path',
-    userProfileData?.data?.profile_photo_path,
-  );
+  const profilePhoto = useAppSelector(state => state?.user.profilePictures)
 
   const onProfilePress = () => {
     navigation.navigate(ROUTES.PROFILE);
   };
-
+  console.log(userProfileData?.data?.profile_photo_path,'deleted');
+  
   return (
     <View style={styles.container}>
       <DashhboardHeader
         userName={userProfileData?.username}
-        profilePic={userProfileData?.data?.profile_photo_path ?? undefined}
+        profilePic={profilePhoto?? undefined}
         clientName={userProfileData?.name}
         consultantName={''}
         onGlobalPanelPress={function (): void {}}

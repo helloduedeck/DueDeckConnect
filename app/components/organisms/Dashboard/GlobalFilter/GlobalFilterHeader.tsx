@@ -12,6 +12,7 @@ import { getHeaderText } from '@components/organisms/ServiceItem/ServiceItemCard
 
 const GlobalFilterHeader = (props: GlobalFilterPropsType) => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const usersState = useAppSelector(state => state?.user.SubheaderName)
 
   const dashboardState = useAppSelector(state => state?.dashboard);
   return (

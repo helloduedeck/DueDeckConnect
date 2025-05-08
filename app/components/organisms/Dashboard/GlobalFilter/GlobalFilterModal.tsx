@@ -24,7 +24,7 @@ import {
   DropDownPickerProps,
   RenderListItemPropsInterface,
 } from 'react-native-dropdown-picker';
-import { setUserCredentials } from '@store/slices/userSlice';
+import { setSubheaderName, setUserCredentials } from '@store/slices/userSlice';
 
 type IProps = {
   isVisible: boolean;
@@ -122,10 +122,10 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
       toast.failure('Please select financial year');
       return;
     }
-    if (!selectedBillingFirm) {
-      toast.failure('Please select billing firm');
-      return;
-    }
+    // if (!selectedBillingFirm) {
+    //   toast.failure('Please select billing firm');
+    //   return;
+    // }
     setIsSheetOpen(false);
     onClose();
     const req = {
@@ -135,12 +135,16 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
       billingfirm_id: selectedBillingFirm,
       deviceName: deviceName,
     };
+   console.log(req,'reqreqreq');
    
     await saveSubHeader(req)
       .unwrap()
       .then(data => {
-        console.log("saveSubHeader- ",data.data)
+        console.log("saveSubHeader- ",data.data.username)
         dispatch(setUserCredentials(data?.data))
+        dispatch(setSubheaderName(data.data.username))
+        console.log(setUserCredentials(data?.data),'+++-');
+
       })
       .finally(() => {
         dispatch(setFilterStatus(true));
@@ -283,7 +287,7 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
               marginEnd: moderateScale(23),
             }}
           />
-          <DropDownPickerComp
+          {/* <DropDownPickerComp
             pickername={'billingFirmPicker'}
             isOpen={openPicker === 'billingFirmPicker'}
             onOpen={onOpen}
@@ -314,7 +318,7 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
               marginStart: moderateScale(32),
               marginEnd: moderateScale(23),
             }}
-          />
+          /> */}
           <Pressable onPress={onApplyFilterPress}>
             <Text style={styles.applyButton}>Done</Text>
           </Pressable>

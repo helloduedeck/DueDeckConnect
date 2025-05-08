@@ -1,11 +1,12 @@
 import React from 'react';
-import {View} from 'react-native';
+import {Platform, View} from 'react-native';
 import {Label} from '../../atoms/Label';
 import {colors} from '../../../themev1';
 import {ScaledSheet, moderateScale} from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Sublabel} from '../../atoms/SubLabel';
+import Svg, { Line } from 'react-native-svg';
 interface DetailContentPropsType {
   SubLabelPropsType: any;
   LabelPropsType: any;
@@ -24,8 +25,14 @@ const DetailContent = ({
   clientName,
   SubLabelPropsType1,
 }: DetailContentPropsType) => {
+  const VerticalLine = () => (
+    <Svg width="1" height="89" viewBox="0 0 1 89" fill="none">
+      <Line x1="0.5" y1="89.0078" x2="0.5" y2="0.985085" stroke="#DDDDDD" />
+    </Svg>
+  );
   return (
     <View style={styles.container}>
+      <View style={{width:'65%'}}>
       <View style={styles.consultancy}>
         <Label {...LabelPropsType}></Label>
       </View>
@@ -42,12 +49,16 @@ const DetailContent = ({
           color={colors.Grey600}
           align={undefined}></Label>
       </View>
+      </View>
+      <View style={{width:'10%'}}>
+      <VerticalLine/>
+      </View>
 
-      <View style={styles.company}>
+      <View >
         <MaterialCommunityIcons
           name={'calendar-blank-outline'}
           color={colors.GRey800}
-          size={11}
+          size={30}
           style={styles.icon1}
         />
         <Label {...LabelPropsType3}></Label>
@@ -62,22 +73,40 @@ const DetailContent = ({
 export default DetailContent;
 const styles = ScaledSheet.create({
   container: {
-    marginVertical: moderateScale(15),
+    marginTop: moderateScale(-13),
+    marginBottom:26,
+    flexDirection:'row',
+    width:'100%',
+    backgroundColor:'white',
+    paddingVertical:10,
+    ...Platform.select({
+      ios: {
+        shadowColor: colors.black,
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
   },
   act: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     marginVertical: moderateScale(5),
+    marginStart:moderateScale(30)
   },
   consultancy: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginStart:moderateScale(30)
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   company: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     marginVertical: moderateScale(10),
     marginBottom: moderateScale(-10),
   },
@@ -88,9 +117,10 @@ const styles = ScaledSheet.create({
   },
   icon: {
     marginRight: moderateScale(6),
+    color:colors.GRey800
   },
   icon1: {
-    marginRight: moderateScale(8),
+    marginLeft: moderateScale(8),
   },
   task: {
     marginLeft: moderateScale(8),
