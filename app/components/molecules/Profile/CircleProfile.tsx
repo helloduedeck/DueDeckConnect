@@ -38,9 +38,15 @@ const CircleProfile = (props: CircleBadgePropsType) => {
   const dispatch = useAppDispatch();
   const [isModalVisible, setModalVisible] = useState(false);
   const userProfileData = useAppSelector(state => state);
-const getprofilepic = userProfileData?.profilePictures
+const getprofilepic = userProfileData?.user
 console.log(getprofilepic,'prpicpath');
+const usersState = useAppSelector(state => state?.user);
+
+const profilePhotoPath = usersState?.user?.data?.profile_photo_path;
+
 const profilePhoto = useAppSelector(state => state?.user.profilePictures)
+
+
 
   const isDuedeck = PROFILE_URL.includes("duedeck.com");
   const finalUrl = isDuedeck ? `${PROFILE_URL}public/storage/profile/` : `${PROFILE_URL}storage/profile/`;
@@ -362,7 +368,7 @@ const profilePhoto = useAppSelector(state => state?.user.profilePictures)
             props.onPronProfileIconPress();
           }}
           backgroundColor={colors.primary}
-          source={profilePic }
+          source={profilePic}
         />
         </TouchableOpacity>
         <View style={styles.badge}>

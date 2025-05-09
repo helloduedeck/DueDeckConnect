@@ -79,6 +79,7 @@ const Notifications = () => {
   const [notificationCount, setNotificationCount] = useState(0);
   const isFocused = useIsFocused();
   const [searchPhrase, setSearchPhrase] = useState('');
+  
   useEffect(() => {
     if (isFocused) {
       getNotificationData();

@@ -343,7 +343,7 @@ const FabButton = (props: FabPropsType) => {
             showActionSheet={showAppointmentView}
           />
           <ActionSheet
-            // disableableClosePressingBackDrop={true}
+             disableableClosePressingBackDrop={false}
             onClose={() => {
               setIsSheetOpen(false);
               props?.onSheetClose?.();
