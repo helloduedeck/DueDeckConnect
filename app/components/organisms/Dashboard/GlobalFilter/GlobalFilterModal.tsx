@@ -2,7 +2,7 @@ import {Sublabel} from '@components/atoms/SubLabel';
 import ActionSheet from '@components/organisms/ActionSheet/ActionSheet';
 import {colors, fontsize} from '../../../../themev1';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {View, Pressable, Text, Alert} from 'react-native';
+import {View, Pressable, Text, Alert, TouchableOpacity, TextInput, FlatList} from 'react-native';
 import {ScaledSheet, moderateScale} from 'react-native-size-matters';
 import {useAppDispatch, useAppSelector} from '@hooks/redux_hooks';
 import DropDownPickerComp from '@components/organisms/ActionSheet/DropDownPickerComp';
@@ -24,7 +24,12 @@ import {
   DropDownPickerProps,
   RenderListItemPropsInterface,
 } from 'react-native-dropdown-picker';
-import { setSubheaderName, setUserCredentials } from '@store/slices/userSlice';
+import { setProfilePictures, setSubheaderName, setUserCredentials } from '@store/slices/userSlice';
+import CustomHeader from '@components/organisms/Headers/CustomHeader';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { RadioButton } from 'react-native-paper';
+import { ScrollView } from 'react-native';
 
 type IProps = {
   isVisible: boolean;
@@ -50,10 +55,10 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
   const [selectedFY, setSelectedFY] = useState(dashboardState.activeFYears);
 
   const [selectedConsultant, setSelectedConsultant] = useState(
-    dashboardState?.activeBranch?.id,
+    dashboardState?.activeBranch,
   );
   const [selectedOrganization, setSelectedOrganisation] = useState(
-    dashboardState?.activeClient?.id, //activeClient
+    dashboardState?.activeClient, //activeClient
   );
 
   const [selectedBillingFirm, setSelectedBillingFirm] = useState(
@@ -64,6 +69,11 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
 
   const [billingFirmData, setBillingFirmData] = useState(billingFirm);
   const [openPicker, setOpenPicker] = useState('');
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const ORGbottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const [openSheet, setOpenSheet] = useState(false);
+  const [openORGSheet, setOpenORGSheet] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -71,6 +81,11 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
   const fyYearPickerRef = useRef();
   const organisationPickerRef = useRef(null);
   const consultatantPickerRef = useRef(null);
+  const [selectedOption, setSelectedOption] = useState(dashboardState?.activeBranch?.id);
+  const [selectedORG, setSelectedORG] = useState(dashboardState?.activeClient?.id);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchorgQuery, setSearchOrgQuery] = useState('');
 
   const onOpen = pickername => {
     setOpenPicker(pickername);
@@ -92,10 +107,20 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
     dashboardState.activeBillingFirm,
     dashboardState.activeFYears,
   ]);
-
-  const filteredUsers = clients.filter(
-    (clients: any) => clients.branch_id === selectedConsultant,
+  // Filtered branches based on search query
+  const filteredBranches = branches.filter(branch =>
+    branch.branch_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  // const filteredUsers = clients.filter(
+  //   (clients: any) => clients.branch_id === selectedConsultant,
+  // );
+  const filteredUsers = clients.filter(client =>
+    client.branch_id === selectedConsultant.id && 
+    client?.name?.toLowerCase()?.includes(searchorgQuery?.toLowerCase())
+  );
+  console.log(filteredUsers,'fuser');
+  
+  
 
   const filterBillingFirm = billingFirm.filter(
     (clients: any) => clients.branch_id === selectedConsultant,
@@ -122,28 +147,24 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
       toast.failure('Please select financial year');
       return;
     }
-    // if (!selectedBillingFirm) {
-    //   toast.failure('Please select billing firm');
-    //   return;
-    // }
-    setIsSheetOpen(false);
-    onClose();
+    
     const req = {
-      client_id: selectedOrganization,
-      branch_id: selectedConsultant,
+      client_id: selectedOrganization.id,
+      branch_id: selectedConsultant.id,
       financial_year: selectedFY,
       billingfirm_id: selectedBillingFirm,
       deviceName: deviceName,
     };
-   console.log(req,'reqreqreq');
    
     await saveSubHeader(req)
       .unwrap()
       .then(data => {
-        console.log("saveSubHeader- ",data.data.username)
+        console.log("saveSubHeader- ",data.data)
         dispatch(setUserCredentials(data?.data))
         dispatch(setSubheaderName(data.data.username))
-        console.log(setUserCredentials(data?.data),'+++-');
+        dispatch(setProfilePictures(data?.data))
+
+        console.log(setProfilePictures(data?.data),'+++');
 
       })
       .finally(() => {
@@ -161,7 +182,7 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
     setSelectedBillingFirm('');
     dispatch(setActiveBranch(item));
     dispatch(setActiveClient(''));
-    setSelectedConsultant(item?.id);
+    setSelectedConsultant(item);
     local.store(local.keys.GPANEL_CONSULTATNT, item);
   };
 
@@ -176,6 +197,36 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
     setSelectedFY(fyear.id);
     local.store(local.keys.GPANEL_FYEAR, fyear.id);
   };
+  const openActionSheet = () => {
+    setOpenSheet(true);
+    bottomSheetRef.current?.present();
+  };
+
+  const closeActionSheet = () => {
+    setOpenSheet(false);
+    bottomSheetRef.current?.dismiss();
+  };
+  const openORGActionSheet = () => {
+    setOpenORGSheet(true);
+    ORGbottomSheetRef.current?.present();
+  };
+
+  const closeORGActionSheet = () => {
+    setOpenORGSheet(false);
+    ORGbottomSheetRef.current?.dismiss();
+  };
+
+  const handleSelectConsultant = (consultant: any) => {
+    setSelectedConsultant(consultant);
+    setSelectedOption(consultant.id); // Save the selected branch ID
+    closeActionSheet();
+  };
+  const handleSelectOrganization = (organization: any) => {
+    setSelectedOrganisation(organization);
+    setSelectedORG(organization.id); // Save the selected branch ID
+    closeORGActionSheet();
+  };
+
 
   const onBillingFirm = (billinFirm: any) => {
     dispatch(setActiveBillingFirm(billinFirm.id));
@@ -183,47 +234,96 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
     setSelectedBillingFirm(billinFirm.id);
     local.store(local.keys.GPANEL_BILLING_FIRM, billinFirm.id);
   };
+  console.log(selectedOrganization,'sscORG');
+  
 
   return (
     <View style={styles.container}>
-      <ActionSheet onClose={() => onClose()} isVisible={isVisible}>
         <View style={styles.sheetContainer}>
-          <View style={styles.titleConatiner}>
-            <Sublabel
-              size={'medium'}
-              fontWeight={'semibold'}
-              fontStyle={'normal'}
-              title={'Filter By'}
-              color={colors.Grey600}
-              align={undefined}
-            />
+      <View>
+        <CustomHeader title={'Filter Task By'}/>
+      </View>
+      <View style={{ width: '100%' }}>
+
+      <Text style={{color:colors.Grey600}}> Consultant </Text>
+      <TouchableOpacity onPress={openActionSheet} style={{ padding: 10, borderRadius: 5 }}>
+        <Text style={{ color: colors.black, }}>
+          {selectedConsultant ? <Text>{selectedConsultant.branch_name}</Text> : <Text style={{color:colors.black}}> Select Consultant </Text> }
+        </Text> 
+      </TouchableOpacity>
+
+      <BottomSheetModal
+        ref={bottomSheetRef}
+        index={0}
+        snapPoints={['50%']} // Adjust snap points for scrolling
+        onDismiss={closeActionSheet}
+      >
+        <View style={{ padding: 15, }}>
+          <View style={{alignItems:'center',flexDirection:'row',marginBottom:10,backgroundColor:colors.actionsheetheader,height:50,justifyContent:"space-between",paddingHorizontal:12}}>
+            <Text style={{color:'white',}}>Consultant</Text>
+         
+          {/* Close Button */}
+          <TouchableOpacity onPress={closeActionSheet} style={{ }}>
+          <MaterialCommunityIcons
+                name="close"
+                size={20}
+                color={colors.white}
+              />
+                        </TouchableOpacity>
           </View>
-          <DropDownPickerComp
-            pickername={'consultatantPicker'}
-            isOpen={openPicker === 'consultatantPicker'}
-            onOpen={onOpen}
-            onClose={onClosePicker}
-            ref={consultatantPickerRef}
-            label="Consultant" // label="Consultant" //Organization
-            fieldValue="id"
-            fieldLabel="branch_name"
-            placeholder="Select Consultant"
-            data={branches}
-            value={selectedConsultant}
-            onItemChange={setConsultatnt}
-            containerStyle={{width: '100%'}} // Adjust width as needed
-            itemTextStyle={{color: colors.black}} // Adjust text color
-            arrowColor={colors.primary}
-            onPickerPress={value => {
-              consultatantPickerRef.current?.close();
-              organisationPickerRef.current?.close();
-              fyYearPickerRef.current?.close();
-              billingFirmPickerRef?.current?.close();
-              console.log('REFERENCEPROPERTIES', organisationPickerRef.current);
-              // organisationPickerRef.current.setOpen();
-              // console.log('REFERENCEPROPERTIES', organisationPickerRef.current);
+
+          {/* Search Box */}
+          <TextInput
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder="Search Consultant..."
+            placeholderTextColor={colors.Grey600}
+            style={{
+              backgroundColor: colors.white,
+              padding: 10,
+              borderRadius: 5,
+              marginBottom: 10,
+              fontSize: 16,
+              borderColor:colors.GRey800,
+              borderWidth:1,
+              color:colors.GRey800
             }}
           />
+
+<FlatList
+  data={filteredBranches}
+  keyExtractor={(item) => item.id.toString()}
+  renderItem={({ item }) => (
+    <ScrollView>
+    <TouchableOpacity
+      onPress={() => handleSelectConsultant(item)}
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 10,
+      }}
+    >
+      {/* Branch name */}
+      <Text style={{ fontSize: 18, color: colors.black, flex: 1 }}>
+        {item.branch_name}
+      </Text>
+
+      {/* Radio Button */}
+      <RadioButton
+        value={item.id}
+        status={selectedOption === item.id ? 'checked' : 'unchecked'}
+        onPress={() => handleSelectConsultant(item)}
+        color={colors.primary} // Customize the color
+      />
+    </TouchableOpacity>
+    </ScrollView>
+  )}
+  ListEmptyComponent={<Text style={{ textAlign: 'center', color: colors.black }}>No results found</Text>}
+  contentContainerStyle={{ height: 300 }} // Added padding at the bottom to avoid cutoff
+/>
+        </View>
+      </BottomSheetModal>
+    </View>
           <View
             style={{
               borderBottomWidth: 1,
@@ -232,25 +332,87 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
               marginEnd: moderateScale(23),
             }}
           />
-          <DropDownPickerComp
-            pickername={'organisationPicker'}
-            isOpen={openPicker === 'organisationPicker'}
-            onOpen={onOpen}
-            onClose={onClosePicker}
-            ref={organisationPickerRef}
-            label="Organization"
-            fieldValue="id"
-            fieldLabel="name"
-            placeholder="Select Organization"
-            zIndex={8}
-            data={clientData}
-            value={selectedOrganization}
-            onItemChange={setClient}
-            containerStyle={{width: '100%'}} // Adjust width as needed
-            itemTextStyle={{color: colors.black}} // Adjust text color
-            arrowColor={colors.primary}
-            onPickerPress={value => {}}
-          />
+          <View style={{ width: '100%' }}>
+
+<Text style={{color:colors.Grey600}}> Organization </Text>
+<TouchableOpacity onPress={openORGActionSheet} style={{ padding: 10, borderRadius: 5 }}>
+  <Text style={{ color: colors.black, }}>
+    {selectedOrganization ? <Text>{selectedOrganization.name}</Text> : <Text style={{color:colors.black}}> Select organization </Text> }
+  </Text> 
+</TouchableOpacity>
+
+<BottomSheetModal
+  ref={ORGbottomSheetRef}
+  index={0}
+  snapPoints={['50%']} // Adjust snap points for scrolling
+  onDismiss={closeORGActionSheet}
+>
+  <View style={{ padding: 15, }}>
+    <View style={{alignItems:'center',flexDirection:'row',marginBottom:10,backgroundColor:colors.actionsheetheader,height:50,justifyContent:"space-between",paddingHorizontal:12}}>
+      <Text style={{color:'white',}}>Organization</Text>
+   
+    {/* Close Button */}
+    <TouchableOpacity onPress={closeORGActionSheet} style={{ }}>
+    <MaterialCommunityIcons
+          name="close"
+          size={20}
+          color={colors.white}
+        />
+                  </TouchableOpacity>
+    </View>
+
+    {/* Search Box */}
+    <TextInput
+      value={searchorgQuery}
+      onChangeText={setSearchOrgQuery}
+      placeholder="Search Organization..."
+      placeholderTextColor={colors.Grey600}
+      style={{
+        backgroundColor: colors.white,
+        padding: 10,
+        borderRadius: 5,
+        marginBottom: 10,
+        fontSize: 16,
+        borderColor:colors.GRey800,
+        borderWidth:1,
+        color:colors.GRey800
+      }}
+    />
+
+<FlatList
+data={filteredUsers}
+keyExtractor={(item) => item.id.toString()}
+renderItem={({ item }) => (
+<ScrollView>
+<TouchableOpacity
+onPress={() => handleSelectOrganization(item)}
+style={{
+  flexDirection: 'row',
+  alignItems: 'center',
+  paddingVertical: 10,
+}}
+>
+{/* Branch name */}
+<Text style={{ fontSize: 18, color: colors.black, }}>
+  {item.name}
+</Text>
+
+{/* Radio Button */}
+<RadioButton
+  value={item.id}
+  status={selectedORG === item.id ? 'checked' : 'unchecked'}
+  onPress={() => handleSelectOrganization(item)}
+  color={colors.primary} // Customize the color
+/>
+</TouchableOpacity>
+</ScrollView>
+)}
+ListEmptyComponent={<Text style={{ textAlign: 'center', color: colors.black }}>No results found</Text>}
+contentContainerStyle={{ height: 300 }} // Added padding at the bottom to avoid cutoff
+/>
+  </View>
+</BottomSheetModal>
+</View>
           <View
             style={{
               borderBottomWidth: 1,
@@ -323,7 +485,6 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
             <Text style={styles.applyButton}>Done</Text>
           </Pressable>
         </View>
-      </ActionSheet>
     </View>
   );
 };
@@ -340,6 +501,7 @@ const styles = ScaledSheet.create({
   container: {
     flexDirection: 'row',
     paddingRight: 1,
+    flex:1
   },
   sheetContainer: {
     //  padding: moderateScale(10),

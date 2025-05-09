@@ -127,6 +127,7 @@ const DashBoard = () => {
       .then(data => {
         dispatch(setDashboardData(data?.data));
         dispatch(setProfilePictures(data?.data.user.profile_photo_path));
+        
       })
       .finally(() => {
         setIsLoading(false);

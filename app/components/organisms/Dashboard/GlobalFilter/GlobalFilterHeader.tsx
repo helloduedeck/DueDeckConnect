@@ -9,10 +9,13 @@ import GlobalFilterModal from './GlobalFilterModal';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useAppSelector} from '@hooks/redux_hooks';
 import { getHeaderText } from '@components/organisms/ServiceItem/ServiceItemCard';
+import { ROUTES } from '@routes';
+import { useNavigation } from '@react-navigation/native';
 
 const GlobalFilterHeader = (props: GlobalFilterPropsType) => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const usersState = useAppSelector(state => state?.user.SubheaderName)
+  const navigation = useNavigation();
 
   const dashboardState = useAppSelector(state => state?.dashboard);
   return (
@@ -20,7 +23,8 @@ const GlobalFilterHeader = (props: GlobalFilterPropsType) => {
       <TouchableOpacity
         style={styles.container}
         onPress={() => {
-          setIsSheetOpen(true);
+          navigation.navigate(ROUTES.GLOBALFILTER);
+
         }}>
         <View>
           <View style={styles.org}>
@@ -55,12 +59,12 @@ const GlobalFilterHeader = (props: GlobalFilterPropsType) => {
           />
         </View>
       </TouchableOpacity>
-      {isSheetOpen && (
-        <GlobalFilterModal
+  
+        {/* <GlobalFilterModal
           onClose={() => setIsSheetOpen(false)}
           isVisible={isSheetOpen}
-        />
-      )}
+        /> */}
+    
     </View>
   );
 };
@@ -69,11 +73,11 @@ export default GlobalFilterHeader;
 const styles = ScaledSheet.create({
   organizationtitle: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    // justifyContent: 'flex-end',
   },
   consultanttitle: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    // justifyContent: 'flex-end',
   },
   container: {
     flexDirection: 'row',
@@ -94,9 +98,9 @@ const styles = ScaledSheet.create({
     // borderBottomColor: colors.grayLight,
 
     // marginBottom: scale(2),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    // justifyContent: 'space-between',
   },
   applyButton: {
     fontSize: fontsize.medium,
