@@ -34,15 +34,12 @@ const Login = ({navigation}: any) => {
   const dispatch = useAppDispatch();
   const [errorMessage, setErrorMessage] = useState('');
 
-  // const emailRegex = /^[\w-]+(\.[\w-]+)*@([gmail]+)\.([com]+)(\.[a-z]{2,})?$/;
   const clearTimeout = () => {
     setTimeout(() => {
       setErrorMessage('');
     }, 3000);
   };
   const onLoginPress = async () => {
-    // Alert.alert('Please enter valid email id')
-    // disptach(actions.dashboard.setActiveAlert(OVERDUE));
     
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
@@ -80,21 +77,15 @@ const Login = ({navigation}: any) => {
       await token({email: email, password: password})
         .unwrap()
         .then(async data => {
-          console.log(data, 'emailshhhhh');
-          console.log(data?.data,'profilelogin');
 
           if (data?.success) {
             await reduxStorage.setItem(
               'USERDETAILS',
               JSON.stringify(data?.data),
             );
-            // api.apiConfig.setToken(data?.data?.token);
-            //local.store(local.keys.AUTH, {email: email, password: password});
-            // callback && callback();
             dispatch(setActiveBranch(data?.data?.consultant));
             dispatch(setActiveClient(data?.data?.client));
             dispatch(setActiveBillingFirm(data?.data?.billingfirm_id));
-            // dispatch(setActiveBillingFirmPaymentStatus(data?.data?.billingfirm_payment_status));
             dispatch(setActiveFYears(data?.data?.financial_year));
 
             local.store(local.keys.GPANEL_FYEAR, data?.data?.financial_year);
@@ -115,11 +106,7 @@ const Login = ({navigation}: any) => {
         })
         .catch(e => {
           setErrorMessage(e.data?.data?.error ?? 'Invalid Credentials');
-          console.log(e.data?.data?.error,'errrrr');
-          
-          clearTimeout();
-          //toast.failure(e.data?.data?.error ?? 'Invalid Credentails');
-          console.log('ERROR WHILE LOGIN', e);
+          // toast.failure(e.data?.data?.error ?? 'Invalid Credentails');
         });
       if (isRememberMe) {
         local.store(local.keys.AUTH, {email: email, password: password});
