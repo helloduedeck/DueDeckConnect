@@ -21,10 +21,7 @@ const NotificationHandler = () => {
   const userState = useAppSelector(state => state?.user.user);
   let id = 0;
   const navigation = useNavigation();
-  console.log(userState,'##');
   
-
-
   let user_id = '';
   try {
     user_id = dashboardData.activeClient.user_id;
