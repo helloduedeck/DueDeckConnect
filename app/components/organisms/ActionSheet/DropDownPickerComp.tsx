@@ -97,7 +97,6 @@ const DropDownPickerComp: React.FC<IProps> = forwardRef((props, ref) => {
 export default DropDownPickerComp;
 
 const styles = StyleSheet.create({
-  container: {},
   scrollContentContainer: {},
   dropdownItemText: {
     fontFamily: fonts.Normal,
@@ -126,13 +125,12 @@ const styles = StyleSheet.create({
     fontSize: fontsize.medium,
   },
   searchContainer: {
-    borderWidth: 0.5,
+    borderBottomWidth: 0.5,
     padding: moderateScale(5),
     paddingVertical: moderateScale(5),
-    borderColor: colors.red,
-    margin:2
+    borderBottomColor: colors.charcoal,
   },
- 
+  container: {},
   flexContainer: {
     flex: 1,
     flexDirection: 'column',
@@ -143,7 +141,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingHorizontal: moderateScale(42),
     borderColor: colors.white,
-    // backgroundColor:'red'
   },
   textStyle: {
     fontFamily: fonts.Normal,

@@ -32,13 +32,13 @@ const ProfileUserSettings = () => {
           onPress={onChangePassword}
         />
       </View>
-      <View style={{marginTop: moderateScale(8)}}>
+      {/* <View style={{marginTop: moderateScale(8)}}>
         <ProfileField
           title={'Sounds & Notifications'}
           color={colors.GRey800}
           size={fontsize.medium}
         />
-      </View>
+      </View> */}
       <TouchableOpacity
         onPress={onTermsPress}
         style={{marginTop: moderateScale(8)}}>

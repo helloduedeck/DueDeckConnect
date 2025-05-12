@@ -4,6 +4,7 @@ import {CircleImagePropsType} from '../../../types/components';
 import {useTheme} from '../../../theme/useTheme';
 import Circlestyles from './Circlestyles';
 import {getInitials} from '@utils/helper';
+import fontsize from '../../../themev1/fontstyle';
 
 const CircleImage = (props: CircleImagePropsType) => {
   const {theme} = useTheme();
@@ -48,6 +49,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     fontWeight: 'bold',
     alignItems: 'center',
+   fontSize:fontsize.xlarge22
   },
 });
 export default CircleImage;
