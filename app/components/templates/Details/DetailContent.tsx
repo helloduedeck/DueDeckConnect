@@ -40,7 +40,7 @@ const DetailContent = ({
         <Label {...LabelPropsType1}></Label>
         <Label {...LabelPropsType2}></Label>
       </View>
-      <View style={styles.company1}>
+      <View style={styles.name} >
         <Icon name="building" size={12} style={styles.icon} />
         <Label
           size={'small'}
@@ -114,6 +114,12 @@ const styles = ScaledSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  name:{
+    flexDirection: 'row',
+    alignItems: 'center',
+     justifyContent: 'center',
+     marginRight:59
   },
   icon: {
     marginRight: moderateScale(6),

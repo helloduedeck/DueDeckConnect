@@ -21,6 +21,7 @@ const DashhboardHeader: React.FC<DashboardHeaderPropsType> = ({
   const dashboardState = useAppSelector(state => state?.dashboard);
   const usersState = useAppSelector(state => state?.user)
   const username = usersState?.user?.username;
+  const userProfileData = useAppSelector(state => state?.user?.user);
 
   const profilePhoto = useAppSelector(state => state?.user.profilePictures)
   console.log(username,'usname');
@@ -37,7 +38,6 @@ const DashhboardHeader: React.FC<DashboardHeaderPropsType> = ({
       setProfilePics('')
     }
   }, [profilePic]);
-console.log(dashboardState.activeClient.user_id,'userrrrrn');
 
   return (
     <View style={styles.container}>

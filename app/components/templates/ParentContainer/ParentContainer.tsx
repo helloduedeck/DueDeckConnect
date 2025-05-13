@@ -28,7 +28,7 @@ const ParentContainer: React.FC<IProps> = ({children, onProfileIconPress}) => {
   return (
     <View style={styles.container}>
       <DashhboardHeader
-        userName={userProfileData?.username+'oooooo'}
+        userName={userProfileData?.username}
         profilePic={profilePhoto?? undefined}
         clientName={userProfileData?.name}
         consultantName={''}

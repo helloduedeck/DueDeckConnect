@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {CircleImagePropsType} from '../../../types/components';
 import {useTheme} from '../../../theme/useTheme';
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     fontWeight: 'bold',
     alignItems: 'center',
-   fontSize:fontsize.xlarge22
+   fontSize:fontsize.large
   },
 });
 export default CircleImage;
