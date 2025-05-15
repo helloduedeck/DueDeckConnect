@@ -521,6 +521,7 @@ const TaskRequests: React.FC<IProps> = ({
 
                                             <View>
                                                 <Button
+                                                isMedium
                                                     label={'Update Request'}
                                                     onPress={() => {
                                                         GetUpdateTaskRequests()
@@ -535,7 +536,7 @@ const TaskRequests: React.FC<IProps> = ({
                                                     labelStyle={{
                                                         color: colors.white,
                                                         fontWeight: 'semibold',
-                                                        fontSize: fontsize.medium,
+                                                         fontSize: fontsize.medium,
                                                     }}
                                                 />
                                             </View>

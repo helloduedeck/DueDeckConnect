@@ -95,7 +95,7 @@ const FabButton = (props: FabPropsType) => {
       return Alert.alert('Please enter a valid service note!');
     }
   
-    setTaskModalVisible(true);
+      setTaskModalVisible(true);
   
     const reqData: any = {
       task_note: serviceNotes.trim(), // Trimmed before sending
@@ -116,7 +116,7 @@ const FabButton = (props: FabPropsType) => {
       .finally(() => {
         setServiceNotes('');
         setShowServiceView(false);
-        // setTaskModalVisible(true);
+        setTaskModalVisible(true);
         console.log('service created ');
         
       })

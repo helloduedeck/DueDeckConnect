@@ -48,7 +48,7 @@ const Comments = ({route, navigation}: any) => {
       <CustomHeaderW title="Comments" />
       </View>
 
-      <View style={{marginVertical: moderateScale(15)}}>
+      <View style={{marginVertical: moderateScale(18)}}>
         <DetailContent
           // SubLabelPropsType={{
           //   size: 'exsmall',

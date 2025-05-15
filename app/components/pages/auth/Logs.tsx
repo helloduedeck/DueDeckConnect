@@ -53,7 +53,7 @@ const Logs = ({route, navigation}: any) => {
       <CustomHeaderW title="Logs" />
       </View>
 
-      <View style={{marginVertical: moderateScale(12)}}>
+      <View style={{marginVertical: moderateScale(18)}}>
         <DetailContent
        LabelPropsType={{
         size: 'medium',

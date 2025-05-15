@@ -128,7 +128,6 @@ const AppointmentBoard = ({
   const onReshedulAppointment = () => {
     setIsSheetOpen(true);
   };
-  console.log(id, 'appoint id ');
 
   return (
     <View style={styles.boardcontainer}>

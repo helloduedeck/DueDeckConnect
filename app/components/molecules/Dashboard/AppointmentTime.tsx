@@ -37,6 +37,7 @@ const AppointmentTime = (props: AppointmentDatePropsType) => {
 
   //DO NOT REMOVE DATE FORMAT CODE UNLESS WE GET FORMATTED CODE FROM API
   const appointmentTime = moment(props.title).format('hh:mm A');
+  
 
   return (
     <View style={styles.container}>

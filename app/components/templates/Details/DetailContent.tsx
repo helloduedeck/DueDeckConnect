@@ -57,11 +57,13 @@ const DetailContent = ({
       <View >
         <MaterialCommunityIcons
           name={'calendar-blank-outline'}
-          color={colors.GRey800}
+          color={colors.Grey600}
           size={30}
           style={styles.icon1}
         />
-        <Label {...LabelPropsType3}></Label>
+        <View style={{width:'60%',marginLeft:moderateScale(10)}}>
+        <Label {...LabelPropsType3} fontWeight={'bold'}></Label>
+        </View>
         <View style={styles.task}>
           <Sublabel {...SubLabelPropsType}></Sublabel>
         </View>
@@ -119,7 +121,7 @@ const styles = ScaledSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
      justifyContent: 'center',
-     marginRight:59
+     marginRight:9
   },
   icon: {
     marginRight: moderateScale(6),
@@ -127,6 +129,7 @@ const styles = ScaledSheet.create({
   },
   icon1: {
     marginLeft: moderateScale(8),
+    marginBottom:3
   },
   task: {
     marginLeft: moderateScale(8),

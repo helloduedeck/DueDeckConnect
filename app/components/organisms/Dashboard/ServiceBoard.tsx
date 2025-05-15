@@ -9,7 +9,7 @@ import {getServiceBackgroundColor} from '@utils/helper';
 import {useNavigation} from '@react-navigation/native';
 import ROUTES from '@routes/routes';
 
-const ServiceBoard = (props: any) => {
+const ServiceBoard = (props: any,) => {
   const serviceBoard = useAppSelector(state => state?.dashboard.serviceBoard);
   const navigation = useNavigation();
 

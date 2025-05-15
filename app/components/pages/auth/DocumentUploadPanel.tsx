@@ -411,7 +411,7 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
           // paddingHorizontal: moderateScale(28),
           // alignItems: 'center',
         }}>
-        <View style={{marginVertical:15}}>
+        <View style={{marginVertical:18}}>
           <DetailContent
             LabelPropsType={{
               size: 'medium',
@@ -453,7 +453,7 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
           />
         </View>
 
-        <View style={{paddingBottom: 150, height: '85%',marginHorizontal:30}}>
+        <View style={{paddingBottom: 150, height: '85%',width:'100%',alignItems:'center',}}>
           <FlatList
             style={{height: '100%'}}
             data={dataSource}
