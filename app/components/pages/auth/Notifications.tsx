@@ -284,7 +284,7 @@ const Notifications = () => {
                   size={'small'}
                   fontWeight={'semibold'}
                   title={section.title}
-                  color={colors.Grey800}
+                  color={colors.GRey800}
                 />
               </View>
             )}
