@@ -128,7 +128,6 @@ const AppointmentBoard = ({
   const onReshedulAppointment = () => {
     setIsSheetOpen(true);
   };
-  console.log(id, 'appoint id ');
 
   return (
     <View style={styles.boardcontainer}>
@@ -236,7 +235,7 @@ const AppointmentBoard = ({
               fontWeight={'semibold'}
               fontStyle={'normal'}
               title={'You Have No Meetings'}
-              color={undefined}
+              color={colors.Grey600}
               align={undefined}
             />
           </View>

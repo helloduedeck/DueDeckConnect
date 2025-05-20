@@ -168,7 +168,7 @@ const AuthContainer: React.FC<IProps> = ({
           // style={styles.subContainer}
           isFailed={isFailed}
           isLoading={showLoader}>
-          <View style={{ backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center', height: "55%" }}>
+          <View style={{ backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center', height: "45%" }}>
             <View style={{
               backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center', height: "50%", marginBottom:
                 Inputfocused && Iskeyboardclosed
@@ -181,7 +181,7 @@ const AuthContainer: React.FC<IProps> = ({
                   )
                   : 0,
             }}>
-              <View style={{ marginVertical: moderateScale(10), backgroundColor: 'white', borderRadius: 10, width: moderateScale(130), height: moderateScale(78) }}>
+              <View style={{ marginVertical: moderateScale(10), backgroundColor: 'white', borderRadius: 10, width: moderateScale(130), height: moderateScale(72) }}>
                 {/* <Logo style={undefined} size={'large'} /> */}
                 <Logo size={'large'} />
                 {/* <LOGOwhite/> */}

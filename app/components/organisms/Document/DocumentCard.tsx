@@ -161,8 +161,8 @@ const DocumentCard = ({item, viewableItems}: DocumentCardPropsType) => {
               size={'exsmall'}
               fontWeight={'normal'}
               fontStyle={'normal'}
-              title={'FY: '}
-              color={undefined}
+              title={'FY : '}
+              color={colors.Grey600}
               align={undefined}
             />
             <Sublabel
@@ -170,7 +170,7 @@ const DocumentCard = ({item, viewableItems}: DocumentCardPropsType) => {
               fontWeight={'semibold'}
               fontStyle={'normal'}
               title={item.fyear}
-              color={undefined}
+              color={colors.Grey600}
               align={undefined}
             />
           </View>

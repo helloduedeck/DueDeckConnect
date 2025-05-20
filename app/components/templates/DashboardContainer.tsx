@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Modal, Pressable, SectionList, TouchableOpacity, View} from 'react-native';
+import {Alert, Modal, Pressable, SectionList, TextInput, TouchableOpacity, View} from 'react-native';
 import {ScaledSheet, moderateScale} from 'react-native-size-matters';
 import DocumentLabel from '@components/organisms/Dashboard/DocumentLabel';
 import {colors} from '@theme';
@@ -20,16 +20,25 @@ import ROUTES from '@routes/routes';
 import { Sublabel } from '@components/atoms/SubLabel';
 import { Label } from '@components/atoms/Label';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Circle from '@components/atoms/Circle/Circle';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Button from '@components/atoms/button/Button';
+import fontsize from '../../themev1/fontstyle';
+import { toast } from '@utils';
+import { useNewTaskRequestMutation } from '@api/services';
+import ActionSheet from '@components/organisms/ActionSheet/ActionSheet';
 
 type IDashboardProps = {
   isDataLoading: boolean;
   onAppointmentAddedOrCancelled: () => void;
   onRefresh: () => void;
+  onReqNewLabelPressed: () => void;
 };
 const DashBoardContainer: React.FC<IDashboardProps> = ({
   isDataLoading,
   onAppointmentAddedOrCancelled,
   onRefresh,
+  onReqNewLabelPressed,
 }) => {
   const dashboardData = useAppSelector(state => state?.dashboard);
   const navigation = useNavigation();
@@ -39,7 +48,65 @@ const DashBoardContainer: React.FC<IDashboardProps> = ({
 
   const [showAppointmentSheet, setShowAppointmentSheet] = useState(false);
   const [showTaskRequestModal, setShowTaskRequestModal] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [showServiceView, setShowServiceView] = useState(false);
+  const [showAppointmentView, setShowAppointmentView] = useState(false);
+  const [characterCount, setCharacterCount] = useState(0);
+  const [taskmodalVisible, setTaskModalVisible] = useState(false);
+  const dashboardState = useAppSelector(state => state?.dashboard);
+  const [createNewTask] = useNewTaskRequestMutation();
 
+  const toggleBottomSheet = () => {
+    setIsSheetOpen(!isSheetOpen);
+    setModalVisible(false);
+  };
+
+  const closeActionsheet = () => {
+    setIsSheetOpen(false);
+    setCharacterCount(0)
+  };
+
+  const handleChangeText = (text: string) => {
+    setServiceNotes(text);
+    setCharacterCount(text.length);
+  };
+  const onNewService = async () => {
+    if (!serviceNotes || serviceNotes.trim() === '') {
+      return Alert.alert('Please enter a valid service note!');
+    }
+  
+      setTaskModalVisible(true);
+  
+    const reqData: any = {
+      task_note: serviceNotes.trim(), // Trimmed before sending
+    };
+  
+    await createNewTask(reqData)
+      .unwrap()
+      .then(data => {
+        if (data?.success) {
+          toast.success(data?.message);
+          // onRefresh?.();
+             // ✅ Call parent (Dashboard) to open modal
+      // props.onTaskRequestCreated?.();
+        } else {
+          toast.failure(data?.message ?? 'Please enter the required fields!');
+        }
+      })
+      .finally(() => {
+        setServiceNotes('');
+        setShowServiceView(false);
+        setTaskModalVisible(true);
+        console.log('service created ');
+        
+      })
+      .catch(e => {
+        toast.failure('Something went wrong! Please try again.');
+      });
+  };
+
+  const [serviceNotes, setServiceNotes] = useState('');
   const appointmentData =
     dashboardData?.appoinmentSection?.['appointment-card'];
 
@@ -56,7 +123,8 @@ const DashBoardContainer: React.FC<IDashboardProps> = ({
       component: (
         <ServiceBoard
           onNewServiceRequest={function (): void {
-            setShowServiceSheet(true);
+            setShowServiceView(true)
+            // onReqNewLabelPressed()
           }}
         />
       ),
@@ -212,82 +280,211 @@ const DashBoardContainer: React.FC<IDashboardProps> = ({
                 }}
                 onRefresh={onRefresh}
                 onTaskRequestCreated={() => setShowTaskRequestModal(true)} // <<<<<< Added this
-
               />
             </View>
           </>
+          <ActionSheet
+            //  disableableClosePressingBackDrop={false}
+            onClose={() => {
+              setIsSheetOpen(false);
+              // props?.onSheetClose?.();
+              closeActionsheet();
+            }}
+            isVisible={showServiceView}>
+            <View>
+              {/* view of New Service*/}
+              {showServiceView && (
+                <View>
+                  <View
+                    style={{alignItems: 'center', justifyContent: 'center'}}>
+                    <Label
+                      size={'medium'}
+                      fontWeight={'semibold'}
+                      title={'New Task Request'}
+                      color={colors.GRey800}
+                      align={undefined}
+                    />
+                    <Label
+                      size={'small'}
+                      fontWeight={'semibold'}
+                      title={'From ' + dashboardState.activeBranch?.branch_name}
+                      color={colors.Grey600}
+                      align={undefined}
+                    />
+                  </View>
+
+                  <View
+                    style={{
+                      marginHorizontal: moderateScale(23),
+                      marginVertical: moderateScale(30),
+                    }}>
+                    <Sublabel
+                      size={'small'}
+                      fontWeight={'bold'}
+                      fontStyle={'normal'}
+                      title={'Service You Are Looking For'}
+                      color={colors.GRey800}
+                      align={undefined}
+                    />
+                    <TextInput
+                      placeholder="Type"
+                      placeholderTextColor={colors.Grey600}
+                      maxLength={250}
+                      value={serviceNotes}
+                      onChangeText={handleChangeText}
+                      style={{color:colors.GRey800}}
+                    />
+                    <View
+                      style={{
+                        borderWidth: 0.3,
+                        borderColor: colors.Grey600,
+                      }}
+                    />
+                    <View
+                      style={{
+                        position: 'absolute',
+                        right: moderateScale(10),
+                        bottom: moderateScale(95),
+                      }}>
+                      <Sublabel
+                        size={'small'}
+                        fontWeight={'bold'}
+                        fontStyle={'normal'}
+                        title={`${characterCount}/250`}
+                        color={colors.GRey800}
+                        align={undefined}
+                      />
+                    </View>
+
+                    <View>
+                      <Button
+                        label={'Submit Request'}
+                        onPress={() => {
+                          onNewService();
+                        }}
+                        containerStyle={{
+                          height: moderateScale(36),
+                          marginVertical: moderateScale(30),
+                          backgroundColor: colors.primary,
+                          borderColor: colors.date,
+                        }}
+                        labelStyle={{
+                          color: colors.white,
+                          fontWeight: 'semibold',
+                          fontSize: fontsize.medium,
+                        }}
+                      />
+                    </View>
+
+                    <View style={{marginTop: -20}}>
+                      <Button
+                        label={'Cancel'}
+                        onPress={() => {
+                          setTimeout(() => {
+                            closeActionsheet();
+                            setShowServiceView(false);
+                            setServiceNotes('');
+                            // props?.onSheetClose?.();
+                          }, 150);
+                        }}
+                        containerStyle={{
+                          height: moderateScale(36),
+                          marginVertical: moderateScale(0),
+                          backgroundColor: colors.Dashboard,
+                          borderColor: colors.date,
+                        }}
+                        labelStyle={{
+                          color: colors.Grey600,
+                          fontWeight: 'semibold',
+                          fontSize: fontsize.medium,
+                        }}
+                      />
+                    </View>
+                  </View>
+                </View>
+              )}
+            </View>
+          </ActionSheet>
         </Content>
       </ParentContainer>
       <Modal
-    animationType="slide"
-    transparent={true}
-    visible={showTaskRequestModal}
-    onRequestClose={() => setShowTaskRequestModal(false)}
-  >
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      }}
-    >
-      <View
-        style={{
-          width: 343,
-          height: 230,
-          backgroundColor: 'white',
-          borderRadius: 4,
-          alignItems: 'center',
-          padding: 24,
-          justifyContent: 'center',
-        }}
+        animationType="slide"
+        transparent={true}
+        visible={taskmodalVisible}
+        onRequestClose={() => setTaskModalVisible(true)}
       >
-        <Pressable
-          style={{position: 'absolute', right: 10, top: 10}}
-          onPress={() => setShowTaskRequestModal(false)}
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}
         >
-          <MaterialCommunityIcons name="close" size={20} color={colors.black} />
-        </Pressable>
-        <View>
-          <MaterialCommunityIcons
-            name="checkbox-marked-circle-outline"
-            color={colors.SemGreen500}
-            size={50}
+          <View
             style={{
-              marginLeft: 75,
+              width: 343,
+              height: 230,
+              backgroundColor: 'white',
+              borderRadius: 4,
+              alignItems: 'center',
+              padding: moderateScale(24),
               justifyContent: 'center',
-              marginBottom: 16,
-            }}
-          />
-          <Label
-            size="small"
-            fontWeight="semibold"
-            title="New Task Request has been created!"
-            color={colors.GRey800}
-          />
-        </View>
-
-        <View style={{position: 'absolute', bottom: 20, right: 20}}>
-          <TouchableOpacity
-            onPress={() => {
-              setShowTaskRequestModal(false);
-              navigation.navigate(ROUTES.TASKREQUESTS);
             }}
           >
-            <Sublabel
-              size="medium"
-              fontWeight="semibold"
-              fontStyle="normal"
-              title="View Task Request"
-              color={colors.primary}
-              align={undefined}
-            />
-          </TouchableOpacity>
+            <Pressable
+              style={{position:'absolute',right:10,top:10}}
+               onPress={() =>
+                setTaskModalVisible(false)
+ }
+            >
+              <MaterialCommunityIcons
+                name="close"
+                size={20}
+                color={colors.black}
+              />
+            </Pressable>
+            <View>
+              <MaterialCommunityIcons
+                name={'checkbox-marked-circle-outline'}
+                color={colors.SemGreen500}
+                size={50}
+                style={{
+                  marginLeft: moderateScale(75),
+                  justifyContent: 'center',
+                  marginBottom: moderateScale(16),
+                }}
+              />
+              <Label
+                size={'small'}
+                fontWeight={'semibold'}
+                title={'New Taskrequest has been created!'}
+                color={colors.GRey800}
+              />
+            </View>
+
+            <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setTaskModalVisible(false);
+                 navigation.navigate(ROUTES.TASKREQUESTS)
+                }}
+              >
+                <Sublabel
+                  size={'medium'}
+                  fontWeight={'semibold'}
+                  fontStyle={'normal'}
+                  title={'View Task Request'}
+                  color={colors.primary}
+                  align={undefined}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-      </View>
-    </View>
-  </Modal>
+      </Modal>
+        
+  
     </DashboardContainer>
   );
 };
@@ -308,6 +505,39 @@ const styles = ScaledSheet.create({
   },
   linearGradient: {
     flex: 1,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalView: {
+    width: 327,
+    height: 178,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    paddingVertical: 30,
+    // alignItems: "center",
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  closeIcon: {
+    fontSize: 20,
+  },
+  icon: {
+    marginEnd: moderateScale(24),
+  },
+  title: {
+    position: 'absolute',
+    top: moderateScale(10),
+    left: moderateScale(24),
   },
 });
 

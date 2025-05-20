@@ -26,6 +26,27 @@ const LogContent = ({details}: IProps) => {
       return '';
     }
   };
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Complete Received':
+      case 'Completed':
+        return colors.green;
+      case 'Cancelled':
+        return colors.graish;
+      case 'Pending':
+      case 'Assigned':
+  
+      case 'Part Received':
+        return colors.orange;
+  
+      case 'WIP':
+        return colors.semblue;
+      case 'Hold':
+        return colors.darkred;
+      default:
+        return colors.primary;
+    }
+  };
   return (
     <View>
       {particulars && (
@@ -66,8 +87,8 @@ const LogContent = ({details}: IProps) => {
             size={'small'}
             fontWeight={'semibold'}
             fontStyle={'normal'}
-            title={status}
-            color={colors.SemGreen500}
+            title={(status)}
+            color={getStatusColor(status)}
             align={undefined}
           />
         </View>

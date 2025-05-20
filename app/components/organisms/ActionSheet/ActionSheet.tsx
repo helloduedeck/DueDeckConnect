@@ -62,7 +62,7 @@ const ActionSheet: React.FC<IProps> = ({isVisible, children, onClose,disableable
   );
   // renders
   const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
-    return <BottomSheetBackdrop {...props}         pressBehavior={disableableClosePressingBackDrop ? 'collapse' : 'close'}
+    return <BottomSheetBackdrop {...props}         pressBehavior={disableableClosePressingBackDrop ? 'collapse' : ''}
     />;
   }, []);
 

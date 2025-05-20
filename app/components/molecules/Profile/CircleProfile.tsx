@@ -147,8 +147,8 @@ const profilePhoto = useAppSelector(state => state?.user.profilePictures)
                   
                   setProfilePic({uri: photo_url});
                   dispatch(setUserCredentials(uploadResponse?.data));
-                  dispatch(setProfilePictures(uploadResponse?.data))
-                  console.log(setProfilePictures(uploadResponse?.data) ,'dxtdtdtdt');
+                  // dispatch(setProfilePictures(uploadResponse.data.data.profile_photo_path))
+                  
                   hideActionSheet()
                   // toast.success(uploadResponse?.message+'profileee');
                    toast.success(uploadResponse.message);

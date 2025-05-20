@@ -95,7 +95,7 @@ const FabButton = (props: FabPropsType) => {
       return Alert.alert('Please enter a valid service note!');
     }
   
-    setTaskModalVisible(true);
+      setTaskModalVisible(true);
   
     const reqData: any = {
       task_note: serviceNotes.trim(), // Trimmed before sending
@@ -116,7 +116,7 @@ const FabButton = (props: FabPropsType) => {
       .finally(() => {
         setServiceNotes('');
         setShowServiceView(false);
-        // setTaskModalVisible(true);
+        setTaskModalVisible(true);
         console.log('service created ');
         
       })
@@ -370,6 +370,22 @@ const FabButton = (props: FabPropsType) => {
                       color={colors.Grey600}
                       align={undefined}
                     />
+                     <TouchableOpacity onPress={()=>{closeActionsheet(),
+                     setShowServiceView(false);
+                     }}> 
+                <MaterialCommunityIcons
+                name={'close'}
+                color={colors.SemGreen500}
+                size={20}
+                style={{
+                  position:'absolute',
+                  left:moderateScale(140),
+                bottom:moderateScale(20),
+                  color:'black'
+                }}
+              />
+              </TouchableOpacity>
+              
                   </View>
 
                   <View

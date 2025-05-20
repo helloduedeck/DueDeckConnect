@@ -20,6 +20,7 @@ import {IResheduleAppointment} from '@types/components';
 import DropDownPickerComp from '../ActionSheet/DropDownPickerComp';
 import moment from 'moment';
 import ActionSheet from '../ActionSheet/ActionSheet';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ResheduleAppointment = ({
   AppointmentContent,
@@ -28,6 +29,7 @@ const ResheduleAppointment = ({
   showActionSheet,
   onClose,
   employeeId,
+  rescheduledate
 }: IResheduleAppointment) => {
   const dashboardData = useAppSelector(state => state?.dashboard);
 
@@ -41,6 +43,9 @@ const ResheduleAppointment = ({
   const [showDatepicker, setShowDatePicker] = useState(false);
   const [date, setDate] = useState(new Date()); //moment(new Date()).format('MMM Do, YYYY')
   const [time, setTime] = useState(new Date()); //new Date()).format('HH:MM a')
+  console.log(time,'seltime');
+  const [apptime, setappTime] = useState(moment(rescheduledate).format('HH:mm:ss'));
+  const [appdate, setappDate] = useState(moment(rescheduledate).format('YYYY-MM-DD'));
   const [characterCount, setCharacterCount] = useState(0);
 
   const [selectedEmployee, setSelectedEmployee] = useState({id: employeeId});
@@ -52,14 +57,18 @@ const ResheduleAppointment = ({
     setTime(AppointmentContent?.selectedDateTime ?? new Date());
     setPurpose(AppointmentContent?.title);
   }, [showActionSheet]);
+  const [disabled, setDisabled] = useState(false);
 
   const onDateChange = (selectedDate: Date) => {
     setDate(selectedDate);
+    console.log(selectedDate,'selcteddate');
+    
     // setShowPicker(Platform.OS === 'ios');
   };
 
   const onTimeChange = (selectedDate: Date) => {
     setTime(selectedDate);
+
     setShowPicker(false);
   };
 
@@ -70,22 +79,33 @@ const ResheduleAppointment = ({
 
   const onReshedule = async () => {
     console.log('onReshedule', time);
+    // if (!appdate || !apptime) {
+    //   setDisabled(true);
+    //   setTimeout(() => {
+    //     setDisabled(false);
+    //   }, 2000);
+    //   return toast.failure('Please select both Date and Time');
+    // }
     if (!purpose) {
       return toast.failure('Please fill purpose');
     }
     if (!selectedEmployee?.id) {
       return toast.failure('Please select employee');
     }
+
+  const appointmentTime = moment(time).format('hh:mm A');
+    const datetime = formattedDate+' '+appointmentTime;
     const reqData = {
       client_id: dashboardState.activeClient.id,
       branch_id: dashboardState.activeBranch.id,
-      datetime: date,
+      datetime: datetime,
       emp_id: selectedEmployee?.id, //TO-DO NEED TO CONFIRM WHAT TO SEND HERE IE. id OR user_id
-      minutes: time,
+      
       purpose: purpose,
       status: selectedEmployee?.status, //1,//TO-DO NEED TO CONFIRM WHAT TO SEND HERE IE. status OR 1
       appointment_id: id,
     };
+console.log(reqData,'reqDatareqDatareqDatassssssssssss');
 
     if (id) {
       resheduleAppointment(reqData);
@@ -123,6 +143,8 @@ const ResheduleAppointment = ({
     await resheduleAppointments(reqData)
       .unwrap()
       .then(data => {
+        console.log(data,'datadatadatadatadatadatav');
+        
         if (data?.success) {
           toast.success(data?.message);
           clearFilledData();
@@ -137,6 +159,9 @@ const ResheduleAppointment = ({
         console.log('ERROR PENDING LIST', e);
       });
   };
+  const toggleBottomSheet =()=>{
+    setIsSheetOpen(false);
+  }
 
   const closeResheduleActionSheet = () => {
     clearFilledData();
@@ -182,6 +207,8 @@ const ResheduleAppointment = ({
   const onClosePicker = () => {
     setOpenPicker('');
   };
+  const formattedDate = moment(date).format("DD/MM/YYYY");
+
 
   const showResheduleAction = () => (
     <ActionSheet
@@ -189,6 +216,7 @@ const ResheduleAppointment = ({
       isVisible={isSheetOpen}>
       <View>
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <View style={{flexDirection:'row',}}>
           <Label
             size={'medium'}
             fontWeight={'semibold'}
@@ -196,6 +224,23 @@ const ResheduleAppointment = ({
             color={colors.GRey800}
             align={undefined}
           />
+             <TouchableOpacity onPress={toggleBottomSheet}> 
+                <MaterialCommunityIcons
+                name={'close'}
+                color={colors.SemGreen500}
+                size={20}
+                style={{
+                  position:'absolute',
+                  left:70,
+                  top:0,
+                  // marginLeft: moderateScale(70),
+                  // justifyContent: 'center',
+                  // marginBottom: moderateScale(0),
+                  color:'black'
+                }}
+              />
+              </TouchableOpacity>
+              </View>
           <Label
             size={'small'}
             fontWeight={'semibold'}
@@ -319,7 +364,7 @@ const ResheduleAppointment = ({
               fontWeight={'bold'}
               fontStyle={'normal'}
               title={'Purpose'}
-              color={undefined}
+              color={colors.Grey600}
               align={undefined}
             />
           </View>
@@ -343,7 +388,7 @@ const ResheduleAppointment = ({
               fontWeight={'bold'}
               fontStyle={'normal'}
               title={`${characterCount}/100`}
-              color={undefined}
+              color={colors.Grey600}
               align={undefined}
             />
           </View>
@@ -415,7 +460,7 @@ const ResheduleAppointment = ({
             onCancel={() => {
               setShowPicker(false);
             }}
-            minimumDate={new Date()}
+              minimumDate={new Date()}
             timePickerModeAndroid="spinner"
           />
         </View>
