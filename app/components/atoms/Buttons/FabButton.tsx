@@ -370,6 +370,22 @@ const FabButton = (props: FabPropsType) => {
                       color={colors.Grey600}
                       align={undefined}
                     />
+                     <TouchableOpacity onPress={()=>{closeActionsheet(),
+                     setShowServiceView(false);
+                     }}> 
+                <MaterialCommunityIcons
+                name={'close'}
+                color={colors.SemGreen500}
+                size={20}
+                style={{
+                  position:'absolute',
+                  left:moderateScale(140),
+                bottom:moderateScale(20),
+                  color:'black'
+                }}
+              />
+              </TouchableOpacity>
+              
                   </View>
 
                   <View

@@ -306,7 +306,7 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
 
   const formatDate = (inputDate: string) => {
     const convertedDate = moment(inputDate, 'YYYY-MM-DD  HH:mm').format(
-      'MMM Do, YYYY',
+      'MMM D, YYYY',
     );
     return convertedDate;
   };
@@ -350,6 +350,7 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
             flexDirection: 'row',
             paddingTop: 5,
             paddingRight: 5,
+          // backgroundColor:colors.date
           }}>
           <DocumentUpload
             attachments={item.attachments && item.attachments[0]}
@@ -365,7 +366,7 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
               fontWeight: 'bold',
               title: getTrailText(item.document_name, 15),
               color: colors.GRey800,
-              align: {undefined},
+              align: { undefined },
             }}
             DocSublabelprop={{
               size: 'exsmall',
@@ -385,14 +386,13 @@ const DocumentUploadPanel = ({route, navigation}: any) => {
             }}
             onDocUpload={function (): void {
               selectFileToUpload(item.id, item.task_id);
-            }}
+            } }
             onImagePress={() => {
               if (item.attachments?.length) {
                 setIsCarouselVisible(true);
                 setCarouselList(item.attachments);
               }
-            }}
-          />
+            } } isNoDocument={undefined} bgcolor={item.dstatus_id == 3 ? colors.date :"white"}          />
         </View>
       </View>
     );

@@ -167,6 +167,7 @@ const ProfileField: React.FC<ProfileFieldProps> = ({
         <Text style={{flex: 1, color: color, fontSize: size, fontWeight}}>
           {title} {/* Accessing the title prop */}
         </Text>
+      
         
         <View>
           {title === 'Sounds & Notifications' ? (

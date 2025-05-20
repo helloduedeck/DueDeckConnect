@@ -150,6 +150,7 @@ const Login = ({navigation}: any) => {
       isSemiBold={false}
       heading="Welcome Back!"
       subHeading="Manage Your Compliance On Fingertips & Stay Connected With Your Consultants" isDisabled={false} showIcon={undefined} showLabel={undefined} Inputfocused={undefined} Iskeyboardclosed={undefined}>
+        <View style={{marginTop:10}}>
       <Input
         placeholder="Email Address"
         iconLeft={'mail'}
@@ -190,6 +191,7 @@ const Login = ({navigation}: any) => {
             <Text style={styles.text}>Forgot Password?</Text>
           </Pressable>
         </View>
+      </View>
       </View>
     </AuthContainer>
   );

@@ -52,7 +52,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
       .then(data => {
         if (data?.success) {
           setServiceData(data?.data.singletask);
-          console.log(data?.data.singletask,'taskidd');
+          console.log(data?.data.singletask.document_count,'taskidd');
           setLogseData(data?.data.singletask.logs);
           setCommentsData(data?.data.singletask.comments);
           setDocumentsData(data?.data.singletask.documents);
@@ -174,7 +174,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
               SubLabelPropsType={{
                 size: 'small',
                 color: colors.darkgray,
-                title: 'Completion',
+                title: 'Status',
               }}
               LabelPropsType={{
                 size: 'small',
@@ -296,7 +296,7 @@ const ServiceDetailBoard = ({id}: IProps) => {
             }}>
             <ProfileField
             showicon={true}
-              title={'Documents'}
+              title={'Documents ' +  serviceData.document_count}
               color={colors.GRey800}
               size={fontsize.medium}
               fontWeight={'semibold'}

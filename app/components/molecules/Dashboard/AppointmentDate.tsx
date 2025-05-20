@@ -35,7 +35,7 @@ const AppointmentDate = (props: AppointmentDatePropsType) => {
       ? '500'
       : 'normal';
   //DO NOT REMOVE DATE FORMAT CODE UNLESS WE GET FORMATTED CODE FROM API
-  const appointmentDate = moment(props.title).format('MMM Do, YYYY');
+  const appointmentDate = moment(props.title).format('MMM D, YYYY');
 
   return (
     <View style={styles.container}>

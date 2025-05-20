@@ -1,4 +1,4 @@
-import {Keyboard, Pressable, StyleSheet} from 'react-native';
+import {Keyboard, Pressable, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Text from '@components/text/Text';
 
@@ -250,6 +250,7 @@ const ResetPassword = () => {
 
         />
       )}
+      <View style={{marginTop:10}}>
       <Input
         placeholder="New Password"
         iconLeft="Lock"
@@ -285,6 +286,7 @@ const ResetPassword = () => {
         disabled={isDisabled}
 
       />
+      </View>
     </AuthContainer>
   );
 };

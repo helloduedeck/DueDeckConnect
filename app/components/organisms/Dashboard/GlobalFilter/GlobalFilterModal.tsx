@@ -2,7 +2,7 @@ import {Sublabel} from '@components/atoms/SubLabel';
 import ActionSheet from '@components/organisms/ActionSheet/ActionSheet';
 import {colors, fontsize} from '../../../../themev1';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {View, Pressable, Text, Alert} from 'react-native';
+import {View, Pressable, Text, Alert, TouchableOpacity} from 'react-native';
 import {ScaledSheet, moderateScale} from 'react-native-size-matters';
 import {useAppDispatch, useAppSelector} from '@hooks/redux_hooks';
 import DropDownPickerComp from '@components/organisms/ActionSheet/DropDownPickerComp';
@@ -25,6 +25,7 @@ import {
   RenderListItemPropsInterface,
 } from 'react-native-dropdown-picker';
 import { setUserCredentials } from '@store/slices/userSlice';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type IProps = {
   isVisible: boolean;
@@ -193,6 +194,19 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
               color={colors.Grey600}
               align={undefined}
             />
+            <TouchableOpacity onPress={()=>{ onClose()}}> 
+                <MaterialCommunityIcons
+                name={'close'}
+                color={colors.SemGreen500}
+                size={20}
+                style={{
+                  marginRight: moderateScale(45),
+                  justifyContent: 'center',
+                  marginBottom: moderateScale(0),
+                  color:'black'
+                }}
+              />
+              </TouchableOpacity>
           </View>
           <DropDownPickerComp
             pickername={'consultatantPicker'}

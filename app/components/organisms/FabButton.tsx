@@ -188,6 +188,7 @@ const FabButton = (props: FabPropsType) => {
                     color={colors.GRey800}
                     align={undefined}
                   />
+                  
                   <Label
                     size={'small'}
                     fontWeight={'semibold'}

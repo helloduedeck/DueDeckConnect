@@ -17,6 +17,7 @@ export interface DocumentUploadPropsType {
   onDocUpload?: () => void;
   onImagePress?: () => void;
   isNoDocument:any
+  bgcolor:any
 }
 const DocumentUpload = ({
   Doclabelprop,
@@ -26,6 +27,7 @@ const DocumentUpload = ({
   attachments,
   onDocUpload,
   onImagePress,
+  bgcolor,
   isNoDocument
 
 }: DocumentUploadPropsType) => {
@@ -38,7 +40,7 @@ const DocumentUpload = ({
     <View
       style={{
         padding: moderateScale(8),
-        backgroundColor: colors.white,
+        backgroundColor: bgcolor || colors.white,
         width: moderateScale(155),
         borderRadius: 4,
         ...Platform.select({

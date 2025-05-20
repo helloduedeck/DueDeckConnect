@@ -29,7 +29,7 @@ const ParentContainer: React.FC<IProps> = ({children, onProfileIconPress}) => {
     <View style={styles.container}>
       <DashhboardHeader
         userName={userProfileData?.username}
-        profilePic={profilePhoto?? undefined}
+        profilePic={userProfileData?.data?.profile_photo_path?? undefined}
         clientName={userProfileData?.name}
         consultantName={''}
         onGlobalPanelPress={function (): void {}}

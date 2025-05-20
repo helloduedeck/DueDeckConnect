@@ -235,7 +235,7 @@ const AppointmentBoard = ({
               fontWeight={'semibold'}
               fontStyle={'normal'}
               title={'You Have No Meetings'}
-              color={undefined}
+              color={colors.Grey600}
               align={undefined}
             />
           </View>

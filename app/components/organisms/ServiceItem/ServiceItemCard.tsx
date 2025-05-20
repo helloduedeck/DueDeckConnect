@@ -70,7 +70,7 @@ const ServiceItemCard: React.FC<IProps> = ({
     : date;
 
   const formattedDateOfNotice = moment(item.due_date, 'DD/MM/YYYY').format(
-    'MMM Do, YYYY',
+    'MMM D, YYYY',
   );
 
   const Documenticon = () => (

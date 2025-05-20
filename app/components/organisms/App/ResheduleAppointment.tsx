@@ -20,6 +20,7 @@ import {IResheduleAppointment} from '@types/components';
 import DropDownPickerComp from '../ActionSheet/DropDownPickerComp';
 import moment from 'moment';
 import ActionSheet from '../ActionSheet/ActionSheet';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ResheduleAppointment = ({
   AppointmentContent,
@@ -158,6 +159,9 @@ console.log(reqData,'reqDatareqDatareqDatassssssssssss');
         console.log('ERROR PENDING LIST', e);
       });
   };
+  const toggleBottomSheet =()=>{
+    setIsSheetOpen(false);
+  }
 
   const closeResheduleActionSheet = () => {
     clearFilledData();
@@ -212,6 +216,7 @@ console.log(reqData,'reqDatareqDatareqDatassssssssssss');
       isVisible={isSheetOpen}>
       <View>
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <View style={{flexDirection:'row',}}>
           <Label
             size={'medium'}
             fontWeight={'semibold'}
@@ -219,6 +224,23 @@ console.log(reqData,'reqDatareqDatareqDatassssssssssss');
             color={colors.GRey800}
             align={undefined}
           />
+             <TouchableOpacity onPress={toggleBottomSheet}> 
+                <MaterialCommunityIcons
+                name={'close'}
+                color={colors.SemGreen500}
+                size={20}
+                style={{
+                  position:'absolute',
+                  left:70,
+                  top:0,
+                  // marginLeft: moderateScale(70),
+                  // justifyContent: 'center',
+                  // marginBottom: moderateScale(0),
+                  color:'black'
+                }}
+              />
+              </TouchableOpacity>
+              </View>
           <Label
             size={'small'}
             fontWeight={'semibold'}

@@ -19,6 +19,7 @@ import Content from "@components/content/Content";
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import EmptyOther from "@components/molecules/empty/EmptyOther";
+import Popover from "react-native-popover-view";
 
 type IProps = {
     item: any;
@@ -147,32 +148,32 @@ const TaskRequests: React.FC<IProps> = ({
             });
     };
 
-    const Popover = ({ onClose }: any) => {
-        return (
-            <TouchableWithoutFeedback onPress={onClose}>
-                <View style={styles.popoverContainer}>
-                    {
-                        <View style={{ flexDirection: 'row', marginBottom: moderateScale(0), alignItems: 'center' }}>
+    // const Popover = ({ onClose }: any) => {
+    //     return (
+    //         <TouchableWithoutFeedback onPress={onClose}>
+    //             <View style={styles.popoverContainer}>
+    //                 {
+    //                     <View style={{ flexDirection: 'row', marginBottom: moderateScale(0), alignItems: 'center' }}>
 
-                            <TouchableOpacity onPress={() => { closePopover(), handleEdit() }}>
-                                <Sublabel size={'exsmall'} fontWeight={'semibold'} fontStyle={'normal'} title={'Edit'} color={colors.GRey800} />
-                            </TouchableOpacity>
-                        </View>
-                    }
+    //                         <TouchableOpacity onPress={() => { closePopover(), handleEdit() }}>
+    //                             <Sublabel size={'exsmall'} fontWeight={'semibold'} fontStyle={'normal'} title={'Edit'} color={colors.GRey800} />
+    //                         </TouchableOpacity>
+    //                     </View>
+    //                 }
 
-                    {
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+    //                 {
+    //                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
-                            <TouchableOpacity onPress={() => { closePopover(), setDeleteModalVisible(true) }}>
-                                <Sublabel size={'exsmall'} fontWeight={'semibold'} fontStyle={'normal'} title={'Delete'} color={colors.GRey800} />
-                            </TouchableOpacity>
-                        </View>
-                    }
+    //                         <TouchableOpacity onPress={() => { closePopover(), setDeleteModalVisible(true) }}>
+    //                             <Sublabel size={'exsmall'} fontWeight={'semibold'} fontStyle={'normal'} title={'Delete'} color={colors.GRey800} />
+    //                         </TouchableOpacity>
+    //                     </View>
+    //                 }
 
-                </View>
-            </TouchableWithoutFeedback>
-        );
-    };
+    //             </View>
+    //         </TouchableWithoutFeedback>
+    //     );
+    // };
 
     // Function to toggle popover visibility
     const togglePopover = (id: any, task_note: any) => {
@@ -254,6 +255,13 @@ const TaskRequests: React.FC<IProps> = ({
             return '';
         }
     };
+      const [popoverNameVisible, setPopoverNameVisible] = useState(false);
+
+  // Function to toggle the popover visibility
+  const toggleNamePopover = (id:any) => setPopoverNameVisible(id);
+  const handlepopover=()=>{
+    setPopoverNameVisible(false)
+  }
 
     const renderItem = ({ item }: { item: any }) => {
         return (
@@ -266,12 +274,27 @@ const TaskRequests: React.FC<IProps> = ({
                     // });
                 }}
                 onCancel={closePopover}>
+          <Popover
+                key={item.id}
+        isVisible={popoverNameVisible == item.id}
+        onRequestClose={handlepopover}  // Close popover when pressing outside
+        
+     
+      >
+          <TouchableWithoutFeedback onPress={() => { toggleNamePopover(item.id); }}>
 
-                <TouchableOpacity onPress={() => { }}>
+        <View style={styles.popoverContent}>
+          <Text>{item.task_note}</Text>
+        </View>
+        </TouchableWithoutFeedback>
+      </Popover>
+                <TouchableOpacity onPress={() => {toggleNamePopover(item.id) }}>
                     <Text isSemiBold style={{ fontSize: fontsize.medium, fontWeight: '700', }}>
                         {getHeaderText(item.task_note, 30)}
                     </Text>
+          
                 </TouchableOpacity>
+     
                 <View style={{ position: 'absolute', right: moderateScale(10), top: moderateScale(10) }}>
                     <MaterialCommunityIcons
                         name="dots-vertical"
@@ -280,9 +303,10 @@ const TaskRequests: React.FC<IProps> = ({
                         onPress={() => togglePopover(item.id, item.task_note)} // Pass item id to toggle popover
                     />
                 </View>
-
+      
                 {/* Popover only visible for the current item */}
-                {popoverVisible == item.id && <Popover onClose={closePopover} />}
+                {/* {popoverVisible == item.id && <Popover onClose={closePopover} />} */}
+       
 
                 <View>
                     <View style={{
@@ -397,6 +421,7 @@ const TaskRequests: React.FC<IProps> = ({
                         </View>
                     </View>
                 </View>
+          
             </Taskrequestcard>
         );
     }
@@ -612,6 +637,13 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: moderateScale(10),
     },
+    popoverContent: {
+        padding: 15,
+        backgroundColor: '#fff',
+        borderRadius: 8,
+        width: 250,
+        elevation: 5, // to give a shadow effect
+      },
 });
 
 export default TaskRequests;
