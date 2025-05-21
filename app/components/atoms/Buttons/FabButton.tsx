@@ -307,7 +307,7 @@ const FabButton = (props: FabPropsType) => {
               <Label
                 size={'small'}
                 fontWeight={'semibold'}
-                title={'New Taskrequest has been created!'}
+                title={'New Task Request has been created!'}
                 color={colors.GRey800}
               />
             </View>
@@ -348,6 +348,8 @@ const FabButton = (props: FabPropsType) => {
               setIsSheetOpen(false);
               props?.onSheetClose?.();
               closeActionsheet();
+              setShowServiceView(false)
+              setShowAppointmentView(false)
             }}
             isVisible={showServiceView}>
             <View>
@@ -370,21 +372,7 @@ const FabButton = (props: FabPropsType) => {
                       color={colors.Grey600}
                       align={undefined}
                     />
-                     <TouchableOpacity onPress={()=>{closeActionsheet(),
-                     setShowServiceView(false);
-                     }}> 
-                <MaterialCommunityIcons
-                name={'close'}
-                color={colors.SemGreen500}
-                size={20}
-                style={{
-                  position:'absolute',
-                  left:moderateScale(140),
-                bottom:moderateScale(20),
-                  color:'black'
-                }}
-              />
-              </TouchableOpacity>
+             
               
                   </View>
 
@@ -401,6 +389,20 @@ const FabButton = (props: FabPropsType) => {
                       color={colors.GRey800}
                       align={undefined}
                     />
+                    <View style={{position:'absolute',top:-80,right:-20}}>
+                        <Button
+                        label={'X'}
+                        onPress={() => {
+                          setTimeout(() => {
+                            closeActionsheet();
+                            setShowServiceView(false);
+                            setServiceNotes('');
+                            props?.onSheetClose?.();
+                          }, 150);
+                        }}
+                      
+                      />
+                      </View>
                     <TextInput
                       placeholder="Type"
                       placeholderTextColor={colors.Grey600}

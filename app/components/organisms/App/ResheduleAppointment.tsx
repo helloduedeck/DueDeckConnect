@@ -198,7 +198,7 @@ const ResheduleAppointment = ({
             color={colors.GRey800}
             align={undefined}
           />
-             <TouchableOpacity onPress={toggleBottomSheet}> 
+             {/* <TouchableOpacity onPress={toggleBottomSheet}> 
                 <MaterialCommunityIcons
                 name={'close'}
                 color={colors.SemGreen500}
@@ -213,7 +213,7 @@ const ResheduleAppointment = ({
                   color:'black'
                 }}
               />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               </View>
           <Label
             size={'small'}
@@ -234,7 +234,7 @@ const ResheduleAppointment = ({
               fontWeight={'bold'}
               fontStyle={'normal'}
               title={'Meet'}
-              color={undefined}
+              color={colors.Grey600}
               align={undefined}
             />
           </View>
@@ -282,7 +282,7 @@ const ResheduleAppointment = ({
                 fontWeight={'bold'}
                 fontStyle={'normal'}
                 title={'Select Date'}
-                color={undefined}
+                color={colors.Grey600}
                 align={undefined}
               />
               <TouchableOpacity
@@ -310,7 +310,7 @@ const ResheduleAppointment = ({
                 fontWeight={'bold'}
                 fontStyle={'normal'}
                 title={'Select Time'}
-                color={undefined}
+                color={colors.Grey600}
                 align={undefined}
               />
               <TouchableOpacity

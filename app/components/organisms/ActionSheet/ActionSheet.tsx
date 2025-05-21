@@ -62,7 +62,7 @@ const ActionSheet: React.FC<IProps> = ({isVisible, children, onClose,disableable
   );
   // renders
   const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
-    return <BottomSheetBackdrop {...props}         pressBehavior={disableableClosePressingBackDrop ? 'collapse' : ''}
+    return <BottomSheetBackdrop {...props}         pressBehavior={disableableClosePressingBackDrop ? 'collapse' : 'close'}
     />;
   }, []);
 
@@ -81,6 +81,7 @@ onDismiss={() => {
   onClose(); // This should set isVisible = false in parent
 }}
       >
+        
       <TouchableOpacity
         style={{
           borderBottomWidth: moderateScale(4),

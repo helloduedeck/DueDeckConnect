@@ -193,7 +193,7 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
               color={colors.Grey600}
               align={undefined}
             />
-            <TouchableOpacity onPress={()=>{ onClose()}}> 
+            {/* <TouchableOpacity onPress={()=>{ onClose()}}> 
                 <MaterialCommunityIcons
                 name={'close'}
                 color={colors.SemGreen500}
@@ -205,7 +205,7 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
                   color:'black'
                 }}
               />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
           </View>
           <DropDownPickerComp
             pickername={'consultatantPicker'}
