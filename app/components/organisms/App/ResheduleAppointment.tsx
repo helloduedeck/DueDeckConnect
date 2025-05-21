@@ -106,7 +106,7 @@ const ResheduleAppointment = ({
       .then(data => {
         if (data?.success) {
           toast.success(data?.message);
-          clearFilledData();
+          clearFilledData();  
           onRefresh();
           onClose();
         } else {
@@ -198,22 +198,6 @@ const ResheduleAppointment = ({
             color={colors.GRey800}
             align={undefined}
           />
-             {/* <TouchableOpacity onPress={toggleBottomSheet}> 
-                <MaterialCommunityIcons
-                name={'close'}
-                color={colors.SemGreen500}
-                size={20}
-                style={{
-                  position:'absolute',
-                  left:70,
-                  top:0,
-                  // marginLeft: moderateScale(70),
-                  // justifyContent: 'center',
-                  // marginBottom: moderateScale(0),
-                  color:'black'
-                }}
-              />
-              </TouchableOpacity> */}
               </View>
           <Label
             size={'small'}

@@ -275,13 +275,22 @@ const TaskRequests: React.FC<IProps> = ({
                 }}
                 onCancel={closePopover}>
       
-                <TouchableOpacity onPress={() => {toggleNamePopover(item.id) }}>
-                    <Text isSemiBold style={{ fontSize: fontsize.medium, fontWeight: '700', }}>
-                        {getHeaderText(item.task_note, 30)}
-                    </Text>
-       
-          
-                </TouchableOpacity>
+                <Popover
+                    key={item.id}
+                    isVisible={popoverNameVisible == item.id}
+                    onRequestClose={handlepopover}  // Close popover when pressing outside
+                    from={
+                        <TouchableOpacity onPress={() => {toggleNamePopover(item.id) }}>
+                            <Text isSemiBold style={{ fontSize: fontsize.medium, fontWeight: '700', }}>
+                                {getHeaderText(item.task_note, 30)}
+                            </Text>
+                        </TouchableOpacity>
+                    }>
+                    <View style={styles.popoverContent}>
+                    <Text>{item.task_note}</Text>
+                    </View>
+                </Popover>
+                
      
                 <View style={{ position: 'absolute', right: moderateScale(10), top: moderateScale(10) }}>
                     <MaterialCommunityIcons
@@ -291,16 +300,7 @@ const TaskRequests: React.FC<IProps> = ({
                         onPress={() => togglePopover(item.id, item.task_note)} // Pass item id to toggle popover
                     />
                 </View>
-                <Popover
-                key={item.id}
-        isVisible={popoverNameVisible == item.id}
-        onRequestClose={handlepopover}  // Close popover when pressing outside
-      >
-
-        <View style={styles.popoverContent}>
-          <Text>{item.task_note}</Text>
-        </View>
-      </Popover>
+                
                 {/* Popover only visible for the current item */}
                 {/* {popoverVisible == item.id && <Popover onClose={closePopover} />} */}
        

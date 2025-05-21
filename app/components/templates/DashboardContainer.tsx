@@ -119,12 +119,139 @@ const DashBoardContainer: React.FC<IDashboardProps> = ({
       id: 2,
       title: 'Service Board',
       component: (
-        <ServiceBoard
-          onNewServiceRequest={function (): void {
-            setShowServiceView(true)
-            // onReqNewLabelPressed()
-          }}
-        />
+        <View>
+          <ServiceBoard
+            onNewServiceRequest={function (): void {
+              setShowServiceView(false); // Step 1: Force it to false first
+              setTimeout(() => {
+                setShowServiceView(true); // Step 2: Reopen after a short delay
+              }, 50); // Small delay to ensure state change is registered
+            }}
+          />
+
+          <ActionSheet
+             disableableClosePressingBackDrop={false}
+            onClose={() => {
+              setIsSheetOpen(false);
+              closeActionsheet();
+            }}
+            isVisible={showServiceView}>
+            <View>
+              {/* view of New Service*/}
+              {showServiceView && (
+                <View>
+                  <View
+                    style={{alignItems: 'center', justifyContent: 'center'}}>
+                    <Label
+                      size={'medium'}
+                      fontWeight={'semibold'}
+                      title={'New Task Request'}
+                      color={colors.GRey800}
+                      align={undefined}
+                    />
+                    <Label
+                      size={'small'}
+                      fontWeight={'semibold'}
+                      title={'From ' + dashboardState.activeBranch?.branch_name}
+                      color={colors.Grey600}
+                      align={undefined}
+                    />
+                  </View>
+
+                  <View
+                    style={{
+                      marginHorizontal: moderateScale(23),
+                      marginVertical: moderateScale(30),
+                    }}>
+                    <Sublabel
+                      size={'small'}
+                      fontWeight={'bold'}
+                      fontStyle={'normal'}
+                      title={'Service You Are Looking For'}
+                      color={colors.GRey800}
+                      align={undefined}
+                    />
+                    <TextInput
+                      placeholder="Type"
+                      placeholderTextColor={colors.Grey600}
+                      maxLength={250}
+                      value={serviceNotes}
+                      onChangeText={handleChangeText}
+                      style={{color:colors.GRey800}}
+                    />
+                    <View
+                      style={{
+                        borderWidth: 0.3,
+                        borderColor: colors.Grey600,
+                      }}
+                    />
+                    <View
+                      style={{
+                        position: 'absolute',
+                        right: moderateScale(10),
+                        bottom: moderateScale(95),
+                      }}>
+                      <Sublabel
+                        size={'small'}
+                        fontWeight={'bold'}
+                        fontStyle={'normal'}
+                        title={`${characterCount}/250`}
+                        color={colors.GRey800}
+                        align={undefined}
+                      />
+                    </View>
+
+                    <View>
+                      <Button
+                        label={'Submit Request'}
+                        onPress={() => {
+                          onNewService();
+                        }}
+                        containerStyle={{
+                          height: moderateScale(36),
+                          marginVertical: moderateScale(30),
+                          backgroundColor: colors.primary,
+                          borderColor: colors.date,
+                        }}
+                        labelStyle={{
+                          color: colors.white,
+                          fontWeight: 'semibold',
+                          fontSize: fontsize.medium,
+                        }}
+                      />
+                    </View>
+
+                    <View style={{marginTop: -20}}>
+                      <Button
+                        label={'Cancel'}
+                        onPress={() => {
+                          setTimeout(() => {
+                            closeActionsheet();
+                            setShowServiceView(false);
+                            setServiceNotes('');
+                            // props?.onSheetClose?.();
+                          }, 150);
+                        }}
+                        containerStyle={{
+                          height: moderateScale(36),
+                          marginVertical: moderateScale(0),
+                          backgroundColor: colors.Dashboard,
+                          borderColor: colors.date,
+                        }}
+                        labelStyle={{
+                          color: colors.Grey600,
+                          fontWeight: 'semibold',
+                          fontSize: fontsize.medium,
+                        }}
+                      />
+                    </View>
+                  </View>
+                </View>
+              )}
+            </View>
+          </ActionSheet>
+        </View>
+        
       ),
     },
     {
@@ -281,128 +408,7 @@ const DashBoardContainer: React.FC<IDashboardProps> = ({
               />
             </View>
           </>
-          <ActionSheet
-            //  disableableClosePressingBackDrop={false}
-            onClose={() => {
-              setIsSheetOpen(false);
-              // props?.onSheetClose?.();
-              closeActionsheet();
-            }}
-            isVisible={showServiceView}>
-            <View>
-              {/* view of New Service*/}
-              {showServiceView && (
-                <View>
-                  <View
-                    style={{alignItems: 'center', justifyContent: 'center'}}>
-                    <Label
-                      size={'medium'}
-                      fontWeight={'semibold'}
-                      title={'New Task Request'}
-                      color={colors.GRey800}
-                      align={undefined}
-                    />
-                    <Label
-                      size={'small'}
-                      fontWeight={'semibold'}
-                      title={'From ' + dashboardState.activeBranch?.branch_name}
-                      color={colors.Grey600}
-                      align={undefined}
-                    />
-                  </View>
-
-                  <View
-                    style={{
-                      marginHorizontal: moderateScale(23),
-                      marginVertical: moderateScale(30),
-                    }}>
-                    <Sublabel
-                      size={'small'}
-                      fontWeight={'bold'}
-                      fontStyle={'normal'}
-                      title={'Service You Are Looking For'}
-                      color={colors.GRey800}
-                      align={undefined}
-                    />
-                    <TextInput
-                      placeholder="Type"
-                      placeholderTextColor={colors.Grey600}
-                      maxLength={250}
-                      value={serviceNotes}
-                      onChangeText={handleChangeText}
-                      style={{color:colors.GRey800}}
-                    />
-                    <View
-                      style={{
-                        borderWidth: 0.3,
-                        borderColor: colors.Grey600,
-                      }}
-                    />
-                    <View
-                      style={{
-                        position: 'absolute',
-                        right: moderateScale(10),
-                        bottom: moderateScale(95),
-                      }}>
-                      <Sublabel
-                        size={'small'}
-                        fontWeight={'bold'}
-                        fontStyle={'normal'}
-                        title={`${characterCount}/250`}
-                        color={colors.GRey800}
-                        align={undefined}
-                      />
-                    </View>
-
-                    <View>
-                      <Button
-                        label={'Submit Request'}
-                        onPress={() => {
-                          onNewService();
-                        }}
-                        containerStyle={{
-                          height: moderateScale(36),
-                          marginVertical: moderateScale(30),
-                          backgroundColor: colors.primary,
-                          borderColor: colors.date,
-                        }}
-                        labelStyle={{
-                          color: colors.white,
-                          fontWeight: 'semibold',
-                          fontSize: fontsize.medium,
-                        }}
-                      />
-                    </View>
-
-                    <View style={{marginTop: -20}}>
-                      <Button
-                        label={'Cancel'}
-                        onPress={() => {
-                          setTimeout(() => {
-                            closeActionsheet();
-                            setShowServiceView(false);
-                            setServiceNotes('');
-                            // props?.onSheetClose?.();
-                          }, 150);
-                        }}
-                        containerStyle={{
-                          height: moderateScale(36),
-                          marginVertical: moderateScale(0),
-                          backgroundColor: colors.Dashboard,
-                          borderColor: colors.date,
-                        }}
-                        labelStyle={{
-                          color: colors.Grey600,
-                          fontWeight: 'semibold',
-                          fontSize: fontsize.medium,
-                        }}
-                      />
-                    </View>
-                  </View>
-                </View>
-              )}
-            </View>
-          </ActionSheet>
+          
         </Content>
       </ParentContainer>
       <Modal

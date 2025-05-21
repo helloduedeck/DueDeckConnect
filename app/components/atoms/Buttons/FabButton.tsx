@@ -372,7 +372,6 @@ const FabButton = (props: FabPropsType) => {
                       color={colors.Grey600}
                       align={undefined}
                     />
-             
               
                   </View>
 

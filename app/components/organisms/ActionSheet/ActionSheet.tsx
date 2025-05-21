@@ -71,7 +71,7 @@ const ActionSheet: React.FC<IProps> = ({isVisible, children, onClose,disableable
       ref={bottomSheetRef}
       index={isPaymentPageOpened ? 3 : 1}
       snapPoints={snapPoints}
-      enablePanDownToClose={false} // disables pull-down gesture to close
+      enablePanDownToClose={true} // disables pull-down gesture to close
       handleComponent={() => {
         return null;
       }}

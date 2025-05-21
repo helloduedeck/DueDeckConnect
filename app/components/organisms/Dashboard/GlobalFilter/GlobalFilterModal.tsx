@@ -192,20 +192,7 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
               title={'Filter By'}
               color={colors.Grey600}
               align={undefined}
-            />
-            {/* <TouchableOpacity onPress={()=>{ onClose()}}> 
-                <MaterialCommunityIcons
-                name={'close'}
-                color={colors.SemGreen500}
-                size={20}
-                style={{
-                  marginRight: moderateScale(45),
-                  justifyContent: 'center',
-                  marginBottom: moderateScale(0),
-                  color:'black'
-                }}
-              />
-              </TouchableOpacity> */}
+            /> 
           </View>
           <DropDownPickerComp
             pickername={'consultatantPicker'}
