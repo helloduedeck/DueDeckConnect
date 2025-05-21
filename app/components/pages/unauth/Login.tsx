@@ -6,7 +6,7 @@ import Text from '@components/text/Text';
 import {useAppDispatch} from '@hooks/redux_hooks';
 import {ROUTES} from '@routes';
 import local from '@store/local';
-import {setUserCredentials} from '@store/slices/userSlice';
+import {setProfilePictures, setUserCredentials} from '@store/slices/userSlice';
 import {reduxStorage} from '@store/storage';
 import colors from '../../../themev1/colors';
 
@@ -96,6 +96,7 @@ const Login = ({navigation}: any) => {
             );
             local.store(local.keys.GPANEL_CONSULTATNT, data?.data?.consultant);
             dispatch(setUserCredentials(data?.data));
+            dispatch(setProfilePictures(data.data.data.profile_photo_path))
             
           } else {
             //toast.failure()

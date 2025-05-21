@@ -24,8 +24,6 @@ const ProfileContainer: React.FC<IProps> = ({children}) => {
           fontWeight={undefined}
           color={undefined}
         />
-        {/* <TopHeader size={"small"} fontWeight={"bold"} title={"Your Profile"} color={colors.red}/> */}
-        {/* <Logo size={'small'}/> */}
       </View>
 
       <ProfileUserDetails />

@@ -37,16 +37,6 @@ const CircleProfile = (props: CircleBadgePropsType) => {
   const [deleteProfilePic] = useDeleteProfilePicMutation();
   const dispatch = useAppDispatch();
   const [isModalVisible, setModalVisible] = useState(false);
-  const userProfileData = useAppSelector(state => state);
-const getprofilepic = userProfileData?.user
-console.log(getprofilepic,'prpicpath');
-const usersState = useAppSelector(state => state?.user);
-
-const profilePhotoPath = usersState?.user?.data?.profile_photo_path;
-
-const profilePhoto = useAppSelector(state => state?.user.profilePictures)
-
-
 
   const isDuedeck = PROFILE_URL.includes("duedeck.com");
   const finalUrl = isDuedeck ? `${PROFILE_URL}public/storage/profile/` : `${PROFILE_URL}storage/profile/`;
@@ -60,8 +50,6 @@ const profilePhoto = useAppSelector(state => state?.user.profilePictures)
       setProfilePic('');
     }
   }, [props.profilePic]);
-  
-  console.log("finalUrl Hereee:"+JSON.stringify(profilePic));
   
   const showActionSheet = () => {
     setIsActionSheetVisible(true);
@@ -143,16 +131,13 @@ const profilePhoto = useAppSelector(state => state?.user.profilePictures)
                   const photo_url = finalUrl?.concat(
                     uploadResponse.data.data.profile_photo_path,
                   );
-                  console.log(photo_url,'photo_urlphoto_url');
                   
                   setProfilePic({uri: photo_url});
                   dispatch(setUserCredentials(uploadResponse?.data));
-                  // dispatch(setProfilePictures(uploadResponse.data.data.profile_photo_path))
+                  dispatch(setProfilePictures(uploadResponse.data.data.profile_photo_path))
                   
                   hideActionSheet()
-                  // toast.success(uploadResponse?.message+'profileee');
                    toast.success(uploadResponse.message);
-                  //  console.log(uploadResponse.message,'promssgss');
                    
                 } else {
                   toast.failure(uploadResponse.message);
@@ -161,8 +146,7 @@ const profilePhoto = useAppSelector(state => state?.user.profilePictures)
                 console.error('Error while cropping image:', error);
               }
             } else {
-              console.log('No image selected.');
-              toast.info('No image selected.');
+              toast.failure('No image selected.');
             }
           }
         );
@@ -283,15 +267,12 @@ const profilePhoto = useAppSelector(state => state?.user.profilePictures)
       await updateUserProfile(formdata)
         .unwrap()
         .then(data => {
-          // console.log('updateUserProfile-', data.data);
           if (data?.success) {
             const photo_url = finalUrl?.concat(
               data.data.data.profile_photo_path,
             );
             setProfilePic({uri: photo_url});
-            dispatch(setUserCredentials(data?.data));
-            console.log(setUserCredentials(data?.data),'ppphoto');
-            
+            dispatch(setUserCredentials(data?.data));            
             toast.success(data?.message);
           }
         })
@@ -301,8 +282,6 @@ const profilePhoto = useAppSelector(state => state?.user.profilePictures)
     }
     hideActionSheet();
   };
-  console.log(profilePic,'circlprofi');
-
 
   const OnProfilepicDeletePress = () => { // Modified by Sahil Gaikwad for deleting profile pic on 21-1-25 .
     Alert.alert(
@@ -320,7 +299,6 @@ const profilePhoto = useAppSelector(state => state?.user.profilePictures)
             try {
               const reqData = {}; // Add required data for deletion if needed
               const response = await deleteProfilePic(reqData).unwrap();
-              console.log(response,'responseresponse')
               if (response?.success) {
                 toast.success('Profile picture deleted successfully');
                 // Clear profile picture from state and Redux store

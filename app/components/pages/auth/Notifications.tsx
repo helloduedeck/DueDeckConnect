@@ -176,7 +176,6 @@ console.log(loadNOtificationPage,'ddinNOT');
     [],
   );
   const renderItem = ({item}: any) => {
-    console.log('renderItem', item);
     const backgroundColor = item.id === '2' ? 'white' : `${colors.primary}10`;
     const color = item.id === selectedId ? 'white' : 'black';
 
