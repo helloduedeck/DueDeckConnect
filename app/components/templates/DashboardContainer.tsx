@@ -107,10 +107,8 @@ const DashBoardContainer: React.FC<IDashboardProps> = ({
   };
 
   const [serviceNotes, setServiceNotes] = useState('');
-  const appointmentData =
-    dashboardData?.appoinmentSection?.['appointment-card'];
+  const appointmentData = dashboardData?.appoinmentSection?.['appointment-card'];
 
-    console.log("dashboardData?.notificationBoard?.label",dashboardData?.notificationBoard)
   const data = [
     {
       id: 1,

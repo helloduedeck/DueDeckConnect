@@ -13,13 +13,7 @@ const ProfileUserDetails = () => {
 
   const userProfileData = useAppSelector(state => state?.user?.user);
   const dashboardState = useAppSelector(state => state?.dashboard);
-  const profilePhoto = useAppSelector(state => state?.user.profilePictures)
-
-// console.log(userProfileData?.data?.profile_photo_path,'puserdetails');
-// console.log(userProfileData?.,'contactss');
-console.log(userProfileData?.data,'emailss');
-
-
+  const profilePhoto = useAppSelector(state => state?.user.profilePictures);
 
   return (
     <>
@@ -32,7 +26,7 @@ console.log(userProfileData?.data,'emailss');
           }}>
           <CircleProfile
             userName={userProfileData?.client_name}
-            profilePic={userProfileData?.data?.profile_photo_path ?? undefined}
+            profilePic={profilePhoto ?? ''}
             clientId={dashboardState?.activeClient?.id}
           />
         </View>
@@ -46,7 +40,7 @@ console.log(userProfileData?.data,'emailss');
         </View>
         <View
           style={{marginTop: moderateScale(3), marginBottom: moderateScale(3)}}>
-          <ProfileInputEmail email={userProfileData?.data?.email} />
+          <ProfileInputEmail email={userProfileData?.email} />
         </View>
       </View>
     </>

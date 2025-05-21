@@ -140,7 +140,6 @@ const GlobalFilterModal: React.FC<IProps> = ({isVisible, onClose}) => {
     await saveSubHeader(req)
       .unwrap()
       .then(data => {
-        console.log("saveSubHeader- ",data.data)
         dispatch(setUserCredentials(data?.data))
       })
       .finally(() => {

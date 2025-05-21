@@ -43,7 +43,6 @@ const ResheduleAppointment = ({
   const [showDatepicker, setShowDatePicker] = useState(false);
   const [date, setDate] = useState(new Date()); //moment(new Date()).format('MMM Do, YYYY')
   const [time, setTime] = useState(new Date()); //new Date()).format('HH:MM a')
-  console.log(time,'seltime');
   const [apptime, setappTime] = useState(moment(rescheduledate).format('HH:mm:ss'));
   const [appdate, setappDate] = useState(moment(rescheduledate).format('YYYY-MM-DD'));
   const [characterCount, setCharacterCount] = useState(0);
@@ -61,14 +60,10 @@ const ResheduleAppointment = ({
 
   const onDateChange = (selectedDate: Date) => {
     setDate(selectedDate);
-    console.log(selectedDate,'selcteddate');
-    
-    // setShowPicker(Platform.OS === 'ios');
   };
 
   const onTimeChange = (selectedDate: Date) => {
     setTime(selectedDate);
-
     setShowPicker(false);
   };
 
@@ -78,14 +73,6 @@ const ResheduleAppointment = ({
   };
 
   const onReshedule = async () => {
-    console.log('onReshedule', time);
-    // if (!appdate || !apptime) {
-    //   setDisabled(true);
-    //   setTimeout(() => {
-    //     setDisabled(false);
-    //   }, 2000);
-    //   return toast.failure('Please select both Date and Time');
-    // }
     if (!purpose) {
       return toast.failure('Please fill purpose');
     }
@@ -105,7 +92,6 @@ const ResheduleAppointment = ({
       status: selectedEmployee?.status, //1,//TO-DO NEED TO CONFIRM WHAT TO SEND HERE IE. status OR 1
       appointment_id: id,
     };
-console.log(reqData,'reqDatareqDatareqDatassssssssssss');
 
     if (id) {
       resheduleAppointment(reqData);
@@ -143,8 +129,6 @@ console.log(reqData,'reqDatareqDatareqDatassssssssssss');
     await resheduleAppointments(reqData)
       .unwrap()
       .then(data => {
-        console.log(data,'datadatadatadatadatadatav');
-        
         if (data?.success) {
           toast.success(data?.message);
           clearFilledData();
@@ -175,22 +159,12 @@ console.log(reqData,'reqDatareqDatareqDatassssssssssss');
   };
 
   const timeIsValid = time => {
-    // let date1 = new Date();
-    // let date2 = new Date();
-    ////2024-05-12T18:29:00.000Z
     var momentDate = moment(time);
-    console.log('momentDate', momentDate.format('YYYY-MM-DDThh:mm:ss Z'));
 
-    console.log(
-      'selectedTime -time ',
-      moment(time, 'YYYY-MM-DDTHH:MM:SSZ').utc().format('HH:MM:SS'),
-    );
 
     const selectedTime = moment(time, 'YYYY-MM-DDTHH:MM:SSZ').format(
       'HH:MM:SS',
     );
-    console.log('selectedTime -time ', selectedTime);
-    // //var date_time = req.body.date + 'T' + req.body.time + 'Z';
 
     const dateA = moment(date, 'DD-MM-YYYY');
     const currentTime = new Date();
@@ -453,14 +427,12 @@ console.log(reqData,'reqDatareqDatareqDatassssssssssss');
             // onConfirm={onTimeChange}
             onConfirm={changedDate => {
               setShowPicker(false);
-              if (timeIsValid(changedDate)) {
-                onTimeChange(changedDate);
-              }
+              onTimeChange(changedDate);
             }}
             onCancel={() => {
               setShowPicker(false);
             }}
-              minimumDate={new Date()}
+            minimumDate={time ?? new Date()}
             timePickerModeAndroid="spinner"
           />
         </View>

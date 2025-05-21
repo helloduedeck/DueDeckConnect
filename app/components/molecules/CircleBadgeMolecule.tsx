@@ -26,8 +26,6 @@ const CircleBadge: React.FC<CircleBadgePropsType> = ({
     return initials;
   };
 
-  console.log(profilePic,'profilePicprofilePicprofilePic');
-
   const getHeaderText = (heading: string, length: number) => {
     try {
       return heading.length < length

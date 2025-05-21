@@ -130,7 +130,7 @@ const Appointment = () => {
       branch_id: dashboardState?.activeBranch?.id,
       sortstatus: 'desc',
     };
-    console.log('requestrequest ', request);
+    
     if (selectedId === 1) {
       await sheduledAppointments()
         .unwrap()
@@ -331,7 +331,6 @@ const Appointment = () => {
                   canAccept,
                   status
                 } = item;
-                console.log('AppointmentBoard====', item);
 
                 let message= ''
                 if(canAccept === 0 && status===4 || status===1){

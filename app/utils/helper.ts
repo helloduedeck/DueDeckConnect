@@ -42,7 +42,6 @@ export const getInitials = (fullName: string) => {
     }
     return acc;
   }, '');
-  console.log('getInitials', initials);
   return initials;
 };
 

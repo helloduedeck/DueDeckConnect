@@ -94,7 +94,6 @@ const DashBoard = () => {
     if (userToken?.token) {
       fetchDataAfterDashboardRefresh();
     }
-    console.log('filterStatusChange', filterStatusChange);
   }, [userToken?.token, filterStatusChange]);
 
   useEffect(() => {
