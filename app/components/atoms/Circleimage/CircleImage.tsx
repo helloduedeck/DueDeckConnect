@@ -25,7 +25,7 @@ const CircleImage = (props: CircleImagePropsType) => {
   return (
     <View>
        <View style={[Circlesizes, { backgroundColor: props.backgroundColor }]}>
-      {props.source && !imageError ? (
+      {props.source ? (
         <Image
           style={[Circlesizes, styles.image]}
           source={props.source}
