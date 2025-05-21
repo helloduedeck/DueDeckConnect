@@ -33,6 +33,7 @@ import Notice from '@components/pages/auth/Notice';
 import FabButton from '@components/atoms/Buttons/FabButton';
 import Documents from '@components/pages/auth/Documents';
 import LinearGradient from 'react-native-linear-gradient';
+import { setLoadNotificationPage } from '@store/slices/dashboardSlice';
 
 const Tab = createBottomTabNavigator();
 
@@ -287,19 +288,35 @@ const BottomTabContainer = () => {
 />
 
   <Tab.Screen
-name={ROUTES.APPOINTMENT}
+    name={ROUTES.APPOINTMENT}
     component={Appointment}
     options={{
-      tabBarIcon: ({ color }) => <Ionicons name="calendar" size={24} color={color} />,
+      tabBarIcon: ({ color }) => <Ionicons name="calendar" size={24} color={color}  style={{marginLeft:0}}/>,
     }}
   />
+
   <Tab.Screen
     name="Notifications"
     component={Notifications}
     options={{
       tabBarIcon: ({ color }) => <Ionicons name="notifications" size={24} color={color} />,
     }}
+    listeners={({ navigation, route }) => ({
+      tabPress: (e) => {
+        const currentRoute = navigation.getState().routes[navigation.getState().index].name;
+
+        if (currentRoute !== ROUTES.NOTIFICATION) {
+          dispatch(setLoadNotificationPage(true)); // Reload only if coming from another screen
+        }
+        //modified by sahil gaikwad on the 25-1-25 for current navigation load page 
+        // Navigate to the notification page if not already there
+        if (currentRoute !== ROUTES.NOTIFICATION) {
+          navigation.navigate(ROUTES.NOTIFICATION);
+        }
+      },
+    })}
   />
+
 </Tab.Navigator>
   );
 };

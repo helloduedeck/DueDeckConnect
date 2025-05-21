@@ -20,6 +20,7 @@ const initialState: any = {
   activeBillingFirm: null,
   activeBillingFirmPaymentStatus: null,
   filterStatusChange: false,
+  loadNotificationpage:false
 };
 
 const dashboardSlice = createSlice({
@@ -63,6 +64,9 @@ const dashboardSlice = createSlice({
     setFilterStatus(state, action) {
       state.filterStatusChange = action.payload;
     },
+    setLoadNotificationPage(state, action){
+      state.loadNotificationpage = action.payload;
+    },
     clearUser() {
       return initialState;
     },
@@ -78,6 +82,7 @@ export const {
   setActiveFYears,
   setActiveBillingFirm,
   setActiveBillingFirmPaymentStatus,
+  setLoadNotificationPage,
   setFilterStatus,
 } = dashboardSlice.actions;
 

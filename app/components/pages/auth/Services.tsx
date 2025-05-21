@@ -66,14 +66,7 @@ const tabs = [
     selectedColor: colors.white,
     selectedbackgroundColor: `${colors.SemGreen500}13`,
   },
-  // {
-  //   id: 5,
-  //   name: 'Requested',
-  //   background: colors.white,
-  //   color: colors.Grey600,
-  //   selectedColor: colors.SemGreen500,
-  //   selectedbackgroundColor: `${colors.SemGreen500}13`,
-  // },
+
 ];
 const Services = (props: any) => {
   const {isFocused} = useFocus();
@@ -327,7 +320,7 @@ const Services = (props: any) => {
       <View style={{backgroundColor:colors.primary,height:42,justifyContent:'center',alignItems:'center'}}>
       <CustomHeaderW title="Tasks" />
       </View>
-      <ScrollView horizontal style={{flexGrow: 0,marginLeft:moderateScale(10)}} ref={scrollViewRef}>
+      <ScrollView horizontal style={{flexGrow: 0,marginLeft:moderateScale(5)}} ref={scrollViewRef}>
         {tabs?.map(item => {
           return (
             <Pressable
@@ -340,6 +333,7 @@ const Services = (props: any) => {
               disabled={moduleStatus === 0}
               onPress={() => {
                 onTabSelected(item.id);
+                
               }}>
               <Text
                 style={{
@@ -410,11 +404,11 @@ const Services = (props: any) => {
 const styles = ScaledSheet.create({
   tabContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
     height: '30@ms',
     margin: '6@ms',
-    paddingHorizontal: '6@ms',
+    paddingHorizontal: '8@ms',
     marginHorizontal: moderateScale(16),
      borderColor:colors.toptab,
     borderWidth:1,
