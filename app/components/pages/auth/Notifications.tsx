@@ -17,6 +17,8 @@ import EmptyOther from '@components/molecules/empty/EmptyOther';
 import moment from 'moment';
 import {debounce} from 'lodash';
 import {useIsFocused} from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { setLoadNotificationPage } from '@store/slices/dashboardSlice';
 const newTaskData = [
   {
     title: 'Today',
@@ -79,7 +81,11 @@ const Notifications = () => {
   const [notificationCount, setNotificationCount] = useState(0);
   const isFocused = useIsFocused();
   const [searchPhrase, setSearchPhrase] = useState('');
-  
+  const dispatch = useDispatch();
+  const loadNOtificationPage = useAppSelector(state => state?.dashboard.loadNotificationpage);
+console.log(loadNOtificationPage,'ddinNOT');
+
+// const loadNOtificationPage = dash
   useEffect(() => {
     if (isFocused) {
       getNotificationData();
@@ -106,6 +112,8 @@ const Notifications = () => {
             setListData(data?.data);
             setFullData(data?.data);
             setNotificationCount(data?.count);
+            dispatch(setLoadNotificationPage(false)); // Dispatch your action\
+
           } else {
             setListData([]);
           }
@@ -209,6 +217,7 @@ const Notifications = () => {
   const keyExtractor = (item: any) => item.id;
 
   return (
+    <Content isLoading={loadNOtificationPage}>
     <Container isSubLabel={true} backLabel={['Dashboard', 'Notice']}>
       {!showSearch && (
         <NotificationHeader
@@ -271,7 +280,6 @@ const Notifications = () => {
           </View>
         </View>
       )}
-      <Content isLoading={isLoading}>
         <>
           <SectionList
             sections={filterNotificationsByMessage([...listData], searchPhrase)}
@@ -295,8 +303,8 @@ const Notifications = () => {
             // removeClippedSubviews={true}
           />
         </>
-      </Content>
     </Container>
+    </Content>
   );
 };
 
