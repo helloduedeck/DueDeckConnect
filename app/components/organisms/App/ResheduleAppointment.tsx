@@ -218,7 +218,7 @@ const ResheduleAppointment = ({
               fontWeight={'bold'}
               fontStyle={'normal'}
               title={'Meet'}
-              color={undefined}
+              color={colors.Grey600}
               align={undefined}
             />
           </View>
@@ -266,7 +266,7 @@ const ResheduleAppointment = ({
                 fontWeight={'bold'}
                 fontStyle={'normal'}
                 title={'Select Date'}
-                color={undefined}
+                color={colors.Grey600}
                 align={undefined}
               />
               <TouchableOpacity
@@ -294,7 +294,7 @@ const ResheduleAppointment = ({
                 fontWeight={'bold'}
                 fontStyle={'normal'}
                 title={'Select Time'}
-                color={undefined}
+                color={colors.Grey600}
                 align={undefined}
               />
               <TouchableOpacity
