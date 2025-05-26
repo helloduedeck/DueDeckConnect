@@ -33,45 +33,11 @@ import GlobalFilter from '@components/molecules/GlobalFilter';
 import fontsize from '../../../themev1/fontstyle';
 import { toast } from '@utils';
 
-const tabs = [
-  {
-    id: 1,
-    name: 'Assigned',
-    background: colors.semorange,
-    color: colors.GRey800,
-    selectedColor: colors.white,
-    selectedbackgroundColor: `${colors.semorange}13`,
-  },
-  {
-    id: 2,
-    name: 'In Progress',
-    background: colors.semblue,
-    color: colors.GRey800,
-    selectedColor: colors.white,
-    selectedbackgroundColor: `${colors.semblue}13`,
-  },
-  {
-    id: 3,
-    name: 'On Hold',
-    background: colors.darkred,
-    color: colors.GRey800,
-    selectedColor: colors.white,
-    selectedbackgroundColor: `${colors.darkred}13`,
-  },
-  {
-    id: 4,
-    name: 'Completed',
-    background: colors.SemGreen500,
-    color: colors.GRey800,
-    selectedColor: colors.white,
-    selectedbackgroundColor: `${colors.SemGreen500}13`,
-  },
-
-];
 const Services = (props: any) => {
   const {isFocused} = useFocus();
   const isScreenFocused = useIsFocused();
   const [listData, setListData] = useState([]);
+  const [listDataCount, setListDataCount] = useState([]);
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedId, setSelectedId] = useState(1);
@@ -81,11 +47,11 @@ const Services = (props: any) => {
   const [onholdServices] = useGetOnHoldServicesMutation();
   const [listCount, setListCount] = useState(0);
   const [searchText, setSearchText] = useState('');
-
+  const dashboardData = useAppSelector(state => state?.dashboard);
   const [moduleStatus, setModuleStatus] = useState();
   const [packagesDisbaleMessage, setPackageDisableMessage] = useState();
   const scrollViewRef = useRef<ScrollView>(null);
-  const[getalltaskcount] = useGetTaskcountMutation();
+  const[getTaskcount] = useGetTaskcountMutation();
   useEffect(() => {
     isFocused && setSearchText('');
     if (isFocused && props?.route?.params?.selectedTab === 1) {
@@ -127,38 +93,71 @@ const Services = (props: any) => {
   useEffect(() => {
     if (isFocused) {
       getListData();
+      Getalltaskcount();
     }
   }, [selectedId, isFocused]);
 
   
-   const Getalltaskcount = async (data:any) => {
-    setIsLoading(true)
-
-
-    const firstTask = data.data[0];
+   const Getalltaskcount = async () => {
     const reqData = {
-      branch_id: firstTask.branch_id,
-      client_id: firstTask.client_id,
-      financial_year: firstTask.financial_year,
+      branch_id: dashboardData.activeClient.branch_id,
+      client_id: dashboardData.activeClient.id,
+      financial_year: dashboardData.activeFYears,
     };
 
-    console.log(reqData,'reqDatareqData')
-    await getalltaskcount(reqData)
+    await getTaskcount(reqData)
         .unwrap()
         .then(data => {
-            if (data?.success) {
-             
-            } else {
-                toast.failure(data?.message ?? 'Something went wrong!!!');
-            }
+          setListDataCount(data);
         })
         .finally(() => {
-            setIsLoading(false)
         })
         .catch(e => {
-            toast.failure('Please Enter Manadatory Fields!!!');
+          console.log('ERROR PENDING LIST', e);
         });
-};
+    };
+
+    // {"assigned": 0, "completed": 0, "hold": 0, "wip": 0}
+
+    const tabs = [
+      {
+        id: 1,
+        name: 'Assigned',
+        count: listDataCount?.assigned,
+        background: colors.semorange,
+        color: colors.GRey800,
+        selectedColor: colors.white,
+        selectedbackgroundColor: `${colors.semorange}13`,
+      },
+      {
+        id: 2,
+        name: 'In Progress',
+        count: listDataCount?.completed,
+        background: colors.semblue,
+        color: colors.GRey800,
+        selectedColor: colors.white,
+        selectedbackgroundColor: `${colors.semblue}13`,
+      },
+      {
+        id: 3,
+        name: 'On Hold',
+        count: listDataCount?.hold,
+        background: colors.darkred,
+        color: colors.GRey800,
+        selectedColor: colors.white,
+        selectedbackgroundColor: `${colors.darkred}13`,
+      },
+      {
+        id: 4,
+        name: 'Completed',
+        count: listDataCount?.wip,
+        background: colors.SemGreen500,
+        color: colors.GRey800,
+        selectedColor: colors.white,
+        selectedbackgroundColor: `${colors.SemGreen500}13`,
+      },
+    
+    ];
 
   const getListData = async () => {
     setListData([]);
@@ -168,8 +167,6 @@ const Services = (props: any) => {
       await assignedServices({})
         .unwrap()
         .then(data => {
-          console.log(data,'1sttabdata');
-          
           if (data?.success) {
             if (data?.module_status === 1) {
               setListData(data?.data);
@@ -257,6 +254,7 @@ const Services = (props: any) => {
 
   const onListRefresh = () => {
     getListData();
+    Getalltaskcount();
     setSearchText('');
   };
 
@@ -342,7 +340,6 @@ const Services = (props: any) => {
                 }}>
                 {item.name}
               </Text>
-              {selectedId === item.id && (
                 <View style={styles.countContainer}>
                   <Text
                     style={{
@@ -354,15 +351,22 @@ const Services = (props: any) => {
                         selectedId === item.id
                           ? item.selectedbackgroundColor
                           : item.backgroundColor,
-                      paddingHorizontal: 4,
+
+                      // color:
+                      //   selectedId === item.id
+                      //     ? item.backgroundColor
+                      //     : colors.white,
+                      // backgroundColor:
+                      //   selectedId === item.id
+                      //     ? colors.white
+                      //     : colors.semorange,
+                      paddingHorizontal: 0,
                       borderRadius: 80,
                       paddingVertical: 1,
-                      fontSize: fontsize.medium10,
                     }}>
-                    {'('+ listCount +')'}
+                    {"("+item.count+")"}
                   </Text>
                 </View>
-              )}
             </Pressable>
           );
         })}

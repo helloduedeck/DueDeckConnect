@@ -175,8 +175,8 @@ const DashBoardContainer: React.FC<IDashboardProps> = ({
                       placeholder="Type"
                       placeholderTextColor={colors.Grey600}
                       maxLength={250}
-                      value={serviceNotes}
-                      onChangeText={handleChangeText}
+                      // value={serviceNotes}
+                      onChangeText={(value) => handleChangeText(value)}
                       style={{color:colors.GRey800}}
                     />
                     <View

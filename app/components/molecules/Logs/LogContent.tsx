@@ -56,7 +56,7 @@ const LogContent = ({details}: IProps) => {
               size={'small'}
               fontWeight={'normal'}
               fontStyle={'normal'}
-              title={'Particulars: '}
+              title={'Particulars : '}
               color={colors.GRey800}
               align={undefined}
             />
