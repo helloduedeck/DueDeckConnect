@@ -232,7 +232,7 @@ const CircleProfile = (props: CircleBadgePropsType) => {
               }
             } else {
 
-              toast.info('No image captured.');
+              toast.failure('No image captured.');
             }
           }
         );

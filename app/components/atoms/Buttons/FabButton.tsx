@@ -388,20 +388,6 @@ const FabButton = (props: FabPropsType) => {
                       color={colors.GRey800}
                       align={undefined}
                     />
-                    <View style={{position:'absolute',top:-80,right:-20}}>
-                        <Button
-                        label={'X'}
-                        onPress={() => {
-                          setTimeout(() => {
-                            closeActionsheet();
-                            setShowServiceView(false);
-                            setServiceNotes('');
-                            props?.onSheetClose?.();
-                          }, 150);
-                        }}
-                      
-                      />
-                      </View>
                     <TextInput
                       placeholder="Type"
                       placeholderTextColor={colors.Grey600}

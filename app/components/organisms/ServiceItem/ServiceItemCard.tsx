@@ -44,7 +44,6 @@ const ServiceItemCard: React.FC<IProps> = ({
 }) => {
   const navigation = useNavigation<any>();
 
-  console.log('ServiceItemCard', item);
   const onDetailPress = () => {
     navigation.push(ROUTES.SERVICEDETAILS, item);
   };

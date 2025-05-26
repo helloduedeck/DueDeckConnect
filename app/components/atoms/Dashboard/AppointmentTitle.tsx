@@ -12,7 +12,6 @@ type IDashboardProps = {
 };
 const AppointmentTitle = ({id, onSheduleNew}: IDashboardProps) => {
   const navigation = useNavigation();
-  console.log('AppointmentTitle', id);
   const onPressHandler = () => {
     if (id) {
       // Navigate to appointments screen
